@@ -1,0 +1,516 @@
+// ============================================================================
+// Amazon PPC Manager — Companion App Database Schema
+// ----------------------------------------------------------------------------
+// SQLite + Prisma. Designed for production-grade student management with
+// clean expansion paths for future features (cohorts, submissions, audit
+// trail, notifications, tagging, etc.).
+//
+// Design principles:
+//   1. Every entity has createdAt + updatedAt timestamps.
+//   2. Soft-delete (deletedAt) on entities that should be recoverable.
+//   3. Every foreign key has an explicit onDelete policy.
+//   4. Indexes on every FK and every commonly-filtered column.
+//   5. Enums for fixed-value fields (role, status, etc.).
+//   6. JSON fields (String?) for flexible metadata where appropriate.
+//   7. Unique constraints where business rules require them.
+//   8. Cascading deletes only for tightly-owned children (progress entries,
+//      submissions, comments). Cohorts and tags are RESTRICT-deleted.
+// ============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum Role {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum StudentStatus {
+  ACTIVE
+  PAUSED
+  GRADUATED
+  WITHDRAWN
+  PENDING // newly signed up, awaiting instructor approval
+}
+
+enum CohortStatus {
+  PLANNED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum EnrollmentStatus {
+  ENROLLED
+  COMPLETED
+  DROPPED
+  EXPELLED
+}
+
+enum ExerciseType {
+  OPEN          // free-text answer
+  CALCULATION   // numeric answer with formula
+  DECISION      // multiple-choice with explanations
+}
+
+enum QuizQuestionType {
+  MCQ       // multiple choice
+  NUMERIC   // numeric answer
+  OPEN      // open-ended (self-graded)
+}
+
+enum SubmissionStatus {
+  DRAFT
+  SUBMITTED
+  GRADED
+  RETURNED
+}
+
+enum CapstoneStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+  ASSIGNMENT
+  GRADE
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  EXPORT
+}
+
+// ============================================================================
+// CORE: STUDENT  (the central user entity)
+// ============================================================================
+
+model Student {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  name          String
+  password      String        @default("ppcdemo123") // demo only — hash in production
+  role          Role          @default(STUDENT)
+
+  // Lifecycle
+  status        StudentStatus @default(ACTIVE)
+  enrolledAt    DateTime      @default(now())
+  graduatedAt   DateTime?
+  lastLoginAt   DateTime?
+  deletedAt     DateTime?     // soft delete — null = active record
+
+  // Profile
+  avatarUrl     String?
+  bio           String?
+  phone         String?
+  timezone      String?       @default("UTC")
+
+  // Training state
+  currentPhase  Int           @default(1) // 1-4
+  targetAcos    Float         @default(30)
+  notes         String?       // instructor notes about this student
+
+  // Legacy cohort string (kept for back-compat; prefer Enrollment table below)
+  cohort        String?
+
+  // Timestamps
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  progress      ProgressEntry[]
+  enrollments   Enrollment[]
+  submissions   ExerciseSubmission[]
+  quizAttempts  QuizAttempt[]
+  capstones     CapstoneProject[]
+  notifications Notification[]
+  comments      Comment[]      // comments authored by this student
+  tagsAssigned  StudentTag[]
+  sessions      SessionLog[]
+  auditLogs     AuditLog[]
+  cohortsLed    Cohort[]       @relation("CohortInstructor") // cohorts where this student is the instructor
+
+  @@index([role])
+  @@index([status])
+  @@index([cohort])
+  @@index([deletedAt])
+  @@index([lastLoginAt])
+}
+
+// ============================================================================
+// COHORT + ENROLLMENT  (proper M2M between students and cohorts)
+// ============================================================================
+
+model Cohort {
+  id          String         @id @default(cuid())
+  name        String         @unique // e.g. "Spring 2026"
+  description String?
+  startDate   DateTime?
+  endDate     DateTime?
+  status      CohortStatus   @default(PLANNED)
+  maxStudents Int?           // null = unlimited
+  metadata    String?        // JSON string for future expansion
+
+  // Lead instructor for this cohort
+  instructorId String?
+  instructor   Student?      @relation("CohortInstructor", fields: [instructorId], references: [id], onDelete: SetNull)
+
+  enrollments Enrollment[]
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([status])
+  @@index([instructorId])
+  @@index([startDate])
+}
+
+model Enrollment {
+  id          String           @id @default(cuid())
+  studentId   String
+  cohortId    String
+  status      EnrollmentStatus @default(ENROLLED)
+  enrolledAt  DateTime         @default(now())
+  completedAt DateTime?
+  droppedAt   DateTime?
+  notes       String?
+
+  student     Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  cohort      Cohort    @relation(fields: [cohortId], references: [id], onDelete: Restrict)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([studentId, cohortId]) // a student can only enroll once per cohort
+  @@index([studentId])
+  @@index([cohortId])
+  @@index([status])
+}
+
+// ============================================================================
+// CURRICULUM  (structured course content — replaces hardcoded course-data.ts)
+// ============================================================================
+
+model Module {
+  id           String     @id @default(cuid())
+  code         String     @unique // e.g. "1.1", "2.3"
+  title        String
+  description  String?
+  phaseNumber  Int        // 1-4
+  order        Int        // display order within phase
+  durationMin  Int?       // estimated minutes
+  isPublished  Boolean    @default(true)
+
+  exercises    Exercise[]
+  quiz         Quiz?
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([phaseNumber])
+  @@index([order])
+  @@index([isPublished])
+}
+
+model Exercise {
+  id           String        @id @default(cuid())
+  moduleId     String
+  code         String        @unique // e.g. "1.1A", "3.3A"
+  title        String
+  prompt       String
+  type         ExerciseType
+  placeholder  String?
+  config       String?       // JSON: questions for CALCULATION, decisions for DECISION
+  modelAnswer  String?
+  order        Int           @default(0)
+
+  module       Module        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  submissions  ExerciseSubmission[]
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([moduleId])
+  @@index([type])
+}
+
+model Quiz {
+  id           String         @id @default(cuid())
+  moduleId     String         @unique // 1-to-1 with the final module of each phase
+  title        String
+  description  String?
+  passingScore Float          @default(60) // percentage
+  timeLimitMin Int?
+
+  module       Module         @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  questions    QuizQuestion[]
+  attempts     QuizAttempt[]
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model QuizQuestion {
+  id            String          @id @default(cuid())
+  quizId        String
+  question      String
+  type          QuizQuestionType
+  options       String?         // JSON array of {id, label, correct?, explanation?}
+  modelAnswer   String?
+  acceptableAnswers String?     // JSON array of acceptable numeric answers
+  explanation   String?
+  points        Int             @default(1)
+  order         Int             @default(0)
+
+  quiz          Quiz            @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([quizId])
+  @@index([order])
+}
+
+// ============================================================================
+// PROGRESS TRACKING  (per-student, per-phase summary + detailed submissions)
+// ============================================================================
+
+model ProgressEntry {
+  id              String   @id @default(cuid())
+  studentId       String
+  phaseNumber     Int      // 1, 2, 3, 4
+  exercisesDone   Int      @default(0)
+  exercisesTotal  Int      @default(0)
+  quizScore       Int?     // null = not taken; latest attempt's score
+  quizTotal       Int      @default(0)
+  capstoneDone    Boolean  @default(false)
+  notes           String?
+
+  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([studentId, phaseNumber])
+  @@index([studentId])
+  @@index([phaseNumber])
+}
+
+model ExerciseSubmission {
+  id          String           @id @default(cuid())
+  studentId   String
+  exerciseId  String
+  answer      String           // the student's submitted answer
+  status      SubmissionStatus @default(DRAFT)
+  score       Float?           // for auto-gradable types
+  feedback    String?          // instructor feedback
+  gradedBy    String?          // instructor studentId
+  gradedAt    DateTime?
+
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  exercise    Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([exerciseId])
+  @@index([status])
+  @@index([studentId, exerciseId])
+}
+
+model QuizAttempt {
+  id           String    @id @default(cuid())
+  studentId    String
+  quizId       String
+  score        Int       // number correct
+  total        Int       // total questions
+  percentage   Float     // score / total * 100
+  passed       Boolean
+  answers      String    // JSON: {questionId: answer}
+  durationSec  Int?
+
+  student      Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  quiz         Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime  @default(now())
+
+  @@index([studentId])
+  @@index([quizId])
+  @@index([passed])
+  @@index([createdAt])
+}
+
+// ============================================================================
+// CAPSTONE PROJECT  (final deliverables per student)
+// ============================================================================
+
+model CapstoneProject {
+  id            String          @id @default(cuid())
+  studentId     String
+  title         String?
+  productBrief  String?
+  targetAcos    Float?
+  targetTacos   Float?
+
+  // 5 deliverables tracked as booleans + their content
+  keywordResearch   String?     // deliverable 1: 50-100 keywords (JSON or text)
+  campaignBlueprint String?     // deliverable 2: campaign structure (JSON)
+  launchPlan        String?     // deliverable 3: 30-day plan (text)
+  optimizationReport String?    // deliverable 4: dummy data analysis (text)
+  presentationUrl   String?     // deliverable 5: slides link
+
+  status        CapstoneStatus  @default(NOT_STARTED)
+  submittedAt   DateTime?
+  reviewedBy    String?         // instructor studentId
+  reviewedAt    DateTime?
+  reviewNotes   String?
+  grade         String?         // A, B, C, etc.
+
+  student       Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([status])
+}
+
+// ============================================================================
+// NOTIFICATIONS  (in-app notification center)
+// ============================================================================
+
+model Notification {
+  id         String           @id @default(cuid())
+  studentId  String
+  type       NotificationType  @default(INFO)
+  title      String
+  message    String
+  link       String?           // URL to navigate to
+  readAt     DateTime?         // null = unread
+
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@index([studentId])
+  @@index([readAt])
+  @@index([createdAt])
+}
+
+// ============================================================================
+// COMMENTS  (instructor feedback on submissions / capstones)
+// ============================================================================
+
+model Comment {
+  id           String   @id @default(cuid())
+  authorId     String
+  targetType   String   // "exercise_submission" | "capstone" | "student"
+  targetId     String   // polymorphic FK
+  body         String
+
+  author       Student  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([authorId])
+  @@index([targetType, targetId])
+}
+
+// ============================================================================
+// TAGS  (flexible labeling system — "needs help", "fast learner", etc.)
+// ============================================================================
+
+model Tag {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  color       String       @default("amber") // tailwind color name
+  description String?
+
+  students    StudentTag[]
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model StudentTag {
+  id         String   @id @default(cuid())
+  studentId  String
+  tagId      String
+  note       String?
+  assignedBy String?  // instructor studentId
+  assignedAt DateTime @default(now())
+
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, tagId])
+  @@index([studentId])
+  @@index([tagId])
+}
+
+// ============================================================================
+// SESSION LOG  (login history + device tracking)
+// ============================================================================
+
+model SessionLog {
+  id           String   @id @default(cuid())
+  studentId    String
+  userAgent    String?
+  ipAddress    String?
+  loginAt      DateTime @default(now())
+  logoutAt     DateTime?
+  durationSec  Int?
+
+  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId])
+  @@index([loginAt])
+}
+
+// ============================================================================
+// AUDIT LOG  (track admin/instructor actions for compliance)
+// ============================================================================
+
+model AuditLog {
+  id          String      @id @default(cuid())
+  actorId     String?     // null = system action
+  action      AuditAction
+  entityType  String      // "student", "cohort", "submission", etc.
+  entityId    String
+  summary     String      // human-readable: "Deleted student Alex Rivera"
+  changes     String?     // JSON diff of what changed
+  ipAddress   String?
+
+  actor       Student?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  createdAt   DateTime    @default(now())
+
+  @@index([actorId])
+  @@index([action])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}

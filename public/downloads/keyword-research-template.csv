@@ -1,0 +1,14 @@
+#,Keyword,Tier (1/2/3),Est. Monthly Volume,Match Type,Campaign Layer,Notes
+1,insulated water bottle,1,12000,Exact,Heroes,"High volume, high intent — hero keyword"
+2,stainless steel water bottle,1,9500,Exact,Heroes,Core product description
+3,water bottle 32oz,1,7200,Exact,Heroes,Size-specific — high purchase intent
+4,water bottle,1,85000,Broad,Discovery,"Too broad for Exact, use in Broad"
+5,gym water bottle,2,3100,Phrase,Expansion,Use-case specific
+6,water bottle for hiking,2,2400,Phrase,Expansion,Outdoor use case
+7,water bottle with straw,2,1800,Phrase,Expansion,Feature-specific
+8,water bottle for office desk,2,900,Phrase,Expansion,"Long-tail, lower competition"
+9,hydroflask alternative,3,600,ASIN,Defense,Competitor brand targeting
+10,yeti water bottle dupe,3,400,ASIN,Defense,Competitor brand targeting
+11,,,,,,
+12,,,,,,
+13,,,,,,

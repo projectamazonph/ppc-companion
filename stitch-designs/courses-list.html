@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Courses List - LMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2463eb",
+                        "primary-dark": "#3b82f6", 
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b",
+                        "text-main": "#111318",
+                        "text-main-dark": "#f1f5f9",
+                        "text-secondary": "#616e89",
+                        "text-secondary-dark": "#94a3b8",
+                        "border-light": "#e2e8f0",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased transition-colors duration-200 pb-20 md:pb-0">
+<div class="min-h-screen flex flex-col">
+<header class="sticky top-0 z-50 bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark px-4 sm:px-6 py-3 shadow-sm">
+<div class="max-w-[1280px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 text-primary flex items-center justify-center">
+<svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-text-main dark:text-text-main-dark text-lg font-bold tracking-tight">PPC MasterClass</h2>
+</div>
+<nav class="hidden md:flex flex-1 justify-center gap-8">
+<a class="text-primary font-bold text-sm leading-normal border-b-2 border-primary pb-0.5" href="#">Courses</a>
+<a class="text-text-secondary dark:text-text-secondary-dark hover:text-text-main dark:hover:text-text-main-dark text-sm font-medium leading-normal transition-colors" href="#">Progress</a>
+<a class="text-text-secondary dark:text-text-secondary-dark hover:text-text-main dark:hover:text-text-main-dark text-sm font-medium leading-normal transition-colors" href="#">Community</a>
+</nav>
+<div class="hidden md:flex gap-3">
+<button aria-label="Profile" class="flex items-center justify-center w-10 h-10 rounded-lg bg-background-light dark:bg-gray-800 text-text-main dark:text-text-main-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</button>
+<button aria-label="Logout" class="flex items-center justify-center w-10 h-10 rounded-lg bg-background-light dark:bg-gray-800 text-text-main dark:text-text-main-dark hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+</button>
+</div>
+<button aria-label="Menu" class="md:hidden flex items-center justify-center w-10 h-10 text-text-main dark:text-text-main-dark hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+<div class="mb-6 sm:mb-8">
+<h1 class="text-text-main dark:text-white text-2xl sm:text-4xl font-black leading-tight tracking-tight mb-2">Your Learning Path</h1>
+<p class="text-text-secondary dark:text-text-secondary-dark text-sm sm:text-lg">Master Amazon PPC step-by-step to accelerate your VA career.</p>
+</div>
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6 sm:mb-8">
+<div class="w-full flex gap-3 md:hidden">
+<div class="relative flex-grow">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-secondary dark:text-text-secondary-dark">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="block w-full pl-9 pr-3 py-2 rounded-lg border-none bg-white dark:bg-surface-dark text-text-main dark:text-white placeholder-text-secondary dark:placeholder-text-secondary-dark shadow-sm ring-1 ring-inset ring-border-light dark:ring-border-dark focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-primary text-sm" placeholder="Search..." type="text"/>
+</div>
+<button class="flex items-center justify-center w-10 h-10 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-lg shadow-sm text-text-main dark:text-white">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+<div class="flex gap-2 w-full overflow-x-auto pb-2 sm:pb-0 scrollbar-hide flex-nowrap sm:flex-wrap">
+<button class="whitespace-nowrap h-9 px-5 rounded-lg bg-text-main dark:bg-primary text-white text-sm font-medium transition-transform active:scale-95 flex-shrink-0">
+                        All
+                    </button>
+<button class="whitespace-nowrap h-9 px-5 rounded-lg bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark text-text-secondary dark:text-text-secondary-dark hover:text-text-main dark:hover:text-text-main-dark hover:border-gray-300 dark:hover:border-gray-600 text-sm font-medium transition-colors flex-shrink-0">
+                        Foundation
+                    </button>
+<button class="whitespace-nowrap h-9 px-5 rounded-lg bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark text-text-secondary dark:text-text-secondary-dark hover:text-text-main dark:hover:text-text-main-dark hover:border-gray-300 dark:hover:border-gray-600 text-sm font-medium transition-colors flex-shrink-0">
+                        Advanced
+                    </button>
+<button class="whitespace-nowrap h-9 px-5 rounded-lg bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark text-text-secondary dark:text-text-secondary-dark hover:text-text-main dark:hover:text-text-main-dark hover:border-gray-300 dark:hover:border-gray-600 text-sm font-medium transition-colors flex-shrink-0">
+                        Completed
+                    </button>
+</div>
+<div class="hidden md:block relative w-full lg:w-80">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-secondary dark:text-text-secondary-dark">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 rounded-lg border-none bg-white dark:bg-surface-dark text-text-main dark:text-white placeholder-text-secondary dark:placeholder-text-secondary-dark shadow-sm ring-1 ring-inset ring-border-light dark:ring-border-dark focus:ring-2 focus:ring-inset focus:ring-primary dark:focus:ring-primary sm:text-sm sm:leading-6" placeholder="Search courses..." type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col h-full">
+<div class="relative h-40 sm:h-48 w-full overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Abstract data charts and graphs on a computer screen representing analytics" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCUQ3tVkU3nV_ob9ftBG_J3WRmSXkdJD4BZ1zdwuWf08PrmDQAX5PfcE_pL_ykadpvDSvZkCF-JWd3al5jNW24tT3AH4MevfmDNEnoXtCc9EIrwgXeodR1qbJFhsg1sQZAP2E0uMg0OW6QgcdAuSBSY6RS54v1J37DscB6iXRc74P6PrM0Uvl7N8rQ36-ZcyLNIhODEzqoSny3uW_81GZJf1XHZO3C7nEm_r6aQEhhuyaJlHwbkPUlJwnKHAlegmzUp3Wbi6HdnGSpG');">
+</div>
+<div class="absolute top-3 left-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur px-2.5 py-1 rounded text-xs font-bold text-primary uppercase tracking-wide shadow-sm">
+                            In Progress
+                        </div>
+</div>
+<div class="p-4 sm:p-5 flex flex-col flex-grow">
+<div class="flex items-center gap-2 text-xs font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 3h 45m</span>
+<span>•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">play_circle</span> 12 Lessons</span>
+</div>
+<h3 class="text-lg sm:text-xl font-bold text-text-main dark:text-white mb-2 line-clamp-2">Amazon PPC Fundamentals</h3>
+<p class="text-text-secondary dark:text-text-secondary-dark text-sm mb-4 sm:mb-5 line-clamp-2">Learn the core concepts of Sponsored Products and how to structure your first campaigns.</p>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-semibold text-text-main dark:text-white">65% Completed</span>
+</div>
+<div class="w-full bg-background-light dark:bg-gray-700 rounded-full h-2 mb-4">
+<div class="bg-primary h-2 rounded-full" style="width: 65%"></div>
+</div>
+<button class="w-full py-2.5 px-4 bg-primary hover:bg-primary-dark text-white rounded-lg text-sm font-bold transition-colors flex items-center justify-center gap-2">
+                                Continue Learning
+                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col h-full">
+<div class="relative h-40 sm:h-48 w-full overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Digital dashboard showing keyword performance metrics" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCsJu4oe8P_r1qF6bOKWzszK9DCWvp1FdH4IN1pKNN-kkFG3xmXW-La0b8b1iKmylJOz64HX0pQROMJpqJOqfJrjO_t03EreqyT36KWcbo4dL6kYsBB-WluKQI_KHEwPj9DQtAcngA_AbxpJ5hFZxVjP685XKeVV9llovjCrGfqgBZdR3aAzICuV0TKfuTiqZFNt7HOi0rZR7CSjqidgvzqHaXk5kqF2ZaBsLWSKjb0g95lhfVlRCQ1YthvVOJcysuCjvzKnGJ7Oygx');">
+</div>
+<div class="absolute top-3 left-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur px-2.5 py-1 rounded text-xs font-bold text-orange-600 uppercase tracking-wide shadow-sm">
+                            In Progress
+                        </div>
+</div>
+<div class="p-4 sm:p-5 flex flex-col flex-grow">
+<div class="flex items-center gap-2 text-xs font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 2h 10m</span>
+<span>•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">play_circle</span> 8 Lessons</span>
+</div>
+<h3 class="text-lg sm:text-xl font-bold text-text-main dark:text-white mb-2 line-clamp-2">Keyword Research Mastery</h3>
+<p class="text-text-secondary dark:text-text-secondary-dark text-sm mb-4 sm:mb-5 line-clamp-2">Deep dive into Helium 10 and manual research methods to find winning keywords.</p>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-semibold text-text-main dark:text-white">15% Completed</span>
+</div>
+<div class="w-full bg-background-light dark:bg-gray-700 rounded-full h-2 mb-4">
+<div class="bg-primary h-2 rounded-full" style="width: 15%"></div>
+</div>
+<button class="w-full py-2.5 px-4 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-600 text-text-main dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg text-sm font-bold transition-colors">
+                                Resume Course
+                            </button>
+</div>
+</div>
+</div>
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark overflow-hidden opacity-80 hover:opacity-100 transition-all duration-300 flex flex-col h-full relative">
+<div class="absolute inset-0 bg-white/50 dark:bg-black/40 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm rounded-xl">
+<div class="bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg mb-2 text-text-secondary dark:text-text-secondary-dark">
+<span class="material-symbols-outlined text-3xl">lock</span>
+</div>
+<p class="text-sm font-bold text-text-main dark:text-white px-6 text-center">Complete "Fundamentals" to unlock</p>
+</div>
+<div class="relative h-40 sm:h-48 w-full overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Person writing on a whiteboard discussing strategy" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDHegeeeZrMdpV0kevT7LpC6A41rC9AM_pz_louk2_MoeWg1M3ymHvJqSqRwNqD-JKu0lmiW1TDlsi0P69YH2bjHE76US8kV4nLL1oBpsJuSVulT11YzIAYvHs1iWpd47EgJFhD9Sarft3-mAz1bBO4zdTa-18Tao45TYHebMsbDunX-EmBTkyUDIz_uB90jvrLOu91AwNBNW9s5fwQtwema8spd5XHHkbEJKMEKTEF6z7m9UbjX506DKyPhxWkN_bvvTonqrikEAED');">
+</div>
+<div class="absolute top-3 left-3 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded text-xs font-bold text-gray-500 uppercase tracking-wide shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span> Locked
+                        </div>
+</div>
+<div class="p-4 sm:p-5 flex flex-col flex-grow">
+<div class="flex items-center gap-2 text-xs font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 5h 00m</span>
+<span>•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">play_circle</span> 20 Lessons</span>
+</div>
+<h3 class="text-lg sm:text-xl font-bold text-text-secondary dark:text-gray-400 mb-2 line-clamp-2">Advanced Bid Optimization</h3>
+<p class="text-text-secondary dark:text-text-secondary-dark text-sm mb-4 sm:mb-5 line-clamp-2">Master the art of bid management, placement modifiers, and dayparting strategies.</p>
+<div class="mt-auto pt-4 border-t border-dashed border-gray-200 dark:border-gray-700">
+<div class="flex items-center gap-2 text-text-secondary dark:text-gray-500 text-sm">
+<span class="material-symbols-outlined text-[18px]">info</span>
+<span>Prerequisite: PPC Fundamentals</span>
+</div>
+</div>
+</div>
+</div>
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark overflow-hidden hover:shadow-lg hover:border-green-500/30 transition-all duration-300 flex flex-col h-full">
+<div class="relative h-40 sm:h-48 w-full overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Group of people working together in a modern office environment" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAFKkfAsuT84uZ0zaeLW328uF0nPJlK9MXhXsEsNoVYJIt7BxvIvlNnweqsmbbgJW4-DtSyxIjQ-uM-NirCym9sDmh8XGbTK2myWYDFrb8N7FG49aD6DvAP6u-8od32e16KaEKeaz5UOaqfGAtyUbP47yg1mDgi6Gr705TULh-14UomZT0S6CAiDa8exk-4glHPmlki4RnHd2XiS9PymWx2kdYAvQrDMTBUH8h5uBruKpxc1bqDsFV4dxWIDL6En0M4Tq5XVJQpuG7u');">
+</div>
+<div class="absolute inset-0 bg-green-900/10"></div> 
+<div class="absolute top-3 left-3 bg-green-100 dark:bg-green-900/60 backdrop-blur px-2.5 py-1 rounded text-xs font-bold text-green-700 dark:text-green-300 uppercase tracking-wide shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Completed
+                        </div>
+</div>
+<div class="p-4 sm:p-5 flex flex-col flex-grow">
+<div class="flex items-center gap-2 text-xs font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 1h 30m</span>
+<span>•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">play_circle</span> 5 Lessons</span>
+</div>
+<h3 class="text-lg sm:text-xl font-bold text-text-main dark:text-white mb-2 line-clamp-2">Introduction to Amazon Selling</h3>
+<p class="text-text-secondary dark:text-text-secondary-dark text-sm mb-4 sm:mb-5 line-clamp-2">Understanding the Amazon ecosystem, FBA vs FBM, and the role of a VA.</p>
+<div class="mt-auto">
+<div class="flex items-center gap-2 mb-4 text-sm text-green-600 dark:text-green-400 font-medium bg-green-50 dark:bg-green-900/20 p-2 rounded">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+                                Certificate Available
+                            </div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 px-3 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-600 text-text-main dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg text-sm font-bold transition-colors">
+                                    Review
+                                </button>
+<button class="flex-1 py-2 px-3 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-bold transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]">download</span> Cert
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col h-full">
+<div class="relative h-40 sm:h-48 w-full overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Close up of financial report data on tablet" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuClGy433rLctf229eX0bLpqLSLfguuIOUNWSYrwS1RZEns26vYf3JrYwBFKzTowwe15HzciZfr59mQ_Ce5MT_Ho9YXyKkJYiIss4ar3Ba6Orr9AwRX583Js6V_Q6nrhlnflsfHAUmMMg85Ww-K4d4sK0X4W3DFapesRdK9h6JXcLww5NMYX0SlmCS1V0FGQUz6_JdqtLbbk5Ts5oVH-oq9AgNIHGt7mbvIn-e3DdPogwUFMeEWeQVXR0gob_2uJEOzgKMSwH0U88G4T');">
+</div>
+<div class="absolute top-3 left-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur px-2.5 py-1 rounded text-xs font-bold text-primary uppercase tracking-wide shadow-sm">
+                            In Progress
+                        </div>
+</div>
+<div class="p-4 sm:p-5 flex flex-col flex-grow">
+<div class="flex items-center gap-2 text-xs font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 2h 45m</span>
+<span>•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">play_circle</span> 10 Lessons</span>
+</div>
+<h3 class="text-lg sm:text-xl font-bold text-text-main dark:text-white mb-2 line-clamp-2">Reporting &amp; Analytics</h3>
+<p class="text-text-secondary dark:text-text-secondary-dark text-sm mb-4 sm:mb-5 line-clamp-2">How to create weekly reports for your clients using Excel and Google Sheets.</p>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-semibold text-text-main dark:text-white">32% Completed</span>
+</div>
+<div class="w-full bg-background-light dark:bg-gray-700 rounded-full h-2 mb-4">
+<div class="bg-primary h-2 rounded-full" style="width: 32%"></div>
+</div>
+<button class="w-full py-2.5 px-4 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-600 text-text-main dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg text-sm font-bold transition-colors">
+                                Resume Course
+                            </button>
+</div>
+</div>
+</div>
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-border-light dark:border-border-dark overflow-hidden opacity-80 hover:opacity-100 transition-all duration-300 flex flex-col h-full relative">
+<div class="absolute inset-0 bg-white/50 dark:bg-black/40 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm rounded-xl">
+<div class="bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg mb-2 text-text-secondary dark:text-text-secondary-dark">
+<span class="material-symbols-outlined text-3xl">lock</span>
+</div>
+<p class="text-sm font-bold text-text-main dark:text-white px-6 text-center">Complete "Reporting" to unlock</p>
+</div>
+<div class="relative h-40 sm:h-48 w-full overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Conceptual image of business automation with laptop and abstract shapes" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD5pJEbjKiy_-93j5YZnnghtK-Jqmj2Gb5kHKP1dlfW1wsRGjGcbDoCvYDDC8t3pQKdnO53pbkKzg_dpRQPFkSPGMnf5KoSfJEagCwAOiDrhK8_9mD6CmbvqUlS5sewOzrPi7mbLITIm8AEAuihmVq6l0cucEpDyhVz03wGhbM-tI19TDHJuzhLa2tfXyWAyFtU5XlxwwB6AeAjiA0xd2V3m6PaCFrzcUbTo3vCOO5nzX4rwd8onfUqixVbL9cBFUg_LPPW8dZy8J_J');">
+</div>
+<div class="absolute top-3 left-3 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded text-xs font-bold text-gray-500 uppercase tracking-wide shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span> Locked
+                        </div>
+</div>
+<div class="p-4 sm:p-5 flex flex-col flex-grow">
+<div class="flex items-center gap-2 text-xs font-medium text-text-secondary dark:text-text-secondary-dark mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 1h 00m</span>
+<span>•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">play_circle</span> 6 Lessons</span>
+</div>
+<h3 class="text-lg sm:text-xl font-bold text-text-secondary dark:text-gray-400 mb-2 line-clamp-2">Automation Tools for VAs</h3>
+<p class="text-text-secondary dark:text-text-secondary-dark text-sm mb-4 sm:mb-5 line-clamp-2">Leveraging AI and scripts to automate bid adjustments.</p>
+<div class="mt-auto pt-4 border-t border-dashed border-gray-200 dark:border-gray-700">
+<div class="flex items-center gap-2 text-text-secondary dark:text-gray-500 text-sm">
+<span class="material-symbols-outlined text-[18px]">info</span>
+<span>Prerequisite: Reporting</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-12 text-center pb-8 sm:pb-12">
+<p class="text-sm text-text-secondary dark:text-text-secondary-dark">Showing 6 of 18 available courses</p>
+<button class="mt-4 px-6 py-2 border border-border-light dark:border-border-dark bg-white dark:bg-surface-dark text-text-main dark:text-white rounded-lg text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors w-full sm:w-auto">
+                    Load More
+                </button>
+</div>
+</main>
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark flex justify-around items-center py-2 px-2 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+<a class="flex flex-col items-center gap-1 p-2 text-text-secondary dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-primary dark:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px] fill-1">school</span>
+<span class="text-[10px] font-medium">Courses</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-text-secondary dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">groups</span>
+<span class="text-[10px] font-medium">Community</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-text-secondary dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">trending_up</span>
+<span class="text-[10px] font-medium">Progress</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-text-secondary dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</nav>
+</div>
+<script>
+        // Simple script to demonstrate functionality conceptually without framework logic
+        // In a real app, this would handle the filtering logic
+    </script>
+
+</body></html>

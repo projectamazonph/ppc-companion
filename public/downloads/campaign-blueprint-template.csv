@@ -1,0 +1,9 @@
+Campaign Name,Ad Type,Match Type,Daily Budget ($),Goal,Example Keywords/Targets,Bid Strategy
+Product – SP – Auto – Discovery,Sponsored Products,Auto,15,Find new search terms,(Amazon decides),Down Only
+Product – SP – Broad – Discovery,Sponsored Products,Broad,10,Explore variations,"keyword1, keyword2",Down Only
+Product – SP – Phrase – Expansion,Sponsored Products,Phrase,12,Scale promising terms,"keyword3, keyword4",Down Only
+Product – SP – Exact – Heroes,Sponsored Products,Exact,25,Maximize profit on heroes,"keyword5, keyword6",Up and Down
+Product – SD – ASIN – Conquest,Sponsored Display,ASIN,8,Win competitor shoppers,"B08XXX, B09XXX",Down Only
+Product – SD – Retarget,Sponsored Display,Retargeting,5,Reclaim viewers,(Viewers who did not buy),Down Only
+,,,,,,
+,,,,,,

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LMS Admin Dashboard</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2463eb",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b",
+                        "text-main-light": "#111318",
+                        "text-main-dark": "#f1f5f9",
+                        "text-sub-light": "#616e89",
+                        "text-sub-dark": "#94a3b8",
+                        "border-light": "#dbdee6",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark">
+<div class="flex h-screen overflow-hidden">
+<!-- Side Navigation -->
+<aside class="w-64 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark hidden md:flex flex-col z-20">
+<div class="p-6 flex items-center gap-3">
+<div class="size-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[20px]">school</span>
+</div>
+<h1 class="text-lg font-bold tracking-tight text-text-main-light dark:text-white">PPC Master</h1>
+</div>
+<nav class="flex-1 px-4 space-y-2 overflow-y-auto py-4">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-sub-light dark:text-text-sub-dark hover:bg-background-light dark:hover:bg-background-dark group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm font-medium">Users</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-sub-light dark:text-text-sub-dark hover:bg-background-light dark:hover:bg-background-dark group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+<span class="text-sm font-medium">Courses</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-sub-light dark:text-text-sub-dark hover:bg-background-light dark:hover:bg-background-dark group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">assessment</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-sub-light dark:text-text-sub-dark hover:bg-background-light dark:hover:bg-background-dark group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-border-light dark:border-border-dark">
+<button class="flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span>Logout</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Top Navbar -->
+<header class="h-16 bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark flex items-center justify-between px-6 z-10 sticky top-0">
+<div class="flex items-center gap-4">
+<button class="md:hidden p-2 rounded-lg text-text-sub-light dark:text-text-sub-dark hover:bg-background-light dark:hover:bg-background-dark">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="text-lg font-bold hidden sm:block">Dashboard</h2>
+</div>
+<div class="flex items-center gap-6">
+<!-- Search Bar -->
+<div class="relative hidden sm:block w-64 lg:w-96">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-text-sub-light dark:text-text-sub-dark">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="w-full bg-background-light dark:bg-background-dark border-none rounded-lg pl-10 pr-4 py-2 text-sm text-text-main-light dark:text-text-main-dark focus:ring-2 focus:ring-primary placeholder-text-sub-light dark:placeholder-text-sub-dark" placeholder="Search students or courses..." type="text"/>
+</div>
+<!-- Actions & Profile -->
+<div class="flex items-center gap-4">
+<button class="relative p-2 rounded-full text-text-sub-light dark:text-text-sub-dark hover:bg-background-light dark:hover:bg-background-dark">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-surface-dark"></span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-border-light dark:border-border-dark">
+<div class="text-right hidden md:block">
+<p class="text-sm font-medium text-text-main-light dark:text-text-main-dark">Admin User</p>
+<p class="text-xs text-text-sub-light dark:text-text-sub-dark">Super Admin</p>
+</div>
+<div class="size-9 rounded-full bg-cover bg-center border border-border-light dark:border-border-dark" data-alt="Admin user profile picture showing a professional headshot" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4RlUKhjvAdv7BlZrrJuYo8kyvLaM-Z21A0xZnQ65xB6VoBBZh10m8YzSdDwEweelmjI21ruvlwU9un98BDwJONwkKN4WEcukvD7WhZ4J5t9kcOCW6-LgP-61qJ2SWjI8GZRihGpglIu_PiuyZzIg2ckVRF2HlbB4yVsx6QaB2OI7g7u-o1QZM9O8eLHHoDGDcTVch5qdfThxdUUY2VvxKkEZPYNeJRsROGVOLqnnk-vJ5yl2Gk5rLGC7WEjvSe_TJppq_WqtpHbVq");'></div>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto p-6 lg:p-10">
+<div class="max-w-7xl mx-auto space-y-8">
+<!-- Stats Section -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Total Students -->
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-4">
+<div class="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<span class="flex items-center text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span> 12%
+                                </span>
+</div>
+<p class="text-sm font-medium text-text-sub-light dark:text-text-sub-dark">Total Students</p>
+<h3 class="text-2xl font-bold text-text-main-light dark:text-text-main-dark mt-1">1,240</h3>
+</div>
+<!-- Active Students -->
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-4">
+<div class="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-primary">
+<span class="material-symbols-outlined">person_check</span>
+</div>
+<span class="flex items-center text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span> 5%
+                                </span>
+</div>
+<p class="text-sm font-medium text-text-sub-light dark:text-text-sub-dark">Active Students</p>
+<h3 class="text-2xl font-bold text-text-main-light dark:text-text-main-dark mt-1">850</h3>
+</div>
+<!-- Completion Rate -->
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-4">
+<div class="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-primary">
+<span class="material-symbols-outlined">emoji_events</span>
+</div>
+<span class="flex items-center text-xs font-medium text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span> 2%
+                                </span>
+</div>
+<p class="text-sm font-medium text-text-sub-light dark:text-text-sub-dark">Completion Rate</p>
+<h3 class="text-2xl font-bold text-text-main-light dark:text-text-main-dark mt-1">78%</h3>
+</div>
+<!-- Avg Rating -->
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-xl border border-border-light dark:border-border-dark shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between mb-4">
+<div class="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-primary">
+<span class="material-symbols-outlined">star</span>
+</div>
+<span class="flex items-center text-xs font-medium text-text-sub-light dark:text-text-sub-dark bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-full">
+                                    0%
+                                </span>
+</div>
+<p class="text-sm font-medium text-text-sub-light dark:text-text-sub-dark">Avg Rating</p>
+<h3 class="text-2xl font-bold text-text-main-light dark:text-text-main-dark mt-1">4.8</h3>
+</div>
+</div>
+<!-- Quick Actions -->
+<div>
+<h2 class="text-lg font-bold text-text-main-light dark:text-text-main-dark mb-4">Quick Actions</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<button class="flex flex-col items-center justify-center gap-3 p-6 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl hover:border-primary/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all group text-center h-32">
+<span class="material-symbols-outlined text-primary text-[32px] group-hover:scale-110 transition-transform">manage_accounts</span>
+<span class="text-sm font-bold text-text-main-light dark:text-text-main-dark">Manage Users</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-3 p-6 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl hover:border-primary/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all group text-center h-32">
+<span class="material-symbols-outlined text-primary text-[32px] group-hover:scale-110 transition-transform">add_circle</span>
+<span class="text-sm font-bold text-text-main-light dark:text-text-main-dark">Add Course</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-3 p-6 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl hover:border-primary/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all group text-center h-32">
+<span class="material-symbols-outlined text-primary text-[32px] group-hover:scale-110 transition-transform">bar_chart</span>
+<span class="text-sm font-bold text-text-main-light dark:text-text-main-dark">View Reports</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-3 p-6 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl hover:border-primary/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all group text-center h-32">
+<span class="material-symbols-outlined text-primary text-[32px] group-hover:scale-110 transition-transform">mail</span>
+<span class="text-sm font-bold text-text-main-light dark:text-text-main-dark">Email All</span>
+</button>
+</div>
+</div>
+<!-- Recent Registrations -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="text-lg font-bold text-text-main-light dark:text-text-main-dark">Recent Registrations</h2>
+<button class="text-sm font-semibold text-primary hover:underline">View All</button>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-background-light dark:bg-background-dark/50 border-b border-border-light dark:border-border-dark">
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-text-sub-light dark:text-text-sub-dark">Student Name</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-text-sub-light dark:text-text-sub-dark">Course</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-text-sub-light dark:text-text-sub-dark">Date Joined</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-text-sub-light dark:text-text-sub-dark">Status</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-text-sub-light dark:text-text-sub-dark text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark">
+<!-- Row 1 -->
+<tr class="hover:bg-background-light/50 dark:hover:bg-background-dark/30 transition-colors">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Portrait of Maria Santos" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAOLqHMthZy-gFI8uZ89lPSt9zf43Rpz8N3Noh1ZqlwxFTdha6ZtsbqnrZEPZnJvyWWKtlNFQ2cqtgiSvdJKbmVTQdb6tokloBJTGbEvV3jOE7EvAbafPdyxRvwqV0PeROHgGhPs0t8QJ-kb04pkelG2P8F8jVgGS2BL_qRJ9xY26-oDeen_IXwOmKVExtC-FJwutrjgkysPZ7A2RaYpR-9PA_0eLlA4IfLxmEhhRqbxgTg7yN2Xg2mOS4UBB3rSRCO_vmTO5WjaR-2");'></div>
+<div>
+<p class="text-sm font-semibold text-text-main-light dark:text-text-main-dark">Maria Santos</p>
+<p class="text-xs text-text-sub-light dark:text-text-sub-dark">maria.santos@gmail.com</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-6 text-sm text-text-main-light dark:text-text-main-dark">Amazon PPC Fundamentals</td>
+<td class="py-4 px-6 text-sm text-text-sub-light dark:text-text-sub-dark">2 hours ago</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                                    Active
+                                                </span>
+</td>
+<td class="py-4 px-6 text-right">
+<button class="text-text-sub-light hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-background-light/50 dark:hover:bg-background-dark/30 transition-colors">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Portrait of Juan dela Cruz" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDNEMC8v1PCMWDHTjSMj7QYWSAsM5ZPlgoA2s2GSzRS4KqgBHA0gehePXq3JuYTm27t46CX8ik8KzbkCuT5xqyCvga4x29yA1ZW1PkdvgzRD6J6CAFo2DBGBvqkQIzc1arUehXOI5jY448qfcDsTCIfNHhim3tvfKEa75TXL46nrvn4OWWtYPmcN1HQIg0LLd50DZNzHfN8iQzU5YEuAaDwL-U3_y8zNC9P84hRnPbHJptxI4cpcYbI9vE6fmMc3Dh_YlMYzrG60yLs");'></div>
+<div>
+<p class="text-sm font-semibold text-text-main-light dark:text-text-main-dark">Juan dela Cruz</p>
+<p class="text-xs text-text-sub-light dark:text-text-sub-dark">juan.delacruz@yahoo.com</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-6 text-sm text-text-main-light dark:text-text-main-dark">Advanced Campaign Management</td>
+<td class="py-4 px-6 text-sm text-text-sub-light dark:text-text-sub-dark">5 hours ago</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+                                                    Pending
+                                                </span>
+</td>
+<td class="py-4 px-6 text-right">
+<button class="text-text-sub-light hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-background-light/50 dark:hover:bg-background-dark/30 transition-colors">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Portrait of Jasmine Cortez" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBB9l9zVT4truHnpYdUsgYCVviNXsSJCNRlWtVwAN0Iaw1ZN650s8lSAMjJgL1G9LZnNpApum9Au-oE5sNGvkri1sX2zN6SeCRV8Z7PWhdYhc1PwNQLYfwXyT8z6eV-vegsP6OzXSUTcV73nW6OG_2ZRXd8g0tH6tQmIHRfZMmnu6ua1sYbGvSRgsRwiqJ6HWtHE3yIjMpbYCBrzy2gb_gpc_YBbQOa4CYfJRhVSqXl9MHlbLIbbSVA9HQs79Eo7cg94WdQ-pJEm0G0");'></div>
+<div>
+<p class="text-sm font-semibold text-text-main-light dark:text-text-main-dark">Jasmine Cortez</p>
+<p class="text-xs text-text-sub-light dark:text-text-sub-dark">jaz.cortez@gmail.com</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-6 text-sm text-text-main-light dark:text-text-main-dark">Keyword Research Masterclass</td>
+<td class="py-4 px-6 text-sm text-text-sub-light dark:text-text-sub-dark">1 day ago</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                                    Active
+                                                </span>
+</td>
+<td class="py-4 px-6 text-right">
+<button class="text-text-sub-light hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-background-light/50 dark:hover:bg-background-dark/30 transition-colors">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Portrait of Mark Bautista" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJf88Yy5AZcnKbfsYmVePX8p3SzkWxSuF28zAlC3RCN7eBNgF6gNF_qEu_ZqsQfbxIJVfX-l2ju_cqJyiQDAMmpcewiY0eqCOmYmyeKj-md-UIAKkFmryOuyMbSyH58lvuIMTzwVgtSR-nHC1vLBbBUENqDREz0Fstyreq3WH5-rSgRzs-ow-uLqLinBVXkkPOcKevt-UzXdtZUxa2Ne9TTsb_ycglggYsbM0XFzDmWoOvVXikIWgupmpKd1dRAQ6y-Ghw9xv8pHm4");'></div>
+<div>
+<p class="text-sm font-semibold text-text-main-light dark:text-text-main-dark">Mark Bautista</p>
+<p class="text-xs text-text-sub-light dark:text-text-sub-dark">mark.b@outlook.com</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-6 text-sm text-text-main-light dark:text-text-main-dark">Amazon PPC Fundamentals</td>
+<td class="py-4 px-6 text-sm text-text-sub-light dark:text-text-sub-dark">2 days ago</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400">
+                                                    Inactive
+                                                </span>
+</td>
+<td class="py-4 px-6 text-right">
+<button class="text-text-sub-light hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<footer class="pt-6 border-t border-border-light dark:border-border-dark flex items-center justify-between text-sm text-text-sub-light dark:text-text-sub-dark">
+<p>© 2024 PPC Master LMS. All rights reserved.</p>
+<div class="flex gap-4">
+<a class="hover:text-primary" href="#">Privacy</a>
+<a class="hover:text-primary" href="#">Terms</a>
+<a class="hover:text-primary" href="#">Help</a>
+</div>
+</footer>
+</div>
+</main>
+</div>
+</div>
+</body></html>

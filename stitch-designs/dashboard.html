@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LMS Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }.no-scrollbar {
+            -ms-overflow-style: none;scrollbar-width: none;}
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2463eb",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111318] dark:text-white antialiased pb-20 md:pb-0">
+<div class="flex min-h-screen w-full">
+<aside class="w-64 min-w-[256px] bg-white dark:bg-[#1a202c] border-r border-[#dbdee6] dark:border-gray-700 hidden md:flex flex-col justify-between sticky top-0 h-screen overflow-y-auto">
+<div class="flex flex-col gap-6 p-6">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-10 rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-lg font-bold leading-tight">VA Masterclass</h1>
+<p class="text-xs text-[#616e89] dark:text-gray-400">Amazon PPC</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#616e89] dark:text-gray-400 hover:bg-[#f0f1f4] dark:hover:bg-gray-800 hover:text-[#111318] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-sm font-medium">Courses</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#616e89] dark:text-gray-400 hover:bg-[#f0f1f4] dark:hover:bg-gray-800 hover:text-[#111318] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-sm font-medium">Community</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#616e89] dark:text-gray-400 hover:bg-[#f0f1f4] dark:hover:bg-gray-800 hover:text-[#111318] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="text-sm font-medium">Leaderboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#616e89] dark:text-gray-400 hover:bg-[#f0f1f4] dark:hover:bg-gray-800 hover:text-[#111318] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-sm font-medium">Profile</span>
+</a>
+</nav>
+</div>
+<div class="p-6 border-t border-[#dbdee6] dark:border-gray-700">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center border border-gray-200" data-alt="Portrait of Maria, a smiling filipino virtual assistant" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAv_ZX1DG5ZBtkuDBkgPGIhZCOMdjm6akb1BMQHmaaSFcrC0imF1lgpyvTmqjQlO0UzO8Knav5PHBhosQrKivL2mynRSZUVfTSP2EmlQLG81TXg8TWog-Ur42ceFDc5eghpCSGt2GFbCUOHUOvYg8504auK8zqB3Htyuc71oL4c8_AloJsPJRwFigfslTDttxfK9Z_uAPnwvO28NPu9vXoQ7CHtcqr2rnVlna7yyQzqeU4d2GBXfRkIcnlb2e18CQbyTCv8Wo3VNWDT");'></div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-sm font-bold text-[#111318] dark:text-white truncate">Maria Santos</p>
+<p class="text-xs text-[#616e89] dark:text-gray-400 truncate">Pro Member</p>
+</div>
+<button class="ml-auto text-[#616e89] hover:text-[#111318] dark:hover:text-white">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-screen overflow-y-auto">
+<div class="md:hidden flex items-center justify-between p-4 bg-white dark:bg-[#1a202c] border-b border-[#dbdee6] dark:border-gray-700 sticky top-0 z-30">
+<div class="flex items-center gap-2">
+<div class="flex items-center justify-center size-8 rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined text-lg">school</span>
+</div>
+<span class="font-bold text-lg">VA Masterclass</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-[#616e89]">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-[#616e89]">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+<div class="p-4 md:p-10 w-full max-w-[1280px] mx-auto flex flex-col gap-6 md:gap-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-2xl md:text-4xl font-black text-[#111318] dark:text-white tracking-tight">Mabuhay, Maria! 👋</h1>
+<p class="text-[#616e89] dark:text-gray-400 text-sm md:text-lg">Ready to master Amazon PPC today?</p>
+</div>
+<div class="flex items-center gap-3 w-full md:w-auto">
+<div class="relative w-full md:w-auto">
+<input class="pl-10 pr-4 py-2 rounded-lg border border-[#dbdee6] dark:border-gray-700 bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-full md:w-64" placeholder="Search lessons..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">search</span>
+</div>
+<button class="p-2 rounded-full bg-white dark:bg-gray-800 border border-[#dbdee6] dark:border-gray-700 text-[#616e89] hover:text-primary transition-colors relative hidden md:block">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-gray-800"></span>
+</button>
+</div>
+</div>
+<div class="-mx-4 px-4 pb-2 md:mx-0 md:px-0 md:pb-0 overflow-x-auto md:overflow-visible no-scrollbar">
+<div class="flex md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 min-w-max md:min-w-0">
+<div class="w-64 md:w-auto bg-white dark:bg-[#1a202c] p-4 md:p-5 rounded-xl border border-[#dbdee6] dark:border-gray-700 shadow-sm flex flex-col justify-between h-full hover:shadow-md transition-shadow shrink-0">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[#616e89] dark:text-gray-400 text-sm font-medium">Course Progress</span>
+<span class="material-symbols-outlined text-primary bg-primary/10 p-1.5 rounded-lg">donut_large</span>
+</div>
+<div>
+<p class="text-2xl md:text-3xl font-bold text-[#111318] dark:text-white">42%</p>
+<p class="text-xs text-green-600 font-medium mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">trending_up</span> +5% this week
+                                </p>
+</div>
+</div>
+<div class="w-64 md:w-auto bg-white dark:bg-[#1a202c] p-4 md:p-5 rounded-xl border border-[#dbdee6] dark:border-gray-700 shadow-sm flex flex-col justify-between h-full hover:shadow-md transition-shadow shrink-0">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[#616e89] dark:text-gray-400 text-sm font-medium">Day Streak</span>
+<span class="material-symbols-outlined text-orange-500 bg-orange-50 p-1.5 rounded-lg">local_fire_department</span>
+</div>
+<div>
+<p class="text-2xl md:text-3xl font-bold text-[#111318] dark:text-white">5 Days</p>
+<p class="text-xs text-[#616e89] dark:text-gray-500 mt-1">Keep it up!</p>
+</div>
+</div>
+<div class="w-64 md:w-auto bg-white dark:bg-[#1a202c] p-4 md:p-5 rounded-xl border border-[#dbdee6] dark:border-gray-700 shadow-sm flex flex-col justify-between h-full hover:shadow-md transition-shadow shrink-0">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[#616e89] dark:text-gray-400 text-sm font-medium">Badges Earned</span>
+<span class="material-symbols-outlined text-purple-500 bg-purple-50 p-1.5 rounded-lg">military_tech</span>
+</div>
+<div>
+<p class="text-2xl md:text-3xl font-bold text-[#111318] dark:text-white">3</p>
+<p class="text-xs text-[#616e89] dark:text-gray-500 mt-1">Next badge in 2 lessons</p>
+</div>
+</div>
+<div class="w-64 md:w-auto bg-white dark:bg-[#1a202c] p-4 md:p-5 rounded-xl border border-[#dbdee6] dark:border-gray-700 shadow-sm flex flex-col justify-between h-full hover:shadow-md transition-shadow shrink-0">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[#616e89] dark:text-gray-400 text-sm font-medium">Total Points</span>
+<span class="material-symbols-outlined text-yellow-500 bg-yellow-50 p-1.5 rounded-lg">star</span>
+</div>
+<div>
+<p class="text-2xl md:text-3xl font-bold text-[#111318] dark:text-white">1,250 XP</p>
+<p class="text-xs text-[#616e89] dark:text-gray-500 mt-1">Top 15% of learners</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="text-lg md:text-xl font-bold text-[#111318] dark:text-white">Continue Learning</h2>
+<a class="text-sm font-medium text-primary hover:text-blue-700" href="#">View all</a>
+</div>
+<div class="flex md:grid flex-col md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+<div class="bg-white dark:bg-[#1a202c] rounded-xl border border-[#dbdee6] dark:border-gray-700 overflow-hidden shadow-sm flex flex-col h-full group shrink-0 w-full">
+<div class="h-32 md:h-40 bg-cover bg-center relative" data-alt="Laptop displaying analytics graphs and charts" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBBfpDanehCjP7kwTjqj4CwGYs8fhkOqWZs0CgmrrE0tdcONgn0lnwrOZp5dcmkrG9Dag-D973sSFOHEBIi0Pjv3EHopLq9vD1GRpykovTkr0lnd7eR9RIidMT-3hgjhUCWk2r9s3biwDWsxDOCrPIWVLz0HcyFNUr_cejtIcXnpUXF3EiHW7mAQ71Ec4q4mirfcfsngicotlpKFq7Rcyj6FXyLQvUb-EWeuBE8NznHwGRYzQx5FL9L83yaVjA1jdFgFNqvOv9Jtz-x");'>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all"></div>
+<span class="absolute top-3 left-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur text-xs font-bold px-2 py-1 rounded text-[#111318] dark:text-white">Module 4</span>
+</div>
+<div class="p-4 md:p-5 flex flex-col flex-1 gap-4">
+<div>
+<h3 class="font-bold text-base md:text-lg text-[#111318] dark:text-white leading-tight mb-1">Advanced Bid Strategies</h3>
+<p class="text-sm text-[#616e89] dark:text-gray-400">Master dynamic bidding and placement adjustments.</p>
+</div>
+<div class="mt-auto flex flex-col gap-3">
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 45%"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-[#616e89] dark:text-gray-400 font-medium">45% Complete</span>
+<button class="bg-primary hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">play_circle</span> Resume
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1a202c] rounded-xl border border-[#dbdee6] dark:border-gray-700 overflow-hidden shadow-sm flex flex-col h-full group shrink-0 w-full">
+<div class="h-32 md:h-40 bg-cover bg-center relative" data-alt="Close up of hands typing on a keyboard" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAEtiiqbvLgKcCvUYcFxMdEd2HNegBTgu6b8fJc4mO_r1yavOqqXOqDOPwydZf007ZRB2nTHmo8eE7Q-6QzmOFazj_gKb9NziU4VxEb0CrQApF7zWe5lqKqSx_Qhz4fLs5oSL7QKPiYK0NnhFkwHtXrmH9efy4_79C2nUflwRJJ_5f8RUuhVl9BEYlTc6A5I7bnviQ6hhQyg6YPiYa2tqjpF6KREbkQi235-cgwtDlkqO4DPSJZJGIMq9piAt-SVuciF3cpczWBfAVO");'>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all"></div>
+<span class="absolute top-3 left-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur text-xs font-bold px-2 py-1 rounded text-[#111318] dark:text-white">Module 5</span>
+</div>
+<div class="p-4 md:p-5 flex flex-col flex-1 gap-4">
+<div>
+<h3 class="font-bold text-base md:text-lg text-[#111318] dark:text-white leading-tight mb-1">Sponsored Brands 101</h3>
+<p class="text-sm text-[#616e89] dark:text-gray-400">Creating effective headline search ads.</p>
+</div>
+<div class="mt-auto flex flex-col gap-3">
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 0%"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-[#616e89] dark:text-gray-400 font-medium">Not Started</span>
+<button class="bg-white border border-[#dbdee6] dark:bg-gray-800 dark:border-gray-600 text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 text-sm font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1">
+                                            Start
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1a202c] rounded-xl border border-[#dbdee6] dark:border-gray-700 overflow-hidden shadow-sm flex flex-col h-full group opacity-75 hover:opacity-100 transition-opacity shrink-0 w-full hidden md:flex">
+<div class="h-32 md:h-40 bg-cover bg-center relative grayscale" data-alt="Charts and data analysis on a computer screen" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDKzPzwLK86cOTKG_0QdodDDi-TPJqPvi5qa8KTp7EbSUXKCCdxwjdqm2rshYqLEgBQ0Kv30wwIt3lJQKIq5AqsFC5Lrd1_JYSzpOHMtQcj42rzAFSVB9INKM7Or7irhaF7uhKylDgGLgPgCTC8r_9KcS7_DFAX1muiopw8Bmed42p1690-muEhTT5GI_zTi_EapXZy3igv6LKI1HVWMS2_QFOWpCKF18Nc0FVtlSGn8kKUayOtPgPoqwndxnSz9m77BJHcCugnQF9L");'>
+<div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-all"></div>
+<span class="absolute top-3 left-3 bg-gray-200 dark:bg-gray-700 text-xs font-bold px-2 py-1 rounded text-gray-500 dark:text-gray-300">Locked</span>
+</div>
+<div class="p-4 md:p-5 flex flex-col flex-1 gap-4">
+<div>
+<h3 class="font-bold text-base md:text-lg text-[#111318] dark:text-white leading-tight mb-1">Scaling Campaigns</h3>
+<p class="text-sm text-[#616e89] dark:text-gray-400">Strategies for high-budget account management.</p>
+</div>
+<div class="mt-auto flex flex-col gap-3">
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-[#616e89] dark:text-gray-400 font-medium flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">lock</span> Prerequisite: Mod 5</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-4 md:pb-10">
+<div class="lg:col-span-2 flex flex-col gap-4">
+<h2 class="text-lg md:text-xl font-bold text-[#111318] dark:text-white">Recent Activity</h2>
+<div class="bg-white dark:bg-[#1a202c] rounded-xl border border-[#dbdee6] dark:border-gray-700 p-1">
+<div class="flex flex-col">
+<div class="flex gap-4 p-4 border-b border-[#f0f1f4] dark:border-gray-700 last:border-0 hover:bg-[#fcfcfd] dark:hover:bg-gray-800/50 transition-colors rounded-lg">
+<div class="bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full size-10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-medium text-[#111318] dark:text-white">Completed Quiz: <span class="font-bold">Match Types Mastery</span></p>
+<p class="text-xs text-[#616e89] dark:text-gray-400">2 hours ago • Scored 90%</p>
+</div>
+</div>
+<div class="flex gap-4 p-4 border-b border-[#f0f1f4] dark:border-gray-700 last:border-0 hover:bg-[#fcfcfd] dark:hover:bg-gray-800/50 transition-colors rounded-lg">
+<div class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full size-10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">forum</span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-medium text-[#111318] dark:text-white">Commented on <span class="font-bold">"Optimizing ACOS for Beauty Products"</span></p>
+<p class="text-xs text-[#616e89] dark:text-gray-400">Yesterday • Community Forum</p>
+</div>
+</div>
+<div class="flex gap-4 p-4 border-b border-[#f0f1f4] dark:border-gray-700 last:border-0 hover:bg-[#fcfcfd] dark:hover:bg-gray-800/50 transition-colors rounded-lg">
+<div class="bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full size-10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">military_tech</span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-medium text-[#111318] dark:text-white">Earned Badge: <span class="font-bold">Keyword Wizard</span></p>
+<p class="text-xs text-[#616e89] dark:text-gray-400">2 days ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="text-lg md:text-xl font-bold text-[#111318] dark:text-white">Top Learners</h2>
+<a class="text-xs font-medium text-[#616e89] hover:text-primary" href="#">See All</a>
+</div>
+<div class="bg-white dark:bg-[#1a202c] rounded-xl border border-[#dbdee6] dark:border-gray-700 overflow-hidden flex flex-col h-full">
+<div class="flex items-center gap-3 p-4 border-b border-[#f0f1f4] dark:border-gray-700">
+<span class="font-bold text-[#111318] dark:text-white w-4 text-center">1</span>
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Portrait of Juan" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBY5GYQfnckNNSxU8xwcpdVbhEVYpUlKyLnQJfjh7Jjkh9Szvy7SAzHooHs-eggKpL_4MiGq0A6kkzOiofaFMyhY9qFDz6d4893V81aKLzX5HQThZRAvM1iGNtEikSezbvbpCjiVDvfRSBArtu0o33O9cyPtce4rQie4L8VpkByB2pflF_FbvGPmLNhYyfQ2Jc274MWg6CoJj3N-l2pOosx3sCvVDE_OVZeaI_03tCPEB7UB_T0WAwEJzIb3Qw6ve0uBkTG4FY-2F0W");'></div>
+<div class="flex flex-col flex-1">
+<p class="text-sm font-bold text-[#111318] dark:text-white">Juan D.</p>
+<p class="text-xs text-[#616e89] dark:text-gray-400">5,000 XP</p>
+</div>
+<span class="material-symbols-outlined text-yellow-500">emoji_events</span>
+</div>
+<div class="flex items-center gap-3 p-4 border-b border-[#f0f1f4] dark:border-gray-700">
+<span class="font-bold text-[#616e89] dark:text-gray-400 w-4 text-center">2</span>
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Portrait of Sarah" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD0KqHG4yPFEyHo-2dvEhBgvJDfByFmMIJ2wNALwmgpyWlP3rRUH_kaJwQ4mhtmCRdMOGtgBcFsOVXYmk5Z6sfGY58VeAW5FVeWw65-1XropcuYoJw1DhbGWOaesysmJ_WnZKEvrpCDoEvbPrpXPDxuOLpCxxTvSBp7Ni0QfWJYEdNaj828csnFSwfx0rOUiTQxTa1rH97pDFYvDd9oPCFM8m64IJaLYXNONY3kTO9PSMMfK2R1jXwU78OyVR6TEbuNNLX3xuvJQnC-");'></div>
+<div class="flex flex-col flex-1">
+<p class="text-sm font-medium text-[#111318] dark:text-white">Sarah L.</p>
+<p class="text-xs text-[#616e89] dark:text-gray-400">4,800 XP</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-4 border-b border-[#f0f1f4] dark:border-gray-700">
+<span class="font-bold text-[#616e89] dark:text-gray-400 w-4 text-center">3</span>
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Portrait of Miguel" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZXip9xJCgTW38usro6gG8oPxrrsUpH9Sb6ekSEXuz0KTUTUIJlzPqnaHholf4eSwps-kCUonHVqtalSamX3vlJCKcJlgCsxJbKSU3ebBnU4A75GL9V-4ZudDWefZsyLtiOXiWhgd0UMEkf6An4tdItADyp-IbpkyYEqW_Olll8CPVKa_2TEYhsPyJk_WZLm7UwpMbHsx4-07tFlOM2fD90dEjAax6EeT4oR7WAsDsj2jPBAASbyhd-GnHVSpzmKeaF1nB3sq6Vyme");'></div>
+<div class="flex flex-col flex-1">
+<p class="text-sm font-medium text-[#111318] dark:text-white">Miguel R.</p>
+<p class="text-xs text-[#616e89] dark:text-gray-400">4,600 XP</p>
+</div>
+</div>
+<div class="mt-auto bg-primary/5 dark:bg-primary/20 p-4 flex items-center gap-3 border-t border-primary/20">
+<span class="font-bold text-primary w-4 text-center">12</span>
+<div class="size-8 rounded-full bg-cover bg-center border-2 border-primary" data-alt="Portrait of Maria" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDiMSN4nRqnKbcrJSa3_8eXrIGm4auBRh7rpib54_GdvnEPrjpdrDjbf2aVC1AZ01UfGCQqsMJzUN8OwIq-Yrz1nFy18-jag9Js_OG3VQFwxfs-EZlIPcsh4NxDlcZyEXtQ1TERZJXJ5hlQ3HimnzTz7uD65pvOsPnHSIgbmXt8_UCGBD-m6oOZkhGXkV5qk3L71KV53BsVsjgAHz6TarLoYwUB4Q0rgG9jTKet4OKkaxKvIh0-_DS_4f6IxPeQLWlkvC0Fpm-waZTK");'></div>
+<div class="flex flex-col flex-1">
+<p class="text-sm font-bold text-[#111318] dark:text-white">You</p>
+<p class="text-xs text-[#616e89] dark:text-gray-400">1,250 XP</p>
+</div>
+<span class="text-xs font-bold text-green-600 bg-green-100 dark:bg-green-900/50 px-2 py-1 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> 2
+                                </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#1a202c] border-t border-[#dbdee6] dark:border-gray-700 pb-safe z-40">
+<nav class="flex justify-around items-center h-16">
+<a class="flex flex-col items-center gap-1 text-primary w-full h-full justify-center" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#616e89] dark:text-gray-400 hover:text-primary dark:hover:text-white w-full h-full justify-center" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-[10px] font-medium">Courses</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#616e89] dark:text-gray-400 hover:text-primary dark:hover:text-white w-full h-full justify-center" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-[10px] font-medium">Community</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#616e89] dark:text-gray-400 hover:text-primary dark:hover:text-white w-full h-full justify-center" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-[10px] font-medium">Progress</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#616e89] dark:text-gray-400 hover:text-primary dark:hover:text-white w-full h-full justify-center" href="#">
+<div class="size-6 rounded-full bg-cover bg-center border border-gray-200" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAv_ZX1DG5ZBtkuDBkgPGIhZCOMdjm6akb1BMQHmaaSFcrC0imF1lgpyvTmqjQlO0UzO8Knav5PHBhosQrKivL2mynRSZUVfTSP2EmlQLG81TXg8TWog-Ur42ceFDc5eghpCSGt2GFbCUOHUOvYg8504auK8zqB3Htyuc71oL4c8_AloJsPJRwFigfslTDttxfK9Z_uAPnwvO28NPu9vXoQ7CHtcqr2rnVlna7yyQzqeU4d2GBXfRkIcnlb2e18CQbyTCv8Wo3VNWDT");'></div>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</nav>
+</div>
+</div>
+
+</body></html>
