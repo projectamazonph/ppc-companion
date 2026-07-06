@@ -110,7 +110,7 @@ async function main() {
 
     for (const mod of phase.modules) {
       // Create module
-      const module = await db.module.create({
+      const moduleItem = await db.module.create({
         data: {
           code: mod.code,
           title: mod.title,
@@ -126,7 +126,7 @@ async function main() {
           const ex = mod.exercises[i];
           await db.exercise.create({
             data: {
-              moduleId: module.id,
+              moduleId: moduleItem.id,
               code: ex.id,
               title: ex.title,
               prompt: ex.prompt,

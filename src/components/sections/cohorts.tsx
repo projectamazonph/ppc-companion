@@ -137,14 +137,17 @@ export function CohortsSection() {
   }, []);
 
   const fetchRef = useRef(fetchCohorts);
-  fetchRef.current = fetchCohorts;
   const refetch = useCallback(() => fetchRef.current(), []);
 
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
+    fetchRef.current = fetchCohorts;
+  });
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  useEffect(() => {
     refetch();
   }, [refetch]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   const confirmDelete = async () => {
     if (!deleteTarget) return;

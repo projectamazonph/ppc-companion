@@ -294,7 +294,7 @@ function ExerciseChip({
     answered = exercise.questions.every((q) => calculationAnswers[q.id]);
   }
 
-  const TypeIcon = getTypeIcon(exercise.type);
+  const TypeIcon = useMemo(() => getTypeIcon(exercise.type), [exercise.type]);
 
   return (
     <button
@@ -404,7 +404,7 @@ function ExerciseView({
   moduleTitle: string;
   phaseNumber: number;
 }) {
-  const TypeIcon = getTypeIcon(exercise.type);
+  const TypeIcon = useMemo(() => getTypeIcon(exercise.type), [exercise.type]);
 
   return (
     <div className="space-y-0 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
