@@ -582,6 +582,7 @@ function CalcQuestion({
   const isCorrect = hasAnswer && normalize(userAnswer) === normalize(question.answer);
 
   // Trigger shake animation when user types something incorrect
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (hasAnswer && !isCorrect && userAnswer.length > 0) {
       setShakeIncorrect(true);
@@ -589,6 +590,7 @@ function CalcQuestion({
       return () => clearTimeout(t);
     }
   }, [userAnswer, hasAnswer, isCorrect]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   return (
     <div

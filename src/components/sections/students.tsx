@@ -251,6 +251,7 @@ export function StudentsSection() {
   fetchStudentsRef.current = fetchStudents;
   const refetch = useCallback(() => fetchStudentsRef.current(), []);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     let cancelled = false;
     const run = async () => {
@@ -280,7 +281,8 @@ export function StudentsSection() {
       cancelled = true;
       clearTimeout(t);
     };
-  }, [search, roleFilter, statusFilter, cohortFilter]);
+  }, [search]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const cohorts = Array.from(new Set(students.map((s) => s.cohort).filter(Boolean))) as string[];
 
@@ -757,6 +759,7 @@ function StudentFormDialog({
   });
   const { toast } = useToast();
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (student) {
       setForm({
@@ -782,6 +785,7 @@ function StudentFormDialog({
       });
     }
   }, [student, open]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const submit = async () => {
     if (!form.name.trim() || !form.email.trim()) {

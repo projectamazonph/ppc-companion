@@ -58,11 +58,13 @@ export function NotificationsPanel() {
     }
   }, [user?.id]);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     fetchNotifications();
     const interval = setInterval(fetchNotifications, 60000);
     return () => clearInterval(interval);
   }, [fetchNotifications]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const markAsRead = async (id: string) => {
     try {

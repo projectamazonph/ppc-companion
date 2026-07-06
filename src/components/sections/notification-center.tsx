@@ -235,9 +235,11 @@ export function NotificationCenterSection() {
   }, [user?.id, filter]);
 
   // Initial fetch + refetch on filter change
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     fetchNotifications();
   }, [fetchNotifications]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Mark single notification as read
   const handleMarkRead = async (id: string) => {

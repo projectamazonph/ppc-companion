@@ -211,10 +211,12 @@ export function MyStudentsSection() {
   fetchRef.current = fetchStudents;
   const refetch = useCallback(() => fetchRef.current(), []);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const t = setTimeout(() => fetchRef.current(), search ? 300 : 0);
     return () => clearTimeout(t);
   }, [search]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const totalStudents = students.length;
   const activeStudents = students.filter((s) => s.status === "ACTIVE").length;

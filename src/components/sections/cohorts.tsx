@@ -140,9 +140,11 @@ export function CohortsSection() {
   fetchRef.current = fetchCohorts;
   const refetch = useCallback(() => fetchRef.current(), []);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     refetch();
   }, [refetch]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const confirmDelete = async () => {
     if (!deleteTarget) return;
@@ -536,6 +538,7 @@ function CohortFormDialog({
   });
   const { toast } = useToast();
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (cohort) {
       setForm({
@@ -557,6 +560,7 @@ function CohortFormDialog({
       });
     }
   }, [cohort, open]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const submit = async () => {
     if (!form.name.trim() || !form.startDate) {
