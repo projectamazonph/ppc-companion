@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { phases, TRIAL_MODULE_IDS } from "@/lib/course-data";
+
+const TRIAL_IDS: readonly string[] = TRIAL_MODULE_IDS;
 import { requireAuth, isErrorResponse } from "@/lib/auth-server";
 
 export async function GET(request: NextRequest) {
@@ -13,14 +15,14 @@ export async function GET(request: NextRequest) {
         id: m.id,
         code: m.code,
         title: m.title,
-        locked: !TRIAL_MODULE_IDS.includes(m.id),
+        locked: !TRIAL_IDS.includes(m.id),
       })),
     }));
     return NextResponse.json({ phases: trialPhases, trialMode: true });
   }
 
-  // If authenticated and role is not blocked, return everything
-  if (authResult && authResult.role !== "BLOCKED") {
+  // If authenticated, return everything
+  if (authResult) {
     return NextResponse.json({ phases, trialMode: false });
   }
 
@@ -31,7 +33,7 @@ export async function GET(request: NextRequest) {
       id: m.id,
       code: m.code,
       title: m.title,
-      locked: !TRIAL_MODULE_IDS.includes(m.id),
+      locked: !TRIAL_IDS.includes(m.id),
     })),
   }));
 
