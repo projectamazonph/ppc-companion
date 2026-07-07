@@ -1174,18 +1174,18 @@ function HeroPreviewCard() {
               ))}
             </div>
 
-            {/* Mock progress bar */}
+            {/* Preview: progress shown after login */}
             <div className="space-y-2">
               <div className="flex justify-between text-[10px] text-muted-foreground/50">
                 <span>Overall Progress</span>
-                <span className="font-medium text-foreground/60">42%</span>
+                <span className="font-medium text-orange-500/70">Log in to track</span>
               </div>
               <div className="h-2 rounded-full bg-black/5 dark:bg-white/5 overflow-hidden">
                 <motion.div
-                  className="h-full w-[42%] rounded-full bg-gradient-to-r from-orange-500 to-orange-600"
-                  initial={{ width: 0 }}
-                  animate={{ width: "42%" }}
-                  transition={{ duration: 1.5, delay: 0.8, ease: [0.32, 0.72, 0, 1] }}
+                  className="h-full w-full rounded-full bg-gradient-to-r from-orange-500/40 to-orange-600/40"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.8 }}
                 />
               </div>
             </div>

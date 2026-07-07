@@ -153,7 +153,7 @@ export function DashboardSection() {
         <div className="relative px-5 py-7 sm:px-8 sm:py-10 lg:px-12 lg:py-14">
           {/* Top badges row */}
           <div className="flex flex-wrap items-center gap-2 mb-5">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/60 dark:border-blue-800/40 bg-blue-500/10 px-3 py-1 text-[11px] font-semibold text-blue-700 dark:text-blue-300">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-orange-200/60 dark:border-orange-800/40 bg-orange-500/10 px-3 py-1 text-[11px] font-semibold text-orange-700 dark:text-orange-300">
               <Sparkles className="h-3 w-3" />
               Version 2026
             </span>
@@ -178,7 +178,7 @@ export function DashboardSection() {
           {/* Greeting + name */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.1]">
             {greeting},{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 dark:from-blue-400 dark:via-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-orange-500 via-orange-600 to-amber-600 dark:from-orange-400 dark:via-orange-500 dark:to-amber-500 bg-clip-text text-transparent">
               {firstName}
             </span>
             .
