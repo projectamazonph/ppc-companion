@@ -115,7 +115,7 @@ export function Sidebar({
       ? "from-violet-500 to-purple-600"
       : user?.role === "guest"
       ? "from-stone-400 to-stone-600"
-      : "from-blue-500 to-indigo-600";
+      : "from-orange-500 to-orange-600";
 
   const roleLabel =
     user?.role === "admin"
@@ -150,7 +150,7 @@ export function Sidebar({
         {/* Gradient icon mark */}
         <div
           className={cn(
-            "flex shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-600/20",
+            "flex shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-600/20",
             collapsed && !mobile ? "h-9 w-9" : "h-9 w-9"
           )}
         >

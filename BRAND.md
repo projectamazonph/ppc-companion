@@ -19,7 +19,7 @@ Source: `/public/icons/icon-og.png`
 
 | Token | Hex | Usage |
 |---|---|---|
-| Primary | `#007EFF` | Umbrella brand — all apps share |
+| Primary | `#FF6B35` | Umbrella brand — all apps share |
 | Secondary | `#3B82F6` | Steel blue — tool-specific accents |
 | Accent | `#F59E0B` | Amber — warnings, highlights |
 | Success | `#22C55E` | Green — positive metrics |

@@ -5,18 +5,18 @@
 
 :root {
   /* ---- Brand Colors (ProjectAmazonPH) ---- */
-  --color-brand-sky: #007EFF;
-  --color-brand-sky-dark: #0066D6;
-  --color-brand-sky-light: #339DFF;
+  --color-brand-orange: #FF6B00;
+  --color-brand-orange-dark: #E65C00;
+  --color-brand-orange-light: #FF8533;
 
-  /* ---- Primary scale — Brand Sky Blue ---- */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #007EFF;
-  --color-primary-600: #0066D6;
+  /* ---- Primary scale — Brand Orange ---- */
+  --color-primary-50: #fff7ed;
+  --color-primary-100: #ffedd5;
+  --color-primary-200: #fed7aa;
+  --color-primary-300: #fdba74;
+  --color-primary-400: #fb923c;
+  --color-primary-500: #FF6B00;
+  --color-primary-600: #E65C00;
   --color-primary-700: #c2410c;
   --color-primary-800: #9a3412;
   --color-primary-900: #7c2d12;
@@ -94,7 +94,7 @@
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-glow: 0 0 20px 4px rgb(0 126 255 / 0.15);
+  --shadow-glow: 0 0 20px 4px rgb(255 107 0 / 0.15);
   --shadow-glow-accent: 0 0 20px 4px rgb(251 191 36 / 0.15);
 
   /* ---- Transitions ---- */
@@ -106,10 +106,10 @@
 
 /* ---- Dark mode overrides ---- */
 .dark {
-  --color-primary-50: #0c1429;
-  --color-primary-100: #0f1d3d;
-  --color-primary-900: #bfdbfe;
-  --color-primary-950: #dbeafe;
+  --color-primary-50: #2d1a0a;
+  --color-primary-100: #3d2414;
+  --color-primary-900: #fdba74;
+  --color-primary-950: #fed7aa;
 }
 
 /* ---- Utility classes ---- */

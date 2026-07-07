@@ -60,8 +60,8 @@ const features = [
     title: "Structured Curriculum",
     description:
       "10 modules across 4 phases — from Amazon fundamentals to a complete capstone strategy.",
-    gradient: "from-blue-500 to-blue-600",
-    bgGlow: "bg-blue-500/10",
+    gradient: "from-orange-500 to-orange-600",
+    bgGlow: "bg-orange-500/10",
   },
   {
     icon: PenLine,
@@ -84,7 +84,7 @@ const features = [
     title: "Capstone Project",
     description:
       "Build a complete PPC strategy and present it as if your instructor is the client.",
-    gradient: "from-violet-500 to-purple-600",
+    gradient: "from-orange-500 to-orange-600",
     bgGlow: "bg-violet-500/10",
   },
 ];
@@ -296,7 +296,7 @@ export function LandingPage() {
 
         {/* Soft gradient orbs */}
         <motion.div
-          className="absolute -top-32 -left-32 h-[30rem] w-[30rem] rounded-full bg-blue-400/20 dark:bg-blue-500/10 blur-[100px]"
+          className="absolute -top-32 -left-32 h-[30rem] w-[30rem] rounded-full blg-orange-400/20 dark:bg-orange-500/10 blur-[100px]"
           animate={{ x: scrollY * 0.01, y: scrollY * 0.005 }}
           transition={{ type: "spring", stiffness: 40, damping: 25 }}
         />
@@ -345,7 +345,7 @@ export function LandingPage() {
             }}
           >
             <div className="rounded-2xl border border-white/50 dark:border-white/5 bg-white/30 dark:bg-stone-900/30 backdrop-blur-sm p-3 shadow-sm">
-              <Icon className="h-5 w-5 text-blue-500/70 dark:text-blue-400/50" />
+              <Icon className="h-5 w-5 text-orange-500/70 dark:text-orange-400/50" />
             </div>
           </motion.div>
         ))}
@@ -367,7 +367,7 @@ export function LandingPage() {
             transition={{ type: "spring", stiffness: 300 }}
           >
             <div className="relative shrink-0">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-md shadow-blue-600/20">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-md shadow-orange-500/20">
                 <Flame className="h-4 w-4" />
               </div>
             </div>
@@ -375,7 +375,7 @@ export function LandingPage() {
               <span className="text-sm font-bold tracking-tight">
                 Amazon PPC
               </span>
-              <span className="hidden sm:inline text-sm font-bold text-blue-600 dark:text-blue-400">
+              <span className="hidden sm:inline text-sm font-bold text-orange-600 dark:text-orange-400">
                 {" "}Training
               </span>
             </div>
@@ -527,7 +527,7 @@ export function LandingPage() {
               >
                 <div className="flex -space-x-1.5">
                   {[
-                    "bg-blue-500",
+                    "bg-orange-500",
                     "bg-amber-500",
                     "bg-emerald-500",
                     "bg-violet-500",
@@ -583,7 +583,7 @@ export function LandingPage() {
                       className="text-center"
                     >
                       <div className="flex items-center justify-center gap-2 mb-1.5">
-                        <StatIcon className="h-4 w-4 text-blue-500/60" />
+                        <StatIcon className="h-4 w-4 text-orange-500/60" />
                         <span className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground stat-value">
                           {s.value}
                         </span>
@@ -619,14 +619,14 @@ export function LandingPage() {
             transition={{ duration: 0.5 }}
             className="text-center max-w-2xl mx-auto"
           >
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200/60 dark:border-blue-800/40 px-3.5 py-1.5 text-xs font-medium text-blue-700 dark:text-blue-300 mb-4">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 dark:bg-orange-950/40 border border-orange-200/60 dark:border-orange-800/40 px-3.5 py-1.5 text-xs font-medium text-orange-700 dark:text-orange-300 mb-4">
               <Sparkles className="h-3.5 w-3.5" />
               Lahat sa isang lugar
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
               Built for serious learners.
               <br />
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
                 Loved by instructors across the Philippines.
               </span>
             </h2>
@@ -685,7 +685,7 @@ export function LandingPage() {
       {/* ============================================================ */}
       <section
         id="how-it-works"
-        className="relative px-4 sm:px-6 py-24 sm:py-32 bg-gradient-to-b from-transparent via-blue-50/40 dark:via-blue-950/10 to-transparent"
+        className="relative px-4 sm:px-6 py-24 sm:py-32 bg-gradient-to-b from-transparent via-orange-50/40 dark:via-orange-950/10 to-transparent"
       >
         <div className="mx-auto max-w-6xl">
           <motion.div
@@ -734,9 +734,9 @@ export function LandingPage() {
                   {/* Step number + icon */}
                   <div className="relative inline-flex">
                     <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-white to-slate-50 dark:from-stone-800 dark:to-stone-900 border border-foreground/5 shadow-sm group-hover:shadow-md group-hover:border-foreground/10 transition-all duration-300">
-                      <StepIcon className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                      <StepIcon className="h-8 w-8 text-orange-600 dark:text-orange-400" />
                     </div>
-                    <div className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-white text-[10px] font-bold shadow-sm">
+                    <div className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-orange-600 text-white text-[10px] font-bold shadow-sm">
                       {step.step}
                     </div>
                   </div>
@@ -791,12 +791,12 @@ export function LandingPage() {
                 whileHover={{ y: -3 }}
                 className="relative rounded-2xl border border-foreground/5 bg-white/60 dark:bg-stone-900/30 backdrop-blur-sm p-6 hover:border-foreground/10 hover:shadow-lg hover:shadow-foreground/5 transition-all duration-300"
               >
-                <Quote className="h-8 w-8 text-blue-500/15 mb-3" />
+                <Quote className="h-8 w-8 text-orange-500/15 mb-3" />
                 <p className="text-sm leading-relaxed text-foreground/80">
                   &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="mt-5 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white text-sm font-bold">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-orange-600 text-white text-sm font-bold">
                     {t.name.charAt(0)}
                   </div>
                   <div>
@@ -831,7 +831,7 @@ export function LandingPage() {
             className="relative rounded-3xl overflow-hidden"
           >
             {/* Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700" />
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700" />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.15),transparent_60%)]" />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(255,255,255,0.08),transparent_50%)]" />
 
@@ -866,7 +866,7 @@ export function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="mt-4 text-base sm:text-lg text-blue-100/80 max-w-xl mx-auto leading-relaxed"
+                className="mt-4 text-base sm:text-lg text-orange-100/80 max-w-xl mx-auto leading-relaxed"
               >
                 Join the students who have already started their Amazon PPC
                 journey. No payment required to start — try it first, trust
@@ -895,7 +895,7 @@ export function LandingPage() {
                         });
                     }, 100);
                   }}
-                  className="group w-full sm:w-auto bg-white text-blue-700 hover:bg-blue-50 shadow-lg shadow-black/10"
+                  className="group w-full sm:w-auto bg-white text-orange-700 hover:bg-orange-50 shadow-lg shadow-black/10"
                 >
                   Start now — it's free
                   <ArrowRight className="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 transition-transform" />
@@ -915,7 +915,7 @@ export function LandingPage() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.55, duration: 0.5 }}
-                className="mt-6 flex items-center justify-center gap-4 text-xs text-blue-200/60"
+                className="mt-6 flex items-center justify-center gap-4 text-xs text-orange-200/60"
               >
                 <span className="flex items-center gap-1">
                   <CheckCircle2 className="h-3.5 w-3.5" />
@@ -978,7 +978,7 @@ export function LandingPage() {
                   whileHover={{ scale: 1.01 }}
                   className="relative rounded-2xl surface-card p-8 sm:p-10 overflow-hidden"
                 >
-                  <div className="absolute -top-16 -right-16 h-32 w-32 rounded-full bg-gradient-to-br from-blue-400/20 to-indigo-400/20 blur-2xl" />
+                  <div className="absolute -top-16 -right-16 h-32 w-32 rounded-full bg-gradient-to-br from-orange-400/20 to-orange-500/20 blur-2xl" />
                   <Trophy className="h-12 w-12 mx-auto text-amber-500" />
                   <h3 className="mt-5 text-2xl font-bold tracking-tight">
                     Ready to begin?
@@ -1022,7 +1022,7 @@ export function LandingPage() {
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-sm">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-sm">
                   <Flame className="h-4 w-4" />
                 </div>
                 <span className="text-sm font-bold tracking-tight">
@@ -1099,14 +1099,14 @@ export function LandingPage() {
 
 function HeroPreviewCard() {
   const phaseColors = [
-    "from-blue-500 to-blue-600",
+    "from-orange-500 to-orange-600",
     "from-rose-500 to-red-500",
     "from-emerald-500 to-teal-600",
-    "from-violet-500 to-purple-600",
+    "from-orange-500 to-orange-600",
   ];
 
   const phases = [
-    { num: 1, title: "Foundations", desc: "How Amazon works & core PPC metrics", color: "bg-blue-500" },
+    { num: 1, title: "Foundations", desc: "How Amazon works & core PPC metrics", color: "bg-orange-500" },
     { num: 2, title: "Optimization", desc: "Campaign structure & bidding strategies", color: "bg-rose-500" },
     { num: 3, title: "Advanced", desc: "Keyword research & data analysis", color: "bg-emerald-500" },
     { num: 4, title: "Portfolio", desc: "Reporting & capstone project", color: "bg-violet-500" },
@@ -1116,7 +1116,7 @@ function HeroPreviewCard() {
     <div className="relative">
       {/* Outer glow */}
       <motion.div
-        className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-br from-blue-500/20 via-indigo-500/10 to-violet-500/20 blur-3xl"
+        className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-br from-orange-500/20 via-orange-600/10 to-orange-700/20 blur-3xl"
         animate={{ opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -1149,8 +1149,8 @@ function HeroPreviewCard() {
                 <div className="h-2.5 w-20 rounded-full bg-black/10 dark:bg-white/10" />
                 <div className="mt-2 h-4 w-36 rounded-full bg-black/15 dark:bg-white/15" />
               </div>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500/10">
-                <div className="h-3 w-3 rounded-full bg-blue-500" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500/10">
+                <div className="h-3 w-3 rounded-full bg-orange-500" />
               </div>
             </div>
 
@@ -1182,7 +1182,7 @@ function HeroPreviewCard() {
               </div>
               <div className="h-2 rounded-full bg-black/5 dark:bg-white/5 overflow-hidden">
                 <motion.div
-                  className="h-full w-[42%] rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"
+                  className="h-full w-[42%] rounded-full bg-gradient-to-r from-orange-500 to-orange-600"
                   initial={{ width: 0 }}
                   animate={{ width: "42%" }}
                   transition={{ duration: 1.5, delay: 0.8, ease: [0.32, 0.72, 0, 1] }}
@@ -1227,7 +1227,7 @@ function HeroPreviewCard() {
     <div className="relative">
       {/* Glow */}
       <motion.div
-        className="absolute -inset-2 rounded-3xl bg-gradient-to-br from-blue-500/15 via-indigo-500/10 to-blue-500/15 blur-xl"
+        className="absolute -inset-2 rounded-3xl bg-gradient-to-br from-orange-500/15 via-orange-600/10 to-orange-500/15 blur-xl"
         animate={{ opacity: [0.3, 0.5, 0.3] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -1249,7 +1249,7 @@ function HeroPreviewCard() {
               {authMode === mode && (
                 <motion.div
                   layoutId="authTab"
-                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg shadow-md"
+                  className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg shadow-md"
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
               )}
@@ -1358,7 +1358,7 @@ function HeroPreviewCard() {
               </label>
               <a
                 href="#"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
+                className="text-orange-600 dark:text-orange-400 hover:underline"
               >
                 Forgot password?
               </a>

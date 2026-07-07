@@ -36,15 +36,15 @@ function findActiveModule(moduleId: string | null) {
 /** Map phase numbers to distinct gradient/color tokens */
 const phaseColorMap: Record<number, { gradient: string; accent: string; ring: string; light: string; badge: string; iconBg: string }> = {
   1: {
-    gradient: "from-blue-600 via-blue-700 to-indigo-700",
+    gradient: "from-orange-500 via-orange-600 to-amber-700",
     accent: "text-blue-600 dark:text-blue-400",
     ring: "ring-blue-200 dark:ring-blue-800",
     light: "bg-blue-50 dark:bg-blue-950/30",
-    badge: "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 border-blue-200 dark:border-blue-800",
+    badge: "bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300 border-orange-200 dark:border-orange-800",
     iconBg: "bg-blue-100 dark:bg-blue-900/50",
   },
   2: {
-    gradient: "from-violet-600 via-purple-700 to-indigo-700",
+    gradient: "from-violet-600 via-purple-700 to-amber-700",
     accent: "text-violet-600 dark:text-violet-400",
     ring: "ring-violet-200 dark:ring-violet-800",
     light: "bg-violet-50 dark:bg-violet-950/30",
@@ -466,7 +466,7 @@ function ModuleView({
               {module.exercises.map((ex) => (
                 <div
                   key={ex.id}
-                  className="flex items-center justify-between gap-4 rounded-xl border border-blue-100 dark:border-blue-900/40 bg-card/80 backdrop-blur-sm p-4"
+                  className="flex items-center justify-between gap-4 rounded-xl border border-orange-100 dark:border-orange-900/40 bg-card/80 backdrop-blur-sm p-4"
                 >
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold text-sm">

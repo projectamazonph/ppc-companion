@@ -34,7 +34,7 @@ import {
 
 const phaseGradients: Record<number, string> = {
   1: "from-violet-500 to-purple-600",
-  2: "from-blue-500 to-cyan-600",
+  2: "from-orange-500 to-orange-600",
   3: "from-amber-500 to-orange-600",
   4: "from-emerald-500 to-teal-600",
 };
@@ -740,14 +740,14 @@ function DecisionExercise({ exercise, phaseNumber }: { exercise: Exercise; phase
             "rounded-xl border-2 p-5 flex items-center gap-4",
             perfectScore
               ? "border-emerald-300 dark:border-emerald-800 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/10"
-              : "border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/10"
+              : "border-orange-200 dark:border-orange-800 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/10"
           )}
         >
           <div className={cn(
             "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-md",
             perfectScore
               ? "bg-gradient-to-br from-emerald-500 to-teal-600"
-              : "bg-gradient-to-br from-blue-500 to-indigo-600"
+              : "bg-gradient-to-br from-orange-500 to-orange-600"
           )}>
             {perfectScore ? (
               <Trophy className="h-6 w-6" />

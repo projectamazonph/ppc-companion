@@ -165,7 +165,7 @@ function getInitials(name: string): string {
 
 function getAvatarGradient(role: Role): string {
   switch (role) {
-    case "STUDENT": return "from-blue-500 to-indigo-600";
+    case "STUDENT": return "from-orange-500 to-orange-600";
     case "INSTRUCTOR": return "from-violet-500 to-purple-600";
     case "ADMIN": return "from-rose-500 to-pink-600";
   }
@@ -369,7 +369,7 @@ export function StudentsSection() {
           label="Total Students"
           value={totalStudents}
           icon={Users}
-          accentColor="bg-gradient-to-r from-blue-500 to-indigo-500"
+          accentColor="bg-gradient-to-r from-orange-500 to-orange-600"
           iconBg="bg-blue-500/10 text-blue-600 dark:text-blue-400"
         />
         <StatCard
@@ -614,7 +614,7 @@ export function StudentsSection() {
                                 className={cn(
                                   "h-full rounded-full transition-all duration-300",
                                   progress >= 75 ? "bg-gradient-to-r from-emerald-500 to-teal-500" :
-                                  progress >= 40 ? "bg-gradient-to-r from-blue-500 to-indigo-500" :
+                                  progress >= 40 ? "bg-gradient-to-r from-orange-500 to-orange-600" :
                                   progress > 0 ? "bg-gradient-to-r from-amber-500 to-orange-500" :
                                   "bg-muted"
                                 )}
@@ -1502,7 +1502,7 @@ function ActivityItem({ item }: { item: any }) {
     notification: Bell,
   };
   const colorMap = {
-    submission: "from-blue-500 to-indigo-600",
+    submission: "from-orange-500 to-orange-600",
     quiz_attempt: "from-rose-500 to-pink-600",
     capstone: "from-violet-500 to-purple-600",
     login: "from-emerald-500 to-teal-600",

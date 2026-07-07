@@ -8,7 +8,7 @@
 |-------|-------|
 | **Owner** | Ryan Roland Dabao (Amazon PPC Lead Manager, 10+ yrs) |
 | **Purpose** | Student training platform with curriculum, quizzes, exercises, PPC tools, capstone project, cohort management |
-| **Status** | Production (v0.5.0) |
+| **Status** | Production (v0.6.0) |
 | **Domain** | ppc-companion.vercel.app |
 
 ## Tech Stack

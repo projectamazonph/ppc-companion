@@ -100,7 +100,7 @@ function getStatusColor(status: string) {
 
 function getAvatarGradient(id: string) {
   const gradients = [
-    "from-blue-500 to-indigo-600",
+    "from-orange-500 to-orange-600",
     "from-violet-500 to-purple-600",
     "from-emerald-500 to-teal-600",
     "from-rose-500 to-pink-600",

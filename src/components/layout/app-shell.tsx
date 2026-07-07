@@ -122,7 +122,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       ? "from-violet-500 to-purple-600"
       : user?.role === "guest"
       ? "from-stone-400 to-stone-600"
-      : "from-blue-500 to-indigo-600";
+      : "from-orange-500 to-orange-600";
 
   const meta = sectionLabels[activeSection] ?? sectionLabels.dashboard;
   // Compute overall progress percentage (simple blend)

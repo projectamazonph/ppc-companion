@@ -533,7 +533,7 @@ export function DashboardSection() {
               <Card className="relative z-10 border-border/50 bg-card/80 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 h-full">
                 <CardContent className="p-4 sm:p-5">
                   <div className="flex items-center gap-2.5 mb-2">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white text-xs font-bold shadow-sm">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-orange-600 text-white text-xs font-bold shadow-sm">
                       {i + 1}
                     </div>
                     <span className="font-bold text-sm">{step.label}</span>
