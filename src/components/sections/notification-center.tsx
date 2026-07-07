@@ -232,7 +232,7 @@ export function NotificationCenterSection() {
     } finally {
       setLoading(false);
     }
-  }, [user?.id, filter]);
+  }, [user, filter]);
 
   // Initial fetch + refetch on filter change
   /* eslint-disable react-hooks/set-state-in-effect */

@@ -56,7 +56,7 @@ export function NotificationsPanel() {
     } finally {
       setLoading(false);
     }
-  }, [user?.id]);
+  }, [user]);
 
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
