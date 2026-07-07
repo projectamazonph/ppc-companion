@@ -45,7 +45,7 @@ export const metadata: Metadata = {
       { url: "/icons/icon-180.png", sizes: "180x180" },
     ],
     other: [
-      { url: "/og/ppc-og.png", rel: "preload", as: "image" },
+      { url: "/og/ppc-og.png", rel: "preload" },
     ],
   },
   manifest: "/manifest.json",
