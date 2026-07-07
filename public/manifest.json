@@ -1,11 +1,11 @@
 {
-  "name": "PPC Companion",
+  "name": "PPC Companion — by ProjectAmazonPH",
   "short_name": "PPC Companion",
   "description": "Amazon PPC Manager companion platform — curriculum, exercises, quizzes, tools, and progress tracking.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f1d3d",
-  "theme_color": "#007EFF",
+  "background_color": "#0A1628",
+  "theme_color": "#FF6B35",
   icons: [
     { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
     { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },

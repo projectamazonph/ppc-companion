@@ -124,7 +124,7 @@ const jsonLd = {
   brand: {
     "@type": "Brand",
     name: "PPC Companion",
-    color: "#007EFF",
+    color: "#FF6B35",
   },
   screenshot: `${BASE_URL}/og/ppc-og.png`,
   softwareVersion: "0.5.0",
