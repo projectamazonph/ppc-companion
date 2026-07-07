@@ -32,6 +32,8 @@ import {
   Rocket,
   BarChart3,
   Users,
+  Map,
+  Lock,
 } from "lucide-react";
 
 import {
@@ -324,6 +326,87 @@ export function DashboardSection() {
           </div>
         </CardContent>
       </Card>
+
+      {/* ═══════════════════════════════════════════════════════════════════════
+          4. YOUR JOURNEY — phase unlock status
+          ═══════════════════════════════════════════════════════════════════════ */}
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
+          <Map className="h-4 w-4 text-orange-500" />
+          <h3 className="text-sm font-bold">Your Journey</h3>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[1, 2, 3, 4].map((n) => {
+            const passed = [user?.phase1Pass, user?.phase2Pass, user?.phase3Pass, user?.phase4Pass][n - 1];
+            const phaseColors = [
+              "bg-gradient-to-br from-orange-500 to-amber-600",
+              "bg-gradient-to-br from-rose-500 to-pink-600",
+              "bg-gradient-to-br from-amber-500 to-orange-600",
+              "bg-gradient-to-br from-violet-500 to-purple-600",
+            ];
+            const borderColors = [
+              "border-orange-200 dark:border-orange-800",
+              "border-rose-200 dark:border-rose-800",
+              "border-amber-200 dark:border-amber-800",
+              "border-violet-200 dark:border-violet-800",
+            ];
+            const badgeGreen = "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300";
+            const badgeMuted = "bg-muted text-muted-foreground";
+
+            return (
+              <div
+                key={n}
+                className={cn(
+                  "rounded-xl border p-4 flex flex-col gap-3 transition-shadow hover:shadow-sm",
+                  borderColors[n - 1]
+                )}
+              >
+                {/* Phase number */}
+                <div className="flex items-center justify-between">
+                  <div className={cn("flex h-8 w-8 items-center justify-center rounded-xl text-white text-sm font-extrabold shadow-sm", phaseColors[n - 1])}>
+                    {n}
+                  </div>
+                  {passed ? (
+                    <Badge className={cn("text-[9px] font-semibold shrink-0", badgeGreen)}>
+                      <CheckCircle2 className="h-2.5 w-2.5 mr-1" />
+                      Passed
+                    </Badge>
+                  ) : (
+                    <Badge className={cn("text-[9px] font-semibold shrink-0", badgeMuted)}>
+                      <Lock className="h-2.5 w-2.5 mr-1" />
+                      {n === 1 ? "Start" : "Locked"}
+                    </Badge>
+                  )}
+                </div>
+                {/* Phase name */}
+                <div>
+                  <p className="text-xs font-bold leading-tight">
+                    {[phases[0].title, phases[1].title, phases[2].title, phases[3].title][n - 1]}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">
+                    {[phases[0].subtitle, phases[1].subtitle, phases[2].subtitle, phases[3].subtitle][n - 1]}
+                  </p>
+                </div>
+                {/* CTA */}
+                {!passed && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full text-[10px] h-7"
+                    onClick={() => {
+                      const p = phases[n - 1];
+                      if (p.modules[0]) setActiveModule(p.modules[0].id, p.id);
+                      setSection("curriculum");
+                    }}
+                  >
+                    {n === 1 ? "Begin" : "Complete previous"}
+                  </Button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       {/* ═══════════════════════════════════════════════════════════════════════
           4. SERVER-BACKED PROGRESS (instructor-tracked)

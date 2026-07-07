@@ -93,6 +93,20 @@ export function CurriculumSection() {
 
   const activeModule = findActiveModule(activeModuleId);
 
+  // Derive pass status from user object (populated by /api/auth/me or /api/progress)
+  const phasePassMap: Record<number, boolean> = {
+    1: user?.phase1Pass ?? false,
+    2: user?.phase2Pass ?? false,
+    3: user?.phase3Pass ?? false,
+    4: user?.phase4Pass ?? false,
+  };
+
+  // Phase N+1 unlocks when phase N has pass=true. Phase 1 is always open.
+  function isPhaseUnlocked(phaseNum: number): boolean {
+    if (phaseNum === 1) return true;
+    return phasePassMap[phaseNum - 1] === true;
+  }
+
   if (activeModule) {
     return (
       <ModuleView
@@ -125,6 +139,7 @@ export function CurriculumSection() {
       <div className="space-y-10 sm:space-y-12">
         {phases.map((phase) => {
           const colors = getPhaseColors(phase.number);
+          const phaseUnlocked = isPhaseUnlocked(phase.number);
           return (
             <section key={phase.id} className="space-y-4 sm:space-y-5">
               {/* ── Phase header banner ── */}
@@ -137,6 +152,14 @@ export function CurriculumSection() {
                 {/* Decorative circle */}
                 <div className="absolute -top-12 -right-12 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
                 <div className="absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-black/10 blur-xl" />
+
+                {/* Lock overlay when phase is locked */}
+                {!phaseUnlocked && (
+                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/30 backdrop-blur-sm rounded-2xl">
+                    <Lock className="h-8 w-8 text-white/80 mb-2" />
+                    <p className="text-sm font-semibold text-white/90">Complete the previous checkpoint to unlock</p>
+                  </div>
+                )}
 
                 <div className="relative flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                   <div className="space-y-3">
@@ -194,7 +217,7 @@ export function CurriculumSection() {
               <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
                 {phase.modules.map((m) => {
                   const colorsM = getPhaseColors(phase.number);
-                  const isLocked = isTrial && !(TRIAL_MODULE_IDS as readonly string[]).includes(m.id);
+                  const isLocked = (!phaseUnlocked) || (isTrial && !(TRIAL_MODULE_IDS as readonly string[]).includes(m.id));
                   return (
                     <button
                       key={m.id}

@@ -53,14 +53,7 @@ export default function Home() {
             {activeSection === "tools" && <ToolsSection />}
             {activeSection === "reference" && <ReferenceSection />}
             {activeSection === "capstone" && <CapstoneSection />}
-            {activeSection === "students" && <StudentsSection />}
-            {activeSection === "myprofile" && <MyProfileSection />}
-            {activeSection === "mystudents" && <MyStudentsSection />}
-            {activeSection === "cohorts" && <CohortsSection />}
-            {activeSection === "audit" && <AuditLogSection />}
             {activeSection === "downloads" && <DownloadsSection />}
-            {activeSection === "admin-dashboard" && <AdminDashboardSection />}
-            {activeSection === "notifications" && <NotificationCenterSection />}
           </AppShell>
           </ErrorBoundary>
         </motion.div>

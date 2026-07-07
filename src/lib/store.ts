@@ -48,6 +48,12 @@ export type User = {
   currentPhase?: number;
   targetAcos?: number;
   loggedInAt: number;
+  // Phase checkpoint pass flags (set by quiz submission)
+  phase1Pass?: boolean;
+  phase2Pass?: boolean;
+  phase3Pass?: boolean;
+  phase4Pass?: boolean;
+  capstoneDone?: boolean;
   // Server-fetched progress (per phase) — distinct from local progress
   serverProgress?: {
     phaseNumber: number;

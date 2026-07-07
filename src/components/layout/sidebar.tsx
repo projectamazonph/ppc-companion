@@ -62,13 +62,8 @@ const navItems: NavItem[] = [
   { id: "myprofile", label: "My Profile", icon: UserCircle, description: "Your progress & activity", roles: ["student"], group: "main" },
 
   // Instructor — their students + grading
-  { id: "mystudents", label: "My Students", icon: ClipboardList, description: "View & grade your students", roles: ["instructor"], group: "admin" },
-  { id: "cohorts", label: "Cohorts", icon: School, description: "Manage cohorts and enrollments", roles: ["instructor", "admin"], group: "admin" },
 
   // Admin — full management
-  { id: "admin-dashboard", label: "Admin Dashboard", icon: Gauge, description: "Aggregate platform stats", roles: ["admin"], group: "admin" },
-  { id: "students", label: "Student Management", icon: Users, description: "Full CRUD on all students", roles: ["admin"], group: "admin" },
-  { id: "audit", label: "Audit Log", icon: ScrollText, description: "All admin actions", roles: ["admin"], group: "admin" },
 ];
 
 // =============================================================
