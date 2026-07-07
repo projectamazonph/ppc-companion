@@ -250,11 +250,9 @@ export function StudentsSection() {
   const fetchStudentsRef = useRef(fetchStudents);
   const refetch = useCallback(() => fetchStudentsRef.current(), []);
 
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     fetchStudentsRef.current = fetchStudents;
   });
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
     let cancelled = false;
@@ -286,7 +284,6 @@ export function StudentsSection() {
       clearTimeout(t);
     };
   }, [search]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   const cohorts = Array.from(new Set(students.map((s) => s.cohort).filter(Boolean))) as string[];
 

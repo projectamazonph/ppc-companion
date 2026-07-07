@@ -209,12 +209,10 @@ export function MyStudentsSection() {
   const fetchRef = useRef(fetchStudents);
   const refetch = useCallback(() => fetchRef.current(), []);
 
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     searchRef.current = search;
     fetchRef.current = fetchStudents;
   });
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
     const t = setTimeout(() => fetchRef.current(), search ? 300 : 0);
