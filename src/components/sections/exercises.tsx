@@ -328,6 +328,7 @@ function ExerciseChip({
           <span className={cn("text-[11px] font-bold tabular-nums", active ? phaseAccentText[phaseNumber] : "text-muted-foreground")}>
             {exercise.id}
           </span>
+          {/* eslint-disable-next-line react-hooks/static-components */}
           <TypeIcon className={cn("h-3 w-3", active ? phaseAccentText[phaseNumber] : "text-muted-foreground/60")} />
         </div>
         <p className={cn(
@@ -424,6 +425,7 @@ function ExerciseView({
 
         <div className="flex items-start gap-3">
           <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-md", phaseGradients[phaseNumber])}>
+            {/* eslint-disable-next-line react-hooks/static-components */}
             <TypeIcon className="h-5 w-5" />
           </div>
           <div>

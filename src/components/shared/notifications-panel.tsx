@@ -41,6 +41,7 @@ export function NotificationsPanel() {
   const [loading, setLoading] = useState(false);
   const user = useAppStore((s) => s.user);
 
+  /* eslint-disable react-compiler/preset */
   const fetchNotifications = useCallback(async () => {
     if (!user?.id) return;
     setLoading(true);

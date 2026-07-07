@@ -248,10 +248,14 @@ export function StudentsSection() {
   }, [roleFilter, statusFilter, cohortFilter, search]);
 
   const fetchStudentsRef = useRef(fetchStudents);
-  fetchStudentsRef.current = fetchStudents;
   const refetch = useCallback(() => fetchStudentsRef.current(), []);
 
   /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    fetchStudentsRef.current = fetchStudents;
+  });
+  /* eslint-enable react-hooks/set-state-in-effect */
+
   useEffect(() => {
     let cancelled = false;
     const run = async () => {
