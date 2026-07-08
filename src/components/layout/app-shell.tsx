@@ -39,6 +39,7 @@ import { Badge } from "@/components/ui/badge";
 import { programOverview } from "@/lib/course-data";
 import { useToast } from "@/hooks/use-toast";
 import { BrandButton, GlassButton } from "@/components/shared/buttons";
+import { ProjectAmazonPHHeader } from "@/components/shared/ProjectAmazonPHHeader";
 import { NotificationsPanel } from "@/components/shared/notifications-panel";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { cn } from "@/lib/utils";
@@ -168,6 +169,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               />
             </div>
           </button>
+
+          {/* ProjectAmazonPH brand header */}
+          <ProjectAmazonPHHeader projectName="PPC Companion" />
 
           {/* Page title + subtitle */}
           <div className="flex-1 min-w-0">

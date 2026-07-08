@@ -156,10 +156,10 @@ export function Sidebar({
         {(!collapsed || mobile) && (
           <div className="min-w-0 flex-1">
             <h1 className="text-[13px] font-semibold tracking-tight leading-tight truncate text-sidebar-foreground">
-              Amazon PPC
+              ProjectAmazonPH
             </h1>
             <p className="text-[11px] text-sidebar-foreground/50 leading-tight">
-              Companion
+              PPC Companion
             </p>
           </div>
         )}
