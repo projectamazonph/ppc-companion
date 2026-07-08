@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GeistSans, GeistMono } from "geist/font";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { PapHeader } from "@/components/header";
 
 const BASE_URL = "https://ppc-companion.vercel.app";
 
@@ -152,6 +153,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <div className="grain-overlay" />
+        <PapHeader />
         {children}
         <Toaster />
       </body>
