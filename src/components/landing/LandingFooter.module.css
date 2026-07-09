@@ -1,0 +1,42 @@
+/* LandingFooter.module.css */
+.footer {
+  padding: 32px 24px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.brand {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.brand span {
+  color: #ff6b35;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.links a {
+  font-size: 0.8rem;
+  color: rgba(232, 232, 240, 0.4);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.links a:hover {
+  color: #ff6b35;
+}
+
+.copy {
+  font-size: 0.75rem;
+  color: rgba(232, 232, 240, 0.3);
+}

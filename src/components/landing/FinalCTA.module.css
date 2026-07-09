@@ -1,0 +1,57 @@
+/* FinalCTA.module.css */
+.finalCta {
+  background: linear-gradient(160deg, #0a1628 0%, rgba(255, 107, 53, 0.08) 100%);
+  border-top: 1px solid rgba(255, 107, 53, 0.2);
+  border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+  padding: 96px 24px;
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #fff;
+  max-width: 700px;
+  margin: 0 auto 16px;
+  line-height: 1.2;
+}
+
+.title em {
+  font-style: normal;
+  color: #ff6b35;
+}
+
+.sub {
+  font-size: 1.05rem;
+  color: rgba(232, 232, 240, 0.65);
+  max-width: 540px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+
+.ctaLarge {
+  font-size: 1.15rem;
+  padding: 18px 48px;
+}
+
+.urgencyRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.urgencyItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: rgba(232, 232, 240, 0.5);
+}
+
+.urgencyItem i {
+  color: #ff6b35;
+}

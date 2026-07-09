@@ -1,0 +1,47 @@
+/* shared button styles */
+.btnPrimary {
+  background: #ff6b35;
+  color: #fff;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 32px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s, transform 0.1s;
+  text-decoration: none;
+}
+
+.btnPrimary:hover {
+  background: #e55a28;
+  transform: translateY(-1px);
+}
+
+.btnPrimary:active {
+  transform: translateY(0);
+}
+
+.btnSecondary {
+  background: transparent;
+  color: #ff6b35;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border: 2px solid #ff6b35;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btnSecondary:hover {
+  background: rgba(255, 107, 53, 0.1);
+}

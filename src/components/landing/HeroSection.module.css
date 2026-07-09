@@ -1,0 +1,131 @@
+/* HeroSection.module.css */
+.hero {
+  padding: 100px 24px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 107, 53, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.25);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ff6b35;
+  margin-bottom: 28px;
+}
+
+.eyebrow i {
+  font-size: 1rem;
+}
+
+.headline {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 700;
+  color: #fff;
+  max-width: 860px;
+  margin: 0 auto 24px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.headline em {
+  font-style: normal;
+  color: #ff6b35;
+}
+
+.subheadline {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(232, 232, 240, 0.75);
+  max-width: 640px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+.subheadline strong {
+  color: #e8e8f0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+.btnPrimaryLarge {
+  font-size: 1.1rem;
+  padding: 16px 40px;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+.statNumber {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.statLabel {
+  font-size: 0.8rem;
+  color: rgba(232, 232, 240, 0.5);
+  margin-top: 2px;
+}
+
+.statDivider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: rgba(232, 232, 240, 0.45);
+}
+
+.badge i {
+  font-size: 0.7rem;
+}
+
+.badgeVerified {
+  color: #28a745;
+}

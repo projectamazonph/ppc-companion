@@ -1,0 +1,39 @@
+/* ResultsBanner.module.css */
+.resultsBanner {
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.resultsTitle {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.resultsSub {
+  font-size: 0.95rem;
+  color: rgba(232, 232, 240, 0.55);
+  margin-bottom: 32px;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.statNumber {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffd700;
+}
+
+.statLabel {
+  font-size: 0.8rem;
+  color: rgba(232, 232, 240, 0.5);
+  margin-top: 2px;
+}
