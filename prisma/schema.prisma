@@ -155,7 +155,7 @@ model Student {
   quizAttempts  QuizAttempt[]
   capstones     CapstoneProject[]
   notifications Notification[]
-  comments      Comment[]       // comments authored by this student
+  comments      Comment[]  @relation("CommentAuthor")  // comments authored by this student
   ta            AuditEntry[]    @relation("AuditActor")
   targetOfAudit AuditEntry[]    @relation("AuditTarget")
   sessions      SessionLog[]
@@ -295,7 +295,7 @@ model ExerciseSubmission {
 
   student     Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
   exercise    Exercise         @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  comments    Comment[]
+  comments    Comment[]  @relation("SubmissionComments")
 
   @@unique([studentId, exerciseId])
   @@index([studentId])
@@ -450,7 +450,7 @@ model Comment {
   deletedAt     DateTime?
 
   author        Student  @relation("CommentAuthor", fields: [authorId], references: [id], onDelete: Cascade)
-  submission    ExerciseSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  submission    ExerciseSubmission @relation("SubmissionComments", fields: [submissionId], references: [id], onDelete: Cascade)
 
   @@index([authorId])
   @@index([submissionId])
