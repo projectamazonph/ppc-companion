@@ -39,7 +39,7 @@ async function main() {
   // Wipe non-student data (idempotent re-run)
   // ----------------------------------------------------------------
   console.log("Clearing existing data...");
-  await db.auditLog.deleteMany();
+  await db.auditEntry.deleteMany();
   await db.comment.deleteMany();
   await db.notification.deleteMany();
   await db.studentTag.deleteMany();
@@ -237,7 +237,7 @@ async function main() {
   // ----------------------------------------------------------------
   // Audit log
   // ----------------------------------------------------------------
-  await db.auditLog.create({
+  await db.auditEntry.create({
     data: {
       actorId: admin?.id ?? null,
       action: "CREATE",
