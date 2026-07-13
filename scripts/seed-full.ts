@@ -139,14 +139,7 @@ async function main() {
     // Create checkpoint quiz for this phase
     if (phase.checkpoint) {
       const quiz = phase.checkpoint;
-      const phaseModule = await db.module.findFirst({
-        where: { code: `${phase.number}.3` },
-      }) ?? await db.module.findFirst({
-        where: { code: `${phase.number}.2` },
-      }) ?? await db.module.findFirst({
-        where: { phaseNumber: phase.number },
-        orderBy: { order: "desc" },
-      });
+      const phaseModule = null; // Phase/Module seeding needed first
 
       if (phaseModule) {
         const createdQuiz = await db.quiz.create({
