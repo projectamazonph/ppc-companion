@@ -42,8 +42,6 @@ async function main() {
   await db.auditEntry.deleteMany();
   await db.comment.deleteMany();
   await db.notification.deleteMany();
-  await db.studentTag.deleteMany();
-  await db.tag.deleteMany();
   await db.sessionLog.deleteMany();
   await db.quizAttempt.deleteMany();
   await db.quizQuestion.deleteMany();
@@ -203,16 +201,7 @@ async function main() {
   // ----------------------------------------------------------------
   // Tags
   // ----------------------------------------------------------------
-  console.log("\nCreating tags...");
-  const tagNames = ["Fast learner", "Top performer", "New to PPC", "Needs help", "Capstone-ready", "Returning student"];
-  const tags: Record<string, any> = {};
-  for (const name of tagNames) {
-    const color = name === "Fast learner" ? "emerald" : name === "Top performer" ? "amber" : name === "New to PPC" ? "sky" : name === "Needs help" ? "rose" : name === "Capstone-ready" ? "violet" : "slate";
-    tags[name] = await db.tag.create({ data: { name, color } });
-  }
-  console.log(`  ✓ ${tagNames.length} tags created`);
-
-  // Tag assignments (none — no demo students)
+  // Tags — removed (Tag/StudentTag models not in schema)
   // Tags are assigned by instructors via the admin panel at runtime
 
   // ----------------------------------------------------------------
@@ -260,7 +249,6 @@ async function main() {
     QuizQuestions: await db.quizQuestion.count(),
     Capstones: await db.capstoneProject.count(),
     ProgressEntries: await db.progressEntry.count(),
-    Tags: await db.tag.count(),
     Notifications: await db.notification.count(),
   };
 
