@@ -27,13 +27,13 @@ export async function GET(req: NextRequest) {
     if (action) where.action = action;
 
     const [entries, total] = await Promise.all([
-      db.auditLog.findMany({
+      db.auditEntry.findMany({
         where,
         orderBy: { createdAt: "desc" },
         take: limit,
         skip: offset,
       }),
-      db.auditLog.count({ where }),
+      db.auditEntry.count({ where }),
     ]);
 
     return NextResponse.json({ count: entries.length, total, skip: offset, limit, entries });
