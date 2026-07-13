@@ -1,0 +1,87 @@
+{
+  "detection": {
+    "commands": {
+      "build": "bun run build",
+      "dev": "bun run dev",
+      "e2e": "Not yet configured",
+      "format_check": "Not yet configured",
+      "install": "bun install --frozen-lockfile",
+      "lint": "bun run lint",
+      "package_manager": "bun",
+      "test": "bun run test",
+      "typecheck": "Not yet configured"
+    },
+    "ecosystem": "javascript",
+    "evidence": [
+      "package.json",
+      "bun.lock",
+      "package-lock.json",
+      "tsconfig.json"
+    ],
+    "stack": "Next.js and TypeScript",
+    "warnings": [
+      "multiple JavaScript lockfiles detected: bun, npm"
+    ]
+  },
+  "files": {
+    ".github/pull_request_template.md": {
+      "sha256": "0ba487bf584b85314c878c22cff1260945bf56903c8832509b3e776564d43648",
+      "template": ".github/pull_request_template.md.tpl"
+    },
+    "CHANGELOG.md": {
+      "sha256": "db9b5a97f0333cfad7511f5fd4ddc0a4bbb9800ff1c47cf8a1a7952fa42f1057",
+      "template": "CHANGELOG.md.tpl"
+    },
+    "CONTRIBUTING.md": {
+      "sha256": "9ae0ad6554b3cab9661561f2c849afbc2a1aa0df7eaa604139e8278ec958d8d4",
+      "template": "CONTRIBUTING.md.tpl"
+    },
+    "docs/BUILD_LOG.md": {
+      "sha256": "5cadc216cac7b376726ca997906d54426a4f5326942f5cd5c83a86411a4b8a33",
+      "template": "docs/BUILD_LOG.md.tpl"
+    },
+    "docs/BUILD_SPEC.md": {
+      "sha256": "49dda919a2aaad60b852f455a3a61c9d041534eed894bdfe2c252160f2c5254f",
+      "template": "docs/BUILD_SPEC.md.tpl"
+    },
+    "docs/DEPLOYMENT.md": {
+      "sha256": "1411dd6fbdbd48c8040ba6c2027c7a397e370b0e43a83fc79b220246a1b1db98",
+      "template": "docs/DEPLOYMENT.md.tpl"
+    },
+    "docs/ENGINEERING_DIARY.md": {
+      "sha256": "886106876e8ad731c67bda7f6327eb484ce3600d393e898d973096a2343b4b30",
+      "template": "docs/ENGINEERING_DIARY.md.tpl"
+    },
+    "docs/ERROR_LOG.md": {
+      "sha256": "36378a687020eb18036e03c4bcff9051f2a21dfbffb01a1e90b847c2a0663c5d",
+      "template": "docs/ERROR_LOG.md.tpl"
+    },
+    "docs/LOOP_ENGINEERING.md": {
+      "sha256": "34753478621628ad9eb05b95d8c5ec6190a7cc3424df810a009a2e214788ae7a",
+      "template": "docs/LOOP_ENGINEERING.md.tpl"
+    },
+    "docs/PRD.md": {
+      "sha256": "dd98705c637ed205d010b2d3e963c6f326129b2189cea0922d0830f5e9200fc5",
+      "template": "docs/PRD.md.tpl"
+    },
+    "docs/ROADMAP.md": {
+      "sha256": "fc79d4ca6d00da8e79dd9f91c8f6b36ff6a42f1ea6d0f4a9e852fb9766f614d2",
+      "template": "docs/ROADMAP.md.tpl"
+    },
+    "docs/SECURITY.md": {
+      "sha256": "9ff00d4e39444996eb0ceac55df35b77e863d7c59978bc18dc6f38914226c7c2",
+      "template": "docs/SECURITY.md.tpl"
+    },
+    "docs/TESTING.md": {
+      "sha256": "a8b2bd548fb0cbb112b8df3a1ddce52542f76b8dab3e768a83bdc26c8e296f5c",
+      "template": "docs/TESTING.md.tpl"
+    }
+  },
+  "generated_at": "2026-07-13T21:31:25+00:00",
+  "generator_version": "2.0.0",
+  "layout": "web-app",
+  "mode": "existing",
+  "profile": "standard",
+  "schema_version": 1,
+  "stack": "Next.js and TypeScript"
+}

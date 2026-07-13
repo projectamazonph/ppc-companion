@@ -63,11 +63,8 @@ A production-grade **8–12 week** training companion built for the Amazon PPC M
 ---
 
 ## Quick Start
-
 ```bash
 # Install dependencies
-npm install
-# or
 bun install
 
 # Set up env
@@ -75,16 +72,14 @@ cp .env.example .env
 # Edit .env with your JWT_SECRET and DATABASE_URL
 
 # Generate Prisma client
-npx prisma generate
-
+bunx prisma generate
 # Push schema to database
-npx prisma db push
-
+bunx prisma db push
 # Bootstrap admin account
-ADMIN_PASSWORD=your-secret npx tsx scripts/seed-students.ts
+ADMIN_PASSWORD=your-secret bunx tsx scripts/seed-students.ts
 
 # Run dev server
-npm run dev
+bun run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
@@ -173,7 +168,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ```bash
 # Build
-npm run build
+bun run build
 
 # Deploy to Vercel
 vercel --prod

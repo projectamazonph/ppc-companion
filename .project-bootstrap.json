@@ -1,0 +1,23 @@
+{
+  "engineering": {
+    "data_sensitivity": "Not yet classified",
+    "deployment_target": "Not yet decided",
+    "stack": "Next.js and TypeScript"
+  },
+  "first_vertical_slice": {
+    "name": "Complete the primary user action through validation, business logic, persistence, feedback, logging, and automated tests."
+  },
+  "layout": "web-app",
+  "product": {
+    "goals": "Deliver the smallest useful end-to-end workflow; establish reliable feedback loops.",
+    "non_goals": "Premature scale work; broad rewrites unrelated to the first validated workflow.",
+    "problem": "The underlying problem needs project-specific evidence and validation."
+  },
+  "profile": "standard",
+  "project": {
+    "name": "PPC Companion",
+    "summary": "Interactive Amazon PPC training platform with curriculum, exercises, quizzes, tools, and capstone project",
+    "users": "Filipino VA students, instructors, admins"
+  },
+  "schema_version": 1
+}

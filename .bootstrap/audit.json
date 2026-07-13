@@ -1,0 +1,194 @@
+{
+  "artifacts": {
+    ".github/pull_request_template.md": {
+      "evidence": [
+        ".github/pull_request_template.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "AGENTS.md": {
+      "evidence": [
+        "AGENTS.md exists (4638 bytes)"
+      ],
+      "recommended_action": "preserve",
+      "status": "valid"
+    },
+    "CHANGELOG.md": {
+      "evidence": [
+        "CHANGELOG.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "CONTRIBUTING.md": {
+      "evidence": [
+        "CONTRIBUTING.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "README.md": {
+      "evidence": [
+        "README.md exists (7356 bytes)",
+        "documents npm commands while repository evidence selects bun"
+      ],
+      "recommended_action": "patch",
+      "status": "conflicting"
+    },
+    "docs/ARCHITECTURE.md": {
+      "evidence": [
+        "docs/ARCHITECTURE.md exists (7345 bytes)"
+      ],
+      "recommended_action": "preserve",
+      "status": "valid"
+    },
+    "docs/BUILD_LOG.md": {
+      "evidence": [
+        "docs/BUILD_LOG.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "docs/BUILD_SPEC.md": {
+      "evidence": [
+        "docs/BUILD_SPEC.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "docs/DECISIONS.md": {
+      "evidence": [
+        "docs/DECISIONS.md exists (4644 bytes)"
+      ],
+      "recommended_action": "preserve",
+      "status": "valid"
+    },
+    "docs/DEPLOYMENT.md": {
+      "evidence": [
+        "docs/DEPLOYMENT.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "docs/ENGINEERING_DIARY.md": {
+      "evidence": [
+        "docs/ENGINEERING_DIARY.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "docs/ERROR_LOG.md": {
+      "evidence": [
+        "docs/ERROR_LOG.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "docs/LOOP_ENGINEERING.md": {
+      "evidence": [
+        "docs/LOOP_ENGINEERING.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "docs/PRD.md": {
+      "evidence": [
+        "docs/PRD.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "docs/ROADMAP.md": {
+      "evidence": [
+        "docs/ROADMAP.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "docs/SECURITY.md": {
+      "evidence": [
+        "docs/SECURITY.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    },
+    "docs/TESTING.md": {
+      "evidence": [
+        "docs/TESTING.md does not exist"
+      ],
+      "recommended_action": "create",
+      "status": "missing"
+    }
+  },
+  "generated_at": "2026-07-13T21:29:54+00:00",
+  "limitations": [
+    "Artifact classification is deterministic and conservative; architecture truth still requires code review.",
+    "A valid document means no obvious placeholder or command conflict was detected, not that every statement is correct."
+  ],
+  "repository": {
+    "commands": {
+      "build": "bun run build",
+      "dev": "bun run dev",
+      "e2e": "Not yet configured",
+      "format_check": "Not yet configured",
+      "install": "bun install --frozen-lockfile",
+      "lint": "bun run lint",
+      "package_manager": "bun",
+      "test": "bun run test",
+      "typecheck": "Not yet configured"
+    },
+    "ecosystem": "javascript",
+    "evidence": [
+      "package.json",
+      "bun.lock",
+      "package-lock.json",
+      "tsconfig.json"
+    ],
+    "package_manager": "bun",
+    "path": "/sdcard/Hermes Projects/gh-repos/ppc-companion",
+    "profile": "standard",
+    "signals": {
+      "ci_workflows": [
+        ".github/workflows/ci.yml"
+      ],
+      "environment_examples": [
+        ".env.example"
+      ],
+      "git": {
+        "available": true,
+        "branch": "master",
+        "last_commit": {
+          "date": null,
+          "hash": null,
+          "subject": null
+        }
+      },
+      "lockfiles": [
+        "package-lock.json",
+        "bun.lock"
+      ],
+      "manifests": [
+        "package.json",
+        "Dockerfile",
+        "docker-compose.yml"
+      ],
+      "test_locations_checked": [
+        "src"
+      ]
+    },
+    "stack": "Next.js and TypeScript",
+    "warnings": [
+      "multiple JavaScript lockfiles detected: bun, npm"
+    ]
+  },
+  "schema_version": 1,
+  "summary": {
+    "conflicting": 1,
+    "missing": 13,
+    "stale": 0,
+    "valid": 3
+  },
+  "tool": "project-bootstrap",
+  "tool_version": "2.0.0"
+}
