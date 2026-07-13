@@ -449,7 +449,7 @@ model Comment {
   updatedAt     DateTime @updatedAt
   deletedAt     DateTime?
 
-  author        Student  @relation("AuditActor", fields: [authorId], references: [id], onDelete: Cascade)
+  author        Student  @relation("CommentAuthor", fields: [authorId], references: [id], onDelete: Cascade)
   submission    ExerciseSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 
   @@index([authorId])
