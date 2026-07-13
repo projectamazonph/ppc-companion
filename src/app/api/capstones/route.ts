@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
     let capstone = await db.capstoneProject.findFirst({ where: { studentId } });
     if (!capstone) {
       capstone = await db.capstoneProject.create({
-        data: { studentId, status: "NOT_STARTED" },
+        data: { studentId, title: "My Capstone Project", status: "NOT_STARTED" },
       });
     }
 
@@ -74,7 +74,7 @@ export async function PUT(req: NextRequest) {
     let capstone = await db.capstoneProject.findFirst({ where: { studentId: body.studentId } });
     if (!capstone) {
       capstone = await db.capstoneProject.create({
-        data: { studentId: body.studentId, status: "NOT_STARTED" },
+        data: { studentId: body.studentId, title: body.title || "Capstone Project", status: "NOT_STARTED" },
       });
     }
 
@@ -87,8 +87,7 @@ export async function PUT(req: NextRequest) {
     for (const f of stringFields) {
       if (typeof body[f] === "string") data[f] = body[f] || null;
     }
-    if (typeof body.targetAcos === "number") data.targetAcos = body.targetAcos;
-    if (typeof body.targetTacos === "number") data.targetTacos = body.targetTacos;
+    // targetAcos/targetTacos removed — not in schema
 
     const validStatuses = ["NOT_STARTED", "IN_PROGRESS", "SUBMITTED", "APPROVED", "REJECTED"];
     if (validStatuses.includes(body.status)) {
