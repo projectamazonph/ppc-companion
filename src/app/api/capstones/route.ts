@@ -81,8 +81,7 @@ export async function PUT(req: NextRequest) {
     // Build update payload with validation
     const data: any = {};
     const stringFields = [
-      "title", "productBrief", "keywordResearch", "campaignBlueprint",
-      "launchPlan", "optimizationReport", "presentationUrl", "reviewNotes", "grade",
+      "title", "description", "deliverables", "feedback",
     ];
     for (const f of stringFields) {
       if (typeof body[f] === "string") data[f] = body[f] || null;
@@ -99,7 +98,6 @@ export async function PUT(req: NextRequest) {
         data.reviewedAt = new Date();
       }
     }
-    if (typeof body.reviewedBy === "string") data.reviewedBy = body.reviewedBy || null;
 
     const updated = await db.capstoneProject.update({
       where: { id: capstone.id },
