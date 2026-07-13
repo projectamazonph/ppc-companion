@@ -84,10 +84,6 @@ export async function GET(
           where: { studentId: id },
           include: { cohort: { select: { id: true, name: true, status: true } } },
         }),
-    // studentTag removed — Tag model not in schema
-          where: { studentId: id },
-          include: { tag: { select: { id: true, name: true, color: true } } },
-        }),
         db.sessionLog.findMany({
           where: { studentId: id },
           orderBy: [{ loginAt: "desc" }],
