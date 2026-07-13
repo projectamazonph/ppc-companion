@@ -73,13 +73,13 @@ async function main() {
   console.log("\nCreating cohorts...");
   const cohortRecords: Record<string, any> = {};
   const cohortsData = [
-    { name: "Spring 2026", desc: "Currently in progress", start: "2026-03-01", end: "2026-06-30", status: "ACTIVE" as const, max: 30 },
-    { name: "Winter 2025", desc: "Completed cohort", start: "2025-01-01", end: "2025-04-30", status: "COMPLETED" as const, max: 25 },
-    { name: "Summer 2026", desc: "Planned cohort", start: "2026-06-15", end: "2026-09-15", status: "PLANNED" as const, max: 40 },
+    { code: "batch-2026-spring", name: "Spring 2026", desc: "Currently in progress", start: "2026-03-01", end: "2026-06-30", status: "ACTIVE" as const, max: 30 },
+    { code: "batch-2025-winter", name: "Winter 2025", desc: "Completed cohort", start: "2025-01-01", end: "2025-04-30", status: "COMPLETED" as const, max: 25 },
+    { code: "batch-2026-summer", name: "Summer 2026", desc: "Planned cohort", start: "2026-06-15", end: "2026-09-15", status: "PLANNED" as const, max: 40 },
   ];
   for (const c of cohortsData) {
     const cohort = await db.cohort.create({
-      data: { name: c.name, description: c.desc, startDate: new Date(c.start), endDate: new Date(c.end), status: c.status, maxStudents: c.max },
+      data: { code: c.code, name: c.name, description: c.desc, startDate: new Date(c.start), endDate: new Date(c.end), status: c.status, maxStudents: c.max },
     });
     cohortRecords[c.name] = cohort;
     console.log(`  ✓ ${cohort.name} (${cohort.status})`);
