@@ -43,14 +43,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    if (!body.code || typeof body.code !== "string") {
+      return NextResponse.json({ error: "code is required" }, { status: 400 });
+    }
     if (!body.name || typeof body.name !== "string") {
       return NextResponse.json({ error: "name is required" }, { status: 400 });
-    }
-
-    // Check uniqueness
-    const existing = await db.cohort.findUnique({ where: { name: body.name } });
-    if (existing) {
-      return NextResponse.json({ error: `Cohort "${body.name}" already exists` }, { status: 409 });
     }
 
     const validStatuses = ["PLANNED", "ACTIVE", "COMPLETED", "CANCELLED"] as const;
@@ -59,6 +56,7 @@ export async function POST(req: NextRequest) {
 
     const cohort = await db.cohort.create({
       data: {
+        code: body.code.trim(),
         name: body.name.trim(),
         description: body.description?.trim() ?? null,
         status,
