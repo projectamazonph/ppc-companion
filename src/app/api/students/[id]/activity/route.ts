@@ -84,7 +84,7 @@ export async function GET(
           where: { studentId: id },
           include: { cohort: { select: { id: true, name: true, status: true } } },
         }),
-        db.studentTag.findMany({
+    // studentTag removed — Tag model not in schema
           where: { studentId: id },
           include: { tag: { select: { id: true, name: true, color: true } } },
         }),
