@@ -43,7 +43,7 @@ export async function GET(
 
 // =============================================================
 // PUT /api/students/[id] — update a student
-//   Body: any subset of { name, email, role, status, cohort, currentPhase, targetAcos, notes }
+//   Body: any subset of { name, email, role, status, cohort, currentPhase, notes }
 //   Requires: ADMIN or INSTRUCTOR
 // =============================================================
 
@@ -90,9 +90,6 @@ export async function PUT(
 
     if (typeof body.currentPhase === "number" && body.currentPhase >= 1 && body.currentPhase <= 4) {
       data.currentPhase = body.currentPhase;
-    }
-    if (typeof body.targetAcos === "number" && body.targetAcos > 0 && body.targetAcos <= 100) {
-      data.targetAcos = body.targetAcos;
     }
 
     const student = await db.student.update({
