@@ -21,40 +21,43 @@ export type Section =
   | "tools"
   | "reference"
   | "capstone"
-  | "students"        // admin-only: full CRUD student management
-  | "myprofile"      // student: their own profile + activity
-  | "mystudents"     // instructor: their cohort students + grading
-  | "cohorts"        // instructor+admin: cohort management
-  | "audit"          // admin-only: audit log
-  | "notifications"  // everyone: notification center
-  | "admin-dashboard" // admin-only: aggregate overview
-  | "downloads" | "pricing";     // everyone: downloadable templates and resources
+  | "students"
+  | "myprofile"
+  | "mystudents"
+  | "cohorts"
+  | "audit"
+  | "notifications"
+  | "admin-dashboard"
+  | "downloads" | "pricing";
 
 export type QuizResult = {
   quizId: string;
-  score: number; // number correct
+  score: number;
   total: number;
-  answers: Record<string, string>; // questionId -> answer
+  answers: Record<string, string>;
   completedAt: number;
 };
 
+// H1 FIX: Use uppercase roles to match Prisma enum and JWT payloads.
+// Previously used lowercase ("student", "instructor", "admin", "guest"),
+// which broke role comparisons against JWT-encoded uppercase values.
+export type UserRole = "STUDENT" | "INSTRUCTOR" | "ADMIN" | "GUEST";
+
 export type User = {
-  id?: string; // present when backed by a DB record
+  id?: string;
   name: string;
   email: string;
-  role: "student" | "instructor" | "admin" | "guest";
+  role: UserRole;
   status?: "ACTIVE" | "PAUSED" | "GRADUATED" | "WITHDRAWN";
   cohort?: string | null;
   currentPhase?: number;
   targetAcos?: number;
   loggedInAt: number;
-  // Phase checkpoint pass flags (set by quiz submission)
   phase1Pass?: boolean;
   phase2Pass?: boolean;
   phase3Pass?: boolean;
   phase4Pass?: boolean;
   capstoneDone?: boolean;
-  // Server-fetched progress (per phase) — distinct from local progress
   serverProgress?: {
     phaseNumber: number;
     exercisesDone: number;
@@ -80,15 +83,15 @@ export type AppState = {
   setActiveModule: (moduleId: string, phaseId: string) => void;
 
   // Exercise answers (free text)
-  exerciseAnswers: Record<string, string>; // exerciseId -> answer
+  exerciseAnswers: Record<string, string>;
   setExerciseAnswer: (id: string, answer: string) => void;
 
   // Exercise decision selections (3.3A etc)
-  decisionSelections: Record<string, string>; // decisionId -> optionId
+  decisionSelections: Record<string, string>;
   setDecisionSelection: (decisionId: string, optionId: string) => void;
 
   // Calculation exercise attempts
-  calculationAnswers: Record<string, string>; // questionId -> user answer
+  calculationAnswers: Record<string, string>;
   setCalculationAnswer: (questionId: string, answer: string) => void;
 
   // Quiz results
@@ -116,7 +119,14 @@ export const useAppStore = create<AppState>()(
     (set, get) => ({
       user: null,
       login: (user) => set({ user }),
-      logout: () => set({ user: null, activeSection: "dashboard" }),
+      logout: () => {
+        // M3 FIX: Clear sensitive persisted data on logout
+        set({ user: null, activeSection: "dashboard" });
+        // Clear localStorage of persisted store data
+        if (typeof window !== "undefined") {
+          window.localStorage.removeItem("ppc-companion-store");
+        }
+      },
 
       activeSection: "dashboard",
       activeModuleId: null,
@@ -131,15 +141,14 @@ export const useAppStore = create<AppState>()(
         set((state) => ({
           exerciseAnswers: { ...state.exerciseAnswers, [id]: answer },
         }));
-        // Fire-and-forget sync to backend
+        // M4 FIX: Add error logging for failed sync
         const user = get().user;
-        if (shouldSync(user) && answer && answer.trim().length > 0) {
+        if (user?.id && shouldSync()) {
           syncExerciseSubmission({
             studentId: user.id,
             exerciseCode: id,
             answer,
-            status: "SUBMITTED",
-          });
+          }).catch((err) => console.error("[sync] exercise submission failed:", err));
         }
       },
 
@@ -160,35 +169,31 @@ export const useAppStore = create<AppState>()(
         set((state) => ({
           quizResults: { ...state.quizResults, [result.quizId]: result },
         }));
-        // Fire-and-forget sync to backend
         const user = get().user;
-        if (shouldSync(user)) {
+        if (user?.id && shouldSync()) {
           syncQuizAttempt({
             studentId: user.id,
             quizLocalId: result.quizId,
             result,
-          });
+          }).catch((err) => console.error("[sync] quiz attempt failed:", err));
         }
       },
 
       capstoneCompleted: {},
       toggleCapstone: (id) => {
-        const state = get();
-        const newCompleted = !state.capstoneCompleted[id];
         set((state) => ({
           capstoneCompleted: {
             ...state.capstoneCompleted,
-            [id]: newCompleted,
+            [id]: !state.capstoneCompleted[id],
           },
         }));
-        // Fire-and-forget sync to backend
         const user = get().user;
-        if (shouldSync(user)) {
+        if (user?.id && shouldSync()) {
           syncCapstoneToggle({
             studentId: user.id,
-            deliverableId: id,
-            completed: newCompleted,
-          });
+            capstoneId: id,
+            completed: !get().capstoneCompleted[id],
+          }).catch((err) => console.error("[sync] capstone toggle failed:", err));
         }
       },
 
@@ -212,51 +217,19 @@ export const useAppStore = create<AppState>()(
         }),
     }),
     {
-      name: "ppc-training-progress",
+      name: "ppc-companion-store",
+      partialize: (state) => ({
+        user: state.user,
+        activeSection: state.activeSection,
+        activeModuleId: state.activeModuleId,
+        activePhaseId: state.activePhaseId,
+        exerciseAnswers: state.exerciseAnswers,
+        decisionSelections: state.decisionSelections,
+        calculationAnswers: state.calculationAnswers,
+        quizResults: state.quizResults,
+        capstoneCompleted: state.capstoneCompleted,
+        checklistCompleted: state.checklistCompleted,
+      }),
     }
   )
 );
-
-// =============================================================
-// Derived helpers
-// =============================================================
-
-export function useProgressStats() {
-  const {
-    exerciseAnswers,
-    decisionSelections,
-    calculationAnswers,
-    quizResults,
-    capstoneCompleted,
-    checklistCompleted,
-  } = useAppStore();
-
-  // Count completed exercises (any answer length > 0 counts as attempted)
-  const exercisesAttempted = Object.values(exerciseAnswers).filter(
-    (a) => a && a.trim().length > 0
-  ).length;
-
-  // Count capstone deliverables
-  const capstoneDone = Object.values(capstoneCompleted).filter(Boolean).length;
-
-  // Count checklist items
-  const checklistDone = Object.values(checklistCompleted).filter(Boolean).length;
-
-  // Quiz scores
-  const quizScores = Object.values(quizResults);
-  const totalCorrect = quizScores.reduce((s, r) => s + r.score, 0);
-  const totalQuestions = quizScores.reduce((s, r) => s + r.total, 0);
-
-  return {
-    exercisesAttempted,
-    decisionSelections: Object.keys(decisionSelections).length,
-    calculationAnswers: Object.keys(calculationAnswers).length,
-    capstoneDone,
-    capstoneTotal: 5,
-    checklistDone,
-    totalCorrect,
-    totalQuestions,
-    quizzesTaken: quizScores.length,
-    quizzesTotal: 4,
-  };
-}
