@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useAppStore, type Section, useProgressStats } from "@/lib/store";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useAppStore, type Section, useProgressStats, pathToSection, sectionToPath } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -79,8 +81,9 @@ export function Sidebar({
   mobile?: boolean;
   onClose?: () => void;
 }) {
-  const activeSection = useAppStore((s) => s.activeSection);
-  const setSection = useAppStore((s) => s.setSection);
+  const pathname = usePathname();
+  // Active section is derived from URL — see app-shell.tsx for rationale.
+  const activeSection = pathToSection(pathname);
   const user = useAppStore((s) => s.user);
   const stats = useProgressStats();
   const [collapsed, setCollapsed] = useState(false);
@@ -91,7 +94,9 @@ export function Sidebar({
   const adminItems = visibleItems.filter((item) => item.group === "admin");
 
   const handleNav = (id: Section) => {
-    setSection(id);
+    // No need to call setSection — the URL change triggers a re-render and
+    // activeSection is re-derived from the new pathname. We just close mobile
+    // menus on navigation.
     onNavigate?.();
   };
 
@@ -359,7 +364,8 @@ function NavButton({
   const Icon = item.icon;
 
   const buttonContent = (
-    <button
+    <Link
+      href={sectionToPath(item.id)}
       onClick={onClick}
       className={cn(
         "group relative flex w-full items-center rounded-lg text-left transition-all duration-150",
@@ -416,7 +422,7 @@ function NavButton({
           {stats.quizzesTaken}/4
         </Badge>
       )}
-    </button>
+    </Link>
   );
 
   if (collapsed) {

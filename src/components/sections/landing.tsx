@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAppStore, type User } from "@/lib/store";
+import { useAppStore, type User, normalizeRole } from "@/lib/store";
 import { programOverview, phases } from "@/lib/course-data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -156,8 +157,9 @@ const floatingIcons = [
 // =============================================================
 
 export function LandingPage() {
-  const login = useAppStore((s) => s.login);
-  const { toast } = useToast();
+const router = useRouter();
+const login = useAppStore((s) => s.login);
+const { toast } = useToast();
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -226,7 +228,7 @@ export function LandingPage() {
         throw new Error(data.error || "Authentication failed");
       }
 
-      const dbRole = (data.user.role ?? "STUDENT").toLowerCase() as User["role"];
+      const dbRole = normalizeRole(data.user.role);
       const dbStatus = data.user.status as User["status"];
 
       const user: User = {
@@ -257,6 +259,9 @@ export function LandingPage() {
               : `Signed in as ${dbRole}. ${user.cohort ? `Cohort: ${user.cohort}.` : ""}`
             : "Your training journey begins now. Start with Phase 1.",
       });
+      // Hand off to the dashboard route. The (app) layout's auth guard
+      // sees the populated Zustand user and renders the AppShell chrome.
+      router.push("/dashboard");
     } catch (err: any) {
       toast({
         title: authMode === "login" ? "Sign in failed" : "Sign up failed",
@@ -280,6 +285,9 @@ export function LandingPage() {
       title: "Viewing as guest",
       description: "Your progress will be saved on your local device.",
     });
+    // Navigate to the dashboard so the user lands inside the AppShell rather
+    // than staying on the marketing page after pressing the guest button.
+    router.push("/dashboard");
   };
 
   return (

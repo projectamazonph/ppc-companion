@@ -38,10 +38,23 @@ export type QuizResult = {
   completedAt: number;
 };
 
-// H1 FIX: Use uppercase roles to match Prisma enum and JWT payloads.
-// Previously used lowercase ("student", "instructor", "admin", "guest"),
-// which broke role comparisons against JWT-encoded uppercase values.
-export type UserRole = "STUDENT" | "INSTRUCTOR" | "ADMIN" | "GUEST";
+// Role identifiers — lowercase canonical, kept consistent across UI and store.
+// The Prisma schema (DB) and JWT payloads may use uppercase; we normalize on
+// hydration via `normalizeRole()`.
+export type UserRole = "student" | "instructor" | "admin" | "guest";
+
+/**
+ * Normalize role strings from any source (DB, JWT, legacy localStorage) into
+ * the canonical lowercase form. Tolerates "GUEST", "guest", " Guest ", etc.
+ */
+export function normalizeRole(raw: unknown): UserRole {
+  if (typeof raw !== "string") return "guest";
+  const v = raw.trim().toLowerCase();
+  if (v === "admin") return "admin";
+  if (v === "instructor") return "instructor";
+  if (v === "student") return "student";
+  return "guest";
+}
 
 export type User = {
   id?: string;
@@ -235,6 +248,46 @@ export const useAppStore = create<AppState>()(
 );
 
 
+// =============================================================
+// Path ↔ Section mapping (URL routing)
+// =============================================================
+
+/** Map a URL path (e.g. "/curriculum") to the Section enum. */
+export function pathToSection(path: string | null | undefined): Section {
+  if (!path) return "dashboard";
+  const cleaned = path.replace(/^\/+/, "").toLowerCase();
+  // my-profile URL ↔ myprofile enum
+  if (cleaned === "my-profile") return "myprofile";
+  const allowed: Section[] = [
+    "dashboard",
+    "curriculum",
+    "exercises",
+    "quizzes",
+    "tools",
+    "reference",
+    "capstone",
+    "students",
+    "myprofile",
+    "mystudents",
+    "cohorts",
+    "audit",
+    "notifications",
+    "admin-dashboard",
+    "downloads",
+    "pricing",
+  ];
+  return (allowed as string[]).includes(cleaned)
+    ? (cleaned as Section)
+    : "dashboard";
+}
+
+/** Map a Section enum to a URL path. */
+export function sectionToPath(s: Section): string {
+  if (s === "myprofile") return "/my-profile";
+  return `/${s}`;
+}
+
+// =============================================================
 // Derived helpers
 // =============================================================
 export function useProgressStats() {

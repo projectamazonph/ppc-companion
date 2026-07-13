@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Sidebar } from "./sidebar";
-import { useAppStore, useProgressStats } from "@/lib/store";
+import { useAppStore, useProgressStats, pathToSection } from "@/lib/store";
 import {
   Menu,
   Moon,
@@ -70,7 +71,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(() => typeof window !== "undefined");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
-  const activeSection = useAppStore((s) => s.activeSection);
+  const pathname = usePathname();
+  // Derive the active section from the URL — the source of truth is now the
+  // browser address bar, not the Zustand store. This keeps the topbar label
+  // in sync with sidebar highlights even on browser back/forward.
+  const activeSection = pathToSection(pathname);
   const resetProgress = useAppStore((s) => s.resetProgress);
   const user = useAppStore((s) => s.user);
   const logout = useAppStore((s) => s.logout);
