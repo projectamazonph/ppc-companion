@@ -233,3 +233,37 @@ export const useAppStore = create<AppState>()(
     }
   )
 );
+
+
+// Derived helpers
+// =============================================================
+export function useProgressStats() {
+  const {
+    exerciseAnswers,
+    decisionSelections,
+    calculationAnswers,
+    quizResults,
+    capstoneCompleted,
+    checklistCompleted,
+  } = useAppStore();
+  const exercisesAttempted = Object.values(exerciseAnswers).filter(
+    (a) => a && a.trim().length > 0
+  ).length;
+  const capstoneDone = Object.values(capstoneCompleted).filter(Boolean).length;
+  const checklistDone = Object.values(checklistCompleted).filter(Boolean).length;
+  const quizScores = Object.values(quizResults);
+  const totalCorrect = quizScores.reduce((s, r) => s + r.score, 0);
+  const totalQuestions = quizScores.reduce((s, r) => s + r.total, 0);
+  return {
+    exercisesAttempted,
+    decisionSelections: Object.keys(decisionSelections).length,
+    calculationAnswers: Object.keys(calculationAnswers).length,
+    capstoneDone,
+    capstoneTotal: 5,
+    checklistDone,
+    totalCorrect,
+    totalQuestions,
+    quizzesTaken: quizScores.length,
+    quizzesTotal: 4,
+  };
+}
