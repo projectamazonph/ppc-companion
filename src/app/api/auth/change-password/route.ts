@@ -20,9 +20,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (newPassword.length < 6) {
+    // H2 FIX: Password minimum raised from 6 to 8 characters
+    if (newPassword.length < 8) {
       return NextResponse.json(
-        { error: "New password must be at least 6 characters" },
+        { error: "New password must be at least 8 characters" },
         { status: 400 }
       );
     }
@@ -66,10 +67,13 @@ export async function POST(req: NextRequest) {
       success: true,
       message: "Password changed successfully",
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("[POST /api/auth/change-password] error:", e);
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "Failed to change password" }, { status: 500 });
+    }
     return NextResponse.json(
-      { error: "Failed to change password", detail: e.message },
+      { error: "Failed to change password", detail: e instanceof Error ? e.message : String(e) },
       { status: 500 }
     );
   }
