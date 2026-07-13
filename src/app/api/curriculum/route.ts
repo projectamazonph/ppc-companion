@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
         id: m.id,
         code: m.code,
         title: m.title,
-        locked: !TRIAL_MODULE_IDS.includes(m.id),
+        locked: !(TRIAL_MODULE_IDS as readonly string[]).includes(m.id),
       })),
     }));
     return NextResponse.json({ phases: trialPhases, trialMode: true });
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
         id: m.id,
         code: m.code,
         title: m.title,
-        locked: !TRIAL_MODULE_IDS.includes(m.id),
+        locked: !(TRIAL_MODULE_IDS as readonly string[]).includes(m.id),
       })),
     }));
     return NextResponse.json({ phases: trialPhases, trialMode: true });
