@@ -1,0 +1,20 @@
+{
+  "acceptance_criteria": [
+    "normalizeRole normalizes uppercase GUEST to lowercase guest",
+    "pathToSection maps /dashboard to dashboard enum",
+    "pathToSection maps /my-profile to myprofile enum",
+    "sectionToPath maps myprofile to /my-profile URL",
+    "sectionToPath maps dashboard to /dashboard URL",
+    "All tests pass via vitest run"
+  ],
+  "max_iterations": 6,
+  "mode": "feature",
+  "objective": "Verify routing helpers and role normalization for the dashboard navigation fix",
+  "schema_version": 1,
+  "stop_conditions": {
+    "full_verification_required": true,
+    "max_identical_failures": 3,
+    "stop_on_blocker": true
+  },
+  "test_command": "npx vitest run src/lib/__tests__/store.test.ts"
+}
