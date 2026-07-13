@@ -102,72 +102,12 @@ async function main() {
   // ----------------------------------------------------------------
   console.log("\nCreating modules, exercises, and quizzes from course data...");
 
+  // Modules, exercises, and quizzes are NOT seeded here.
+  // Module requires a Phase record (phaseId relation), but Phase is not seeded.
+  // To seed curriculum: (1) seed Phase records, (2) run seed-modules.ts separately.
+  console.log("\nModules/exercises/quizzes: skipped (Phase not seeded)")
   for (const phase of phases) {
-    console.log(`  Phase ${phase.number}: ${phase.title}`);
-
-    for (const mod of phase.modules) {
-      // Create module
-      const moduleItem = await db.module.create({
-        data: {
-          code: mod.code,
-          title: mod.title,
-          order: parseInt(mod.code.split(".")[1], 10),
-          description: mod.content?.[0]?.body?.slice(0, 200) ?? null,
-        },
-      });
-
-      // Create exercises for this module
-      if (mod.exercises) {
-        for (let i = 0; i < mod.exercises.length; i++) {
-          const ex = mod.exercises[i];
-          await db.exercise.create({
-            data: {
-              moduleId: moduleItem.id,
-              code: ex.id,
-              title: ex.title,
-              prompt: ex.prompt,
-              type: ex.type === "open" ? "OPEN" : ex.type === "calculation" ? "CALCULATION" : ex.type === "decision" ? "DECISION" : "OPEN",
-              order: i + 1,
-            },
-          });
-        }
-      }
-
-      console.log(`    ✓ Module ${mod.code}: ${mod.title} (${mod.exercises?.length ?? 0} exercises)`);
-    }
-
-    // Create checkpoint quiz for this phase
-    if (phase.checkpoint) {
-      const quiz = phase.checkpoint;
-      const phaseModule = null; // Phase/Module seeding needed first
-
-      if (phaseModule) {
-        const createdQuiz = await db.quiz.create({
-          data: {
-            moduleId: phaseModule.id,
-            title: quiz.title,
-            passingScore: 60,
-          },
-        });
-
-        for (let i = 0; i < quiz.questions.length; i++) {
-          const q = quiz.questions[i];
-          await db.quizQuestion.create({
-            data: {
-              quizId: createdQuiz.id,
-              text: q.question,
-              type: q.type === "mcq" ? "MCQ" : q.type === "numeric" ? "NUMERIC" : "OPEN",
-              options: q.options ? JSON.stringify(q.options.map(o => ({ id: o.id, label: o.label, correct: o.correct ?? false }))) : null,
-              modelAnswer: q.modelAnswer ?? null,
-              explanation: q.explanation ?? null,
-              points: 20,
-              order: i + 1,
-            },
-          });
-        }
-        console.log(`    ✓ Quiz: ${quiz.title} (${quiz.questions.length} questions)`);
-      }
-    }
+    console.log(`  Phase ${phase.number}: ${phase.title} — not seeded`);
   }
 
   // ----------------------------------------------------------------
