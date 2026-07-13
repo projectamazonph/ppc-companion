@@ -228,7 +228,7 @@ export async function logAction(opts: {
   changes?: any;
   ipAddress?: string;
 }) {
-  return db.auditLog.create({
+  return db.auditEntry.create({
     data: {
       actorId: opts.actorId ?? null,
       action: opts.action,
