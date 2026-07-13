@@ -111,7 +111,6 @@ async function main() {
         data: {
           code: mod.code,
           title: mod.title,
-          phaseNumber: phase.number,
           order: parseInt(mod.code.split(".")[1], 10),
           description: mod.content?.[0]?.body?.slice(0, 200) ?? null,
         },
@@ -163,7 +162,7 @@ async function main() {
           await db.quizQuestion.create({
             data: {
               quizId: createdQuiz.id,
-              question: q.question,
+              text: q.question,
               type: q.type === "mcq" ? "MCQ" : q.type === "numeric" ? "NUMERIC" : "OPEN",
               options: q.options ? JSON.stringify(q.options.map(o => ({ id: o.id, label: o.label, correct: o.correct ?? false }))) : null,
               modelAnswer: q.modelAnswer ?? null,
@@ -190,8 +189,6 @@ async function main() {
         studentId: student.id,
         title: `${student.name}'s Capstone`,
         status: s.currentPhase >= 4 ? "IN_PROGRESS" : "NOT_STARTED",
-        targetAcos: TARGET_ACOS,
-        targetTacos: 15,
       },
     });
   }
@@ -217,7 +214,7 @@ async function main() {
       { type: "SUCCESS" as const, title: "Phase 1 Ready", message: `Phase 1: Foundations is ready for you. Complete 3 exercises and the checkpoint quiz.`, link: "/curriculum" },
     ];
     for (const n of notifications) {
-      await db.notification.create({ data: { studentId: student.id, type: n.type, title: n.title, message: n.message, link: n.link } });
+      await db.notification.create({ data: { studentId: student.id, type: n.type, title: n.title, message: n.message, actionUrl: n.link, read: false } });
     }
   }
   console.log(`  ✓ Welcome notifications created`);
