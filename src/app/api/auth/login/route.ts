@@ -36,21 +36,18 @@ export async function POST(req: NextRequest) {
       include: { progress: { orderBy: { phaseNumber: "asc" } } },
     });
 
+    // Generic error message to prevent user enumeration (C2)
+    const genericAuthError = "Invalid email or password. Please try again.";
+
     if (!student) {
-      return NextResponse.json(
-        { error: `No account found for "${body.email}". Try signing up instead.` },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: genericAuthError }, { status: 401 });
     }
 
     // Compare password using bcrypt
     const passwordValid = await bcrypt.compare(body.password, student.password);
 
     if (!passwordValid) {
-      return NextResponse.json(
-        { error: "Incorrect password. Please try again." },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: genericAuthError }, { status: 401 });
     }
 
     if (student.status === "WITHDRAWN") {
@@ -108,8 +105,15 @@ export async function POST(req: NextRequest) {
     });
 
     return response;
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("[POST /api/auth/login] error:", e);
-    return NextResponse.json({ error: "Login failed", detail: e.message }, { status: 500 });
+    // C3: Only expose error detail in development
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "Login failed. Please try again." }, { status: 500 });
+    }
+    return NextResponse.json({
+      error: "Login failed",
+      detail: e instanceof Error ? e.message : String(e),
+    }, { status: 500 });
   }
 }

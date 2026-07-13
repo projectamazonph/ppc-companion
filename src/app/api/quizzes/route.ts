@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const moduleId = searchParams.get("moduleId");
     const withQuestions = searchParams.get("withQuestions") === "true";
 
-    const where: any = {};
+    const where: Record<string, string> = {};
     if (moduleId) where.moduleId = moduleId;
 
     const quizzes = await db.quiz.findMany({
@@ -25,9 +25,12 @@ export async function GET(req: NextRequest) {
     });
 
     return NextResponse.json({ count: quizzes.length, quizzes });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("[GET /api/quizzes] error:", e);
-    return NextResponse.json({ error: "Failed to list quizzes", detail: e.message }, { status: 500 });
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "Failed to list quizzes" }, { status: 500 });
+    }
+    return NextResponse.json({ error: "Failed to list quizzes", detail: e instanceof Error ? e.message : String(e) }, { status: 500 });
   }
 }
 
@@ -133,8 +136,11 @@ export async function POST(req: NextRequest) {
       phaseUnlocked: passed && phaseNumber < 4 ? phaseNumber + 1 : null,
       results,
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("[POST /api/quizzes] error:", e);
-    return NextResponse.json({ error: "Failed to submit quiz", detail: e.message }, { status: 500 });
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "Failed to submit quiz" }, { status: 500 });
+    }
+    return NextResponse.json({ error: "Failed to submit quiz", detail: e instanceof Error ? e.message : String(e) }, { status: 500 });
   }
 }

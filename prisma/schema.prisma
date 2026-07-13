@@ -111,7 +111,9 @@ model Student {
   id            String        @id @default(cuid())
   email         String        @unique
   name          String
-  password      String        @default("ppcdemo123") // demo only — hash in production
+  // H6 FIX: No default password. All code paths must explicitly set and hash.
+  // Seed scripts should use bcrypt.hash("chosen-password", 12).
+  password      String
   role          Role          @default(STUDENT)
 
   // Lifecycle
@@ -153,46 +155,44 @@ model Student {
   quizAttempts  QuizAttempt[]
   capstones     CapstoneProject[]
   notifications Notification[]
-  comments      Comment[]      // comments authored by this student
-  tagsAssigned  StudentTag[]
+  comments      Comment[]       // comments authored by this student
+  ta            AuditEntry[]    @relation("AuditActor")
+  targetOfAudit AuditEntry[]    @relation("AuditTarget")
   sessions      SessionLog[]
-  auditLogs     AuditLog[]
-  cohortsLed    Cohort[]       @relation("CohortInstructor") // cohorts where this student is the instructor
 
+  @@index([email])
   @@index([role])
   @@index([status])
   @@index([cohort])
   @@index([deletedAt])
-  @@index([lastLoginAt])
 }
 
 // ============================================================================
-// COHORT + ENROLLMENT  (proper M2M between students and cohorts)
+// COHORTS
 // ============================================================================
 
 model Cohort {
-  id          String         @id @default(cuid())
-  name        String         @unique // e.g. "Spring 2026"
+  id          String        @id @default(cuid())
+  code        String        @unique // e.g. "batch-2026-q1"
+  name        String
   description String?
+  status      CohortStatus  @default(PLANNED)
   startDate   DateTime?
   endDate     DateTime?
-  status      CohortStatus   @default(PLANNED)
-  maxStudents Int?           // null = unlimited
-  metadata    String?        // JSON string for future expansion
-
-  // Lead instructor for this cohort
-  instructorId String?
-  instructor   Student?      @relation("CohortInstructor", fields: [instructorId], references: [id], onDelete: SetNull)
+  maxStudents Int           @default(50)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
 
   enrollments Enrollment[]
 
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-
+  @@index([code])
   @@index([status])
-  @@index([instructorId])
-  @@index([startDate])
 }
+
+// ============================================================================
+// ENROLLMENTS (many-to-many: Student <-> Cohort with status)
+// ============================================================================
 
 model Enrollment {
   id          String           @id @default(cuid())
@@ -202,322 +202,297 @@ model Enrollment {
   enrolledAt  DateTime         @default(now())
   completedAt DateTime?
   droppedAt   DateTime?
-  notes       String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 
-  student     Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  cohort      Cohort    @relation(fields: [cohortId], references: [id], onDelete: Restrict)
+  student     Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  cohort      Cohort           @relation(fields: [cohortId], references: [id], onDelete: Restrict)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@unique([studentId, cohortId]) // a student can only enroll once per cohort
+  @@unique([studentId, cohortId])
   @@index([studentId])
   @@index([cohortId])
   @@index([status])
 }
 
 // ============================================================================
-// CURRICULUM  (structured course content — replaces hardcoded course-data.ts)
+// CURRICULUM
 // ============================================================================
+
+model Phase {
+  id          String   @id @default(cuid())
+  number      Int      @unique // 1-4
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  modules     Module[]
+  quizzes     Quiz[]
+
+  @@index([number])
+}
 
 model Module {
-  id           String     @id @default(cuid())
-  code         String     @unique // e.g. "1.1", "2.3"
-  title        String
-  description  String?
-  phaseNumber  Int        // 1-4
-  order        Int        // display order within phase
-  durationMin  Int?       // estimated minutes
-  isPublished  Boolean    @default(true)
+  id          String   @id @default(cuid())
+  phaseId     String
+  code        String   @unique // e.g. "1.1", "2.3"
+  title       String
+  objective   String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  exercises    Exercise[]
-  quiz         Quiz?
+  phase       Phase    @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  exercises   Exercise[]
+  quizzes     Quiz[]
+  progress    ProgressEntry[]
 
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-
-  @@index([phaseNumber])
+  @@index([phaseId])
+  @@index([code])
   @@index([order])
-  @@index([isPublished])
 }
+
+// ============================================================================
+// EXERCISES
+// ============================================================================
 
 model Exercise {
-  id           String        @id @default(cuid())
-  moduleId     String
-  code         String        @unique // e.g. "1.1A", "3.3A"
-  title        String
-  prompt       String
-  type         ExerciseType
-  placeholder  String?
-  config       String?       // JSON: questions for CALCULATION, decisions for DECISION
-  modelAnswer  String?
-  order        Int           @default(0)
+  id          String       @id @default(cuid())
+  moduleId    String
+  code        String       @unique // e.g. "1.1A"
+  title       String
+  description String?
+  type        ExerciseType @default(OPEN)
+  content     String?      // JSON: exercise body
+  modelAnswer String?      // JSON: correct answer(s)
+  options     String?      // JSON: for DECISION type
+  explanation String?      // JSON: explanation after grading
+  order       Int          @default(0)
+  points      Int          @default(1)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
-  module       Module        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  submissions  ExerciseSubmission[]
-
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  module      Module       @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  submissions ExerciseSubmission[]
 
   @@index([moduleId])
-  @@index([type])
-}
-
-model Quiz {
-  id           String         @id @default(cuid())
-  moduleId     String         @unique // 1-to-1 with the final module of each phase
-  title        String
-  description  String?
-  passingScore Float          @default(60) // percentage
-  timeLimitMin Int?
-
-  module       Module         @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  questions    QuizQuestion[]
-  attempts     QuizAttempt[]
-
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-}
-
-model QuizQuestion {
-  id            String          @id @default(cuid())
-  quizId        String
-  question      String
-  type          QuizQuestionType
-  options       String?         // JSON array of {id, label, correct?, explanation?}
-  modelAnswer   String?
-  acceptableAnswers String?     // JSON array of acceptable numeric answers
-  explanation   String?
-  points        Int             @default(1)
-  order         Int             @default(0)
-
-  quiz          Quiz            @relation(fields: [quizId], references: [id], onDelete: Cascade)
-
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-
-  @@index([quizId])
-  @@index([order])
-}
-
-// ============================================================================
-// PROGRESS TRACKING  (per-student, per-phase summary + detailed submissions)
-// ============================================================================
-
-model ProgressEntry {
-  id              String   @id @default(cuid())
-  studentId       String
-  phaseNumber     Int      // 1, 2, 3, 4
-  exercisesDone   Int      @default(0)
-  exercisesTotal  Int      @default(0)
-  quizScore       Int?     // null = not taken; latest attempt's score
-  quizTotal       Int      @default(0)
-  capstoneDone    Boolean  @default(false)
-  notes           String?
-
-  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@unique([studentId, phaseNumber])
-  @@index([studentId])
-  @@index([phaseNumber])
+  @@index([code])
 }
 
 model ExerciseSubmission {
   id          String           @id @default(cuid())
   studentId   String
   exerciseId  String
-  answer      String           // the student's submitted answer
+  answer      String?          // JSON
   status      SubmissionStatus @default(DRAFT)
-  score       Float?           // for auto-gradable types
-  feedback    String?          // instructor feedback
-  gradedBy    String?          // instructor studentId
+  score       Float?
+  feedback    String?
+  submittedAt DateTime?
   gradedAt    DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  deletedAt   DateTime?
 
-  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  exercise    Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  student     Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  exercise    Exercise         @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  comments    Comment[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
+  @@unique([studentId, exerciseId])
   @@index([studentId])
   @@index([exerciseId])
   @@index([status])
-  @@index([studentId, exerciseId])
+}
+
+// ============================================================================
+// QUIZZES
+// ============================================================================
+
+model Quiz {
+  id           String   @id @default(cuid())
+  moduleId     String
+  title        String
+  description  String?
+  passingScore Int      @default(70)
+  timeLimitMin Int?     // null = untimed
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  module       Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  questions    QuizQuestion[]
+  attempts     QuizAttempt[]
+  phases       Phase[]
+
+  @@index([moduleId])
+}
+
+model QuizQuestion {
+  id               String           @id @default(cuid())
+  quizId           String
+  text             String
+  type             QuizQuestionType @default(MCQ)
+  options          String?          // JSON: for MCQ
+  modelAnswer      String?
+  acceptableAnswers String?          // JSON: for NUMERIC
+  explanation      String?
+  order            Int              @default(0)
+  points           Int              @default(1)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  quiz             Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@index([quizId])
 }
 
 model QuizAttempt {
-  id           String    @id @default(cuid())
-  studentId    String
-  quizId       String
-  score        Int       // number correct
-  total        Int       // total questions
-  percentage   Float     // score / total * 100
-  passed       Boolean
-  answers      String    // JSON: {questionId: answer}
-  durationSec  Int?
+  id          String   @id @default(cuid())
+  studentId   String
+  quizId      String
+  score       Int
+  total       Int
+  percentage  Int
+  passed      Boolean
+  answers     String?  // JSON
+  durationSec Int?
+  completedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  student      Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  quiz         Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
-
-  createdAt    DateTime  @default(now())
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
   @@index([studentId])
   @@index([quizId])
   @@index([passed])
-  @@index([createdAt])
 }
 
 // ============================================================================
-// CAPSTONE PROJECT  (final deliverables per student)
+// PROGRESS TRACKING
+// ============================================================================
+
+model ProgressEntry {
+  id            String   @id @default(cuid())
+  studentId     String
+  moduleId      String
+  phaseNumber   Int
+  exercisesDone Int      @default(0)
+  exercisesTotal Int     @default(0)
+  completedAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  student       Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  module        Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, moduleId])
+  @@index([studentId])
+  @@index([moduleId])
+  @@index([phaseNumber])
+}
+
+// ============================================================================
+// CAPSTONE PROJECTS
 // ============================================================================
 
 model CapstoneProject {
-  id            String          @id @default(cuid())
-  studentId     String
-  title         String?
-  productBrief  String?
-  targetAcos    Float?
-  targetTacos   Float?
+  id          String        @id @default(cuid())
+  studentId   String
+  title       String
+  description String?
+  status      CapstoneStatus @default(NOT_STARTED)
+  deliverables String?      // JSON
+  submittedAt DateTime?
+  reviewedAt  DateTime?
+  feedback    String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
 
-  // 5 deliverables tracked as booleans + their content
-  keywordResearch   String?     // deliverable 1: 50-100 keywords (JSON or text)
-  campaignBlueprint String?     // deliverable 2: campaign structure (JSON)
-  launchPlan        String?     // deliverable 3: 30-day plan (text)
-  optimizationReport String?    // deliverable 4: dummy data analysis (text)
-  presentationUrl   String?     // deliverable 5: slides link
-
-  status        CapstoneStatus  @default(NOT_STARTED)
-  submittedAt   DateTime?
-  reviewedBy    String?         // instructor studentId
-  reviewedAt    DateTime?
-  reviewNotes   String?
-  grade         String?         // A, B, C, etc.
-
-  student       Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  student     Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@index([studentId])
   @@index([status])
 }
 
 // ============================================================================
-// NOTIFICATIONS  (in-app notification center)
+// NOTIFICATIONS
 // ============================================================================
 
 model Notification {
-  id         String           @id @default(cuid())
-  studentId  String
-  type       NotificationType  @default(INFO)
-  title      String
-  message    String
-  link       String?           // URL to navigate to
-  readAt     DateTime?         // null = unread
+  id        String           @id @default(cuid())
+  studentId String
+  title     String
+  message   String?
+  type      NotificationType @default(INFO)
+  read      Boolean          @default(false)
+  actionUrl String?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 
-  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
-
-  createdAt  DateTime @default(now())
+  student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@index([studentId])
-  @@index([readAt])
+  @@index([read])
+  @@index([type])
+}
+
+// ============================================================================
+// COMMENTS (on exercise submissions)
+// ============================================================================
+
+model Comment {
+  id            String   @id @default(cuid())
+  authorId      String
+  submissionId  String
+  content       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  deletedAt     DateTime?
+
+  author        Student  @relation("AuditActor", fields: [authorId], references: [id], onDelete: Cascade)
+  submission    ExerciseSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([authorId])
+  @@index([submissionId])
+}
+
+// ============================================================================
+// AUDIT LOG
+// ============================================================================
+
+model AuditEntry {
+  id         String     @id @default(cuid())
+  actorId    String?
+  action     AuditAction
+  entityType String
+  entityId   String?
+  summary    String?
+  details    String?    // JSON
+  ipAddress  String?
+  createdAt  DateTime   @default(now())
+
+  actor      Student?   @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  target     Student?   @relation("AuditTarget", fields: [entityId], references: [id], onDelete: SetNull)
+
+  @@index([actorId])
+  @@index([entityType, entityId])
+  @@index([action])
   @@index([createdAt])
 }
 
 // ============================================================================
-// COMMENTS  (instructor feedback on submissions / capstones)
-// ============================================================================
-
-model Comment {
-  id           String   @id @default(cuid())
-  authorId     String
-  targetType   String   // "exercise_submission" | "capstone" | "student"
-  targetId     String   // polymorphic FK
-  body         String
-
-  author       Student  @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  @@index([authorId])
-  @@index([targetType, targetId])
-}
-
-// ============================================================================
-// TAGS  (flexible labeling system — "needs help", "fast learner", etc.)
-// ============================================================================
-
-model Tag {
-  id          String       @id @default(cuid())
-  name        String       @unique
-  color       String       @default("amber") // tailwind color name
-  description String?
-
-  students    StudentTag[]
-
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-}
-
-model StudentTag {
-  id         String   @id @default(cuid())
-  studentId  String
-  tagId      String
-  note       String?
-  assignedBy String?  // instructor studentId
-  assignedAt DateTime @default(now())
-
-  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-  @@unique([studentId, tagId])
-  @@index([studentId])
-  @@index([tagId])
-}
-
-// ============================================================================
-// SESSION LOG  (login history + device tracking)
+// SESSION LOG
 // ============================================================================
 
 model SessionLog {
-  id           String   @id @default(cuid())
-  studentId    String
-  userAgent    String?
-  ipAddress    String?
-  loginAt      DateTime @default(now())
-  logoutAt     DateTime?
-  durationSec  Int?
+  id        String   @id @default(cuid())
+  studentId String
+  userAgent String?
+  ipAddress String?
+  createdAt DateTime @default(now())
 
-  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@index([studentId])
-  @@index([loginAt])
-}
-
-// ============================================================================
-// AUDIT LOG  (track admin/instructor actions for compliance)
-// ============================================================================
-
-model AuditLog {
-  id          String      @id @default(cuid())
-  actorId     String?     // null = system action
-  action      AuditAction
-  entityType  String      // "student", "cohort", "submission", etc.
-  entityId    String
-  summary     String      // human-readable: "Deleted student Alex Rivera"
-  changes     String?     // JSON diff of what changed
-  ipAddress   String?
-
-  actor       Student?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
-
-  createdAt   DateTime    @default(now())
-
-  @@index([actorId])
-  @@index([action])
-  @@index([entityType, entityId])
   @@index([createdAt])
 }

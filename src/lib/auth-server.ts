@@ -117,6 +117,6 @@ export function requireRole(
 // --------------------------------------------------------------------------
 // Type guard — check if result is an error response (for TypeScript narrowing)
 // --------------------------------------------------------------------------
-export function isErrorResponse(result: any): result is NextResponse {
+export function isErrorResponse(result: unknown): result is NextResponse {
   return result instanceof NextResponse;
 }
