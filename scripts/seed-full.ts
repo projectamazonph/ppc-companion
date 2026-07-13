@@ -65,8 +65,7 @@ async function main() {
   // Students — no demo accounts. Add students via admin panel or sign-up.
   const studentsData: any[] = [];
   const createdStudents: Record<string, any> = {};
-  let instructor: any = null;
-  let admin: any = null;
+    let admin: any = null;
 
   // ----------------------------------------------------------------
   // Cohorts
@@ -80,7 +79,7 @@ async function main() {
   ];
   for (const c of cohortsData) {
     const cohort = await db.cohort.create({
-      data: { name: c.name, description: c.desc, startDate: new Date(c.start), endDate: new Date(c.end), status: c.status, maxStudents: c.max, instructorId: instructor?.id },
+      data: { name: c.name, description: c.desc, startDate: new Date(c.start), endDate: new Date(c.end), status: c.status, maxStudents: c.max },
     });
     cohortRecords[c.name] = cohort;
     console.log(`  ✓ ${cohort.name} (${cohort.status})`);
