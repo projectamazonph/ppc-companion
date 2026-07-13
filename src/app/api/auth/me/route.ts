@@ -31,10 +31,13 @@ export async function GET(req: NextRequest) {
       user: publicUser(student),
       progress: student.progress,
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("[GET /api/auth/me] error:", e);
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "Failed to fetch session" }, { status: 500 });
+    }
     return NextResponse.json(
-      { error: "Failed to fetch session", detail: e.message },
+      { error: "Failed to fetch session", detail: e instanceof Error ? e.message : String(e) },
       { status: 500 }
     );
   }
