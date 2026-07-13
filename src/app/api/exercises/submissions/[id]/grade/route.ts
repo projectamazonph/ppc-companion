@@ -50,9 +50,15 @@ export async function PUT(
       where: { id },
       data,
       include: {
-        exercise: { select: { id: true, code: true, title: true, type: true, module: { select: { code: true, phaseNumber: true } } } },
+        exercise: { select: { id: true, code: true, title: true, type: true, module: { select: { code: true, title: true, phase: { select: { number: true } } } } } },
       },
-    });
+    }).then((u) => ({
+      ...u,
+      exercise: {
+        ...u.exercise,
+        module: { ...u.exercise.module, phaseNumber: u.exercise.module.phase?.number ?? null },
+      },
+    }));
 
     // Write an audit log entry
     await logAction({

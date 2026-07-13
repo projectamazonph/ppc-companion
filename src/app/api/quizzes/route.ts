@@ -19,10 +19,15 @@ export async function GET(req: NextRequest) {
     const quizzes = await db.quiz.findMany({
       where,
       include: withQuestions
-        ? { questions: { orderBy: { order: "asc" } }, module: { select: { code: true, title: true, phaseNumber: true } } }
-        : { module: { select: { code: true, title: true, phaseNumber: true } } },
+        ? { questions: { orderBy: { order: "asc" } }, module: { select: { code: true, title: true, phase: { select: { number: true } } } } }
+        : { module: { select: { code: true, title: true, phase: { select: { number: true } } } } },
       orderBy: { createdAt: "asc" },
-    });
+    }).then((quizzes) =>
+      quizzes.map((q) => ({
+        ...q,
+        module: { ...q.module, phaseNumber: q.module.phase?.number ?? null },
+      }))
+    );
 
     return NextResponse.json({ count: quizzes.length, quizzes });
   } catch (e: unknown) {
@@ -58,7 +63,7 @@ export async function POST(req: NextRequest) {
     // Fetch quiz with questions
     const quiz = await db.quiz.findUnique({
       where: { id: quizId },
-      include: { questions: { orderBy: { order: "asc" } }, module: { select: { code: true, title: true, phaseNumber: true } } },
+      include: { questions: { orderBy: { order: "asc" } }, module: { select: { code: true, title: true, phase: { select: { number: true } } } } },
     });
 
     if (!quiz) {
@@ -112,7 +117,7 @@ export async function POST(req: NextRequest) {
     });
 
     // If passed, set the corresponding phaseNPass field on the Student record
-    const phaseNumber = quiz.module.phaseNumber;
+    const phaseNumber = quiz.module?.phase?.number ?? 1;
     if (passed && phaseNumber >= 1 && phaseNumber <= 4) {
       const phaseFieldMap: Record<number, string> = {
         1: "phase1Pass",

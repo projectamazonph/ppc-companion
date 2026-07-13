@@ -38,12 +38,20 @@ export async function GET(req: NextRequest) {
       where,
       include: {
         exercise: {
-          select: { id: true, code: true, title: true, type: true, moduleId: true, module: { select: { code: true, title: true, phaseNumber: true } } },
+          select: { id: true, code: true, title: true, type: true, moduleId: true, module: { select: { code: true, title: true, phase: { select: { number: true } } } } },
         },
       },
       orderBy: [{ updatedAt: "desc" }],
       take: 200,
-    });
+    }).then((submissions) =>
+      submissions.map((s) => ({
+        ...s,
+        exercise: {
+          ...s.exercise,
+          module: { ...s.exercise.module, phaseNumber: s.exercise.module.phase?.number ?? null },
+        },
+      }))
+    );
 
     // If "latest" requested, dedupe by exerciseId keeping the most recent
     let result = submissions;

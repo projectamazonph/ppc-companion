@@ -38,12 +38,20 @@ export async function GET(req: NextRequest) {
       where,
       include: {
         quiz: {
-          select: { id: true, title: true, moduleId: true, module: { select: { code: true, title: true, phaseNumber: true } } },
+          select: { id: true, title: true, moduleId: true, module: { select: { code: true, title: true, phase: { select: { number: true } } } } },
         },
       },
       orderBy: [{ createdAt: "desc" }],
       take: 200,
-    });
+    }).then((attempts) =>
+      attempts.map((a) => ({
+        ...a,
+        quiz: {
+          ...a.quiz,
+          module: { ...a.quiz.module, phaseNumber: a.quiz.module.phase?.number ?? null },
+        },
+      }))
+    );
 
     let result = attempts;
     if (best) {
@@ -100,7 +108,7 @@ export async function POST(req: NextRequest) {
     // Verify student + quiz exist
     const [student, quiz] = await Promise.all([
       db.student.findUnique({ where: { id: body.studentId }, select: { id: true, deletedAt: true } }),
-      db.quiz.findUnique({ where: { id: body.quizId }, include: { module: { select: { phaseNumber: true } } } }),
+      db.quiz.findUnique({ where: { id: body.quizId }, include: { module: { select: { phase: { select: { number: true } } } } } }),
     ]);
     if (!student || student.deletedAt) {
       return NextResponse.json({ error: "Student not found or deactivated" }, { status: 404 });
@@ -128,18 +136,18 @@ export async function POST(req: NextRequest) {
     });
 
     // Update ProgressEntry for this phase with the latest score
-    const phaseNumber = quiz.module?.phaseNumber ?? 1;
+    const phaseNumber = quiz.module?.phase?.number ?? 1;
     await db.progressEntry.upsert({
-      where: { studentId_phaseNumber: { studentId: body.studentId, phaseNumber } },
-      create: {
+      where: { studentId_phaseNumber: { studentId: body.studentId, phaseNumber },
+     create: {
         studentId: body.studentId,
         phaseNumber,
         quizScore: body.score,
-        quizTotal: body.total,
-      },
+       quizTotal: body.total,
+     },
       update: {
         quizScore: body.score,
-        quizTotal: body.total,
+        quizOtal: body.total,
       },
     });
 
