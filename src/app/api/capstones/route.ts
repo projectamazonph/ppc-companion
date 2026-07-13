@@ -104,14 +104,8 @@ export async function PUT(req: NextRequest) {
       data,
     });
 
-    // If status changed to APPROVED, update ProgressEntry for phase 4 capstoneDone
-    if (data.status === "APPROVED") {
-      await db.progressEntry.upsert({
-        where: { studentId_phaseNumber: { studentId: body.studentId, phaseNumber: 4 } },
-        create: { studentId: body.studentId, phaseNumber: 4, capstoneDone: true },
-        update: { capstoneDone: true },
-      });
-    }
+    // Note: ProgressEntry requires moduleId — capstoneDone tracking via Phase model needed separately
+    
 
     return NextResponse.json({ capstone: updated });
   } catch (e: any) {
