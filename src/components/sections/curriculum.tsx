@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAppStore } from "@/lib/store";
 import { phases, TRIAL_MODULE_IDS, type Module, type ModuleSection } from "@/lib/course-data";
 import { BrandButton } from "@/components/shared/buttons";
@@ -9,17 +10,18 @@ import {
   ArrowRight,
   BookOpen,
   CheckCircle2,
-  ChevronRight,
   Clock,
+  Download,
+  Eye,
   GraduationCap,
   Layers,
   Lightbulb,
-  ListChecks,
   Lock,
   PenLine,
   PlayCircle,
+  Search,
+  ShieldCheck,
   Sparkles,
-  Target,
 } from "lucide-react";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -34,7 +36,7 @@ function findActiveModule(moduleId: string | null) {
 }
 
 /** Map phase numbers to distinct gradient/color tokens */
-const phaseColorMap: Record<number, { gradient: string; accent: string; ring: string; light: string; badge: string; iconBg: string }> = {
+const phaseColorMap: Record<number, { gradient: string; accent: string; ring: string; light: string; badge: string; iconBg: string; cardBorder: string }> = {
   1: {
     gradient: "from-orange-500 via-orange-600 to-amber-700",
     accent: "text-blue-600 dark:text-blue-400",
@@ -42,6 +44,7 @@ const phaseColorMap: Record<number, { gradient: string; accent: string; ring: st
     light: "bg-blue-50 dark:bg-blue-950/30",
     badge: "bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300 border-orange-200 dark:border-orange-800",
     iconBg: "bg-blue-100 dark:bg-blue-900/50",
+    cardBorder: "hover:border-[var(--color-brand-orange)]/30",
   },
   2: {
     gradient: "from-violet-600 via-purple-700 to-amber-700",
@@ -50,6 +53,7 @@ const phaseColorMap: Record<number, { gradient: string; accent: string; ring: st
     light: "bg-violet-50 dark:bg-violet-950/30",
     badge: "bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300 border-violet-200 dark:border-violet-800",
     iconBg: "bg-violet-100 dark:bg-violet-900/50",
+    cardBorder: "hover:border-violet-500/30",
   },
   3: {
     gradient: "from-amber-500 via-orange-600 to-red-600",
@@ -58,6 +62,7 @@ const phaseColorMap: Record<number, { gradient: string; accent: string; ring: st
     light: "bg-amber-50 dark:bg-amber-950/30",
     badge: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300 border-amber-200 dark:border-amber-800",
     iconBg: "bg-amber-100 dark:bg-amber-900/50",
+    cardBorder: "hover:border-amber-500/30",
   },
   4: {
     gradient: "from-emerald-500 via-teal-600 to-cyan-700",
@@ -66,6 +71,7 @@ const phaseColorMap: Record<number, { gradient: string; accent: string; ring: st
     light: "bg-emerald-50 dark:bg-emerald-950/30",
     badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800",
     iconBg: "bg-emerald-100 dark:bg-emerald-900/50",
+    cardBorder: "hover:border-emerald-500/30",
   },
   5: {
     gradient: "from-rose-500 via-pink-600 to-fuchsia-600",
@@ -74,12 +80,15 @@ const phaseColorMap: Record<number, { gradient: string; accent: string; ring: st
     light: "bg-rose-50 dark:bg-rose-950/30",
     badge: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 border-rose-200 dark:border-rose-800",
     iconBg: "bg-rose-100 dark:bg-rose-900/50",
+    cardBorder: "hover:border-rose-500/30",
   },
 };
 
 function getPhaseColors(num: number) {
   return phaseColorMap[num] ?? phaseColorMap[1];
 }
+
+type FilterTab = "all" | "foundation" | "advanced" | "completed";
 
 // ─── Main Export ─────────────────────────────────────────────────────────────
 
@@ -90,10 +99,9 @@ export function CurriculumSection() {
   const user = useAppStore((s) => s.user);
 
   const isTrial = !user || user.role === "guest";
-
   const activeModule = findActiveModule(activeModuleId);
 
-  // Derive pass status from user object (populated by /api/auth/me or /api/progress)
+  // Derive pass status from user object
   const phasePassMap: Record<number, boolean> = {
     1: user?.phase1Pass ?? false,
     2: user?.phase2Pass ?? false,
@@ -101,7 +109,6 @@ export function CurriculumSection() {
     4: user?.phase4Pass ?? false,
   };
 
-  // Phase N+1 unlocks when phase N has pass=true. Phase 1 is always open.
   function isPhaseUnlocked(phaseNum: number): boolean {
     if (phaseNum === 1) return true;
     return phasePassMap[phaseNum - 1] === true;
@@ -120,210 +127,371 @@ export function CurriculumSection() {
     );
   }
 
-  // Phase overview grid
+  // ── Courses list view (matches stitch structure) ──
+  return <CoursesListView isTrial={isTrial} phasePassMap={phasePassMap} isPhaseUnlocked={isPhaseUnlocked} setActiveModule={setActiveModule} />;
+}
+
+// ─── COURSES LIST VIEW ──────────────────────────────────────────────────────
+
+function CoursesListView({
+  isTrial,
+  phasePassMap,
+  isPhaseUnlocked,
+  setActiveModule,
+}: {
+  isTrial: boolean;
+  phasePassMap: Record<number, boolean>;
+  isPhaseUnlocked: (n: number) => boolean;
+  setActiveModule: (moduleId: string, phaseId: string) => void;
+}) {
+  const [activeFilter, setActiveFilter] = useState<FilterTab>("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Build course cards from phases
+  const courseCards = phases.map((phase) => {
+    const unlocked = isPhaseUnlocked(phase.number);
+    const passed = phasePassMap[phase.number] ?? false;
+    const totalLessons = phase.modules.length;
+    const totalExercises = phase.modules.reduce((sum, m) => sum + (m.exercises?.length ?? 0), 0);
+
+    // Determine status
+    let status: "in_progress" | "locked" | "completed";
+    if (passed) {
+      status = "completed";
+    } else if (!unlocked) {
+      status = "locked";
+    } else {
+      status = "in_progress";
+    }
+
+    // Compute progress percentage from server data or trial hint
+    let progressPct = 0;
+    if (passed) {
+      progressPct = 100;
+    } else if (unlocked) {
+      // Approximate: if user has done any exercises, show some progress
+      progressPct = 10; // placeholder — real progress comes from serverProgress
+    }
+
+    // Determine prerequisite text for locked phases
+    const prerequisitePhase = phase.number > 1 ? phases.find((p) => p.number === phase.number - 1) : null;
+
+    // Category tag
+    const category: "foundation" | "advanced" = phase.number <= 2 ? "foundation" : "advanced";
+
+    return {
+      phase,
+      status,
+      progressPct,
+      totalLessons,
+      totalExercises,
+      prerequisitePhase,
+      category,
+    };
+  });
+
+  // Filter
+  const filtered = courseCards.filter((card) => {
+    if (activeFilter === "completed") return card.status === "completed";
+    if (activeFilter === "foundation") return card.category === "foundation";
+    if (activeFilter === "advanced") return card.category === "advanced";
+    return true; // "all"
+  }).filter((card) => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      card.phase.title.toLowerCase().includes(q) ||
+      card.phase.subtitle.toLowerCase().includes(q)
+    );
+  });
+
   return (
-    <div className="space-y-8 sm:space-y-10">
+    <div className="space-y-6 sm:space-y-8">
       {/* Page header */}
       <div className="space-y-2">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
-          Curriculum
+        <h1 className="text-2xl sm:text-4xl font-black leading-tight tracking-tight">
+          Your Learning Path
         </h1>
         <p className="text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
-          Work through five structured phases to master Amazon PPC — from campaign
-          fundamentals to enterprise-level strategy. Click any module to dive into
-          the full lesson, exercises, and checkpoint.
+          Master Amazon PPC step-by-step to accelerate your VA career.
         </p>
       </div>
 
-      {/* Phase sections */}
-      <div className="space-y-10 sm:space-y-12">
-        {phases.map((phase) => {
-          const colors = getPhaseColors(phase.number);
-          const phaseUnlocked = isPhaseUnlocked(phase.number);
-          return (
-            <section key={phase.id} className="space-y-4 sm:space-y-5">
-              {/* ── Phase header banner ── */}
-              <div
+      {/* Filter bar + search (matches stitch) */}
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        {/* Filter tabs */}
+        <div className="flex gap-2 w-full overflow-x-auto pb-2 sm:pb-0 flex-nowrap sm:flex-wrap">
+          {([
+            { key: "all", label: "All" },
+            { key: "foundation", label: "Foundation" },
+            { key: "advanced", label: "Advanced" },
+            { key: "completed", label: "Completed" },
+          ] as const).map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setActiveFilter(tab.key)}
+              className={cn(
+                "whitespace-nowrap h-9 px-5 rounded-lg text-sm font-medium transition-all flex-shrink-0",
+                activeFilter === tab.key
+                  ? "bg-foreground text-background dark:bg-[var(--color-brand-orange)] dark:text-white"
+                  : "bg-white dark:bg-muted border border-border text-muted-foreground hover:text-foreground hover:border-gray-300 dark:hover:border-gray-600"
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Search */}
+        <div className="hidden md:block relative w-full lg:w-80">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Search courses..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="block w-full pl-10 pr-3 py-2.5 rounded-lg bg-white dark:bg-muted border border-border text-foreground placeholder:text-muted-foreground text-sm focus:ring-2 focus:ring-[var(--color-brand-orange)] focus:border-transparent outline-none"
+          />
+        </div>
+      </div>
+
+      {/* Mobile search */}
+      <div className="md:hidden relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="block w-full pl-9 pr-3 py-2 rounded-lg bg-white dark:bg-muted border-none text-foreground placeholder:text-muted-foreground text-sm shadow-sm ring-1 ring-inset ring-border focus:ring-2 focus:ring-[var(--color-brand-orange)] outline-none"
+        />
+      </div>
+
+      {/* Course card grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        {filtered.map((card) => (
+          <CourseCard
+            key={card.phase.id}
+            card={card}
+            isTrial={isTrial}
+            setActiveModule={setActiveModule}
+            setSection={() => {}}
+          />
+        ))}
+      </div>
+
+      {/* Empty state */}
+      {filtered.length === 0 && (
+        <div className="text-center py-12">
+          <BookOpen className="h-10 w-10 mx-auto text-muted-foreground/40 mb-3" />
+          <p className="text-sm text-muted-foreground">No courses match your filter.</p>
+        </div>
+      )}
+
+      {/* Footer count */}
+      <div className="text-center pb-4">
+        <p className="text-sm text-muted-foreground">
+          Showing {filtered.length} of {phases.length} phases
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── COURSE CARD ────────────────────────────────────────────────────────────
+
+function CourseCard({
+  card,
+  isTrial,
+  setActiveModule,
+  setSection,
+}: {
+  card: {
+    phase: (typeof phases)[number];
+    status: "in_progress" | "locked" | "completed";
+    progressPct: number;
+    totalLessons: number;
+    totalExercises: number;
+    prerequisitePhase: (typeof phases)[number] | undefined;
+  };
+  isTrial: boolean;
+  setActiveModule: (moduleId: string, phaseId: string) => void;
+  setSection: () => void;
+}) {
+  const { phase, status, progressPct, totalLessons, prerequisitePhase } = card;
+  const colors = getPhaseColors(phase.number);
+  const isLocked = status === "locked";
+  const isCompleted = status === "completed";
+
+  // For locked: clicking first unlocked module goes nowhere — show lock
+  // For in_progress/completed: click opens first module of the phase
+  const firstModule = phase.modules[0];
+
+  function handleCardClick() {
+    if (isLocked || isTrial) return;
+    if (firstModule) {
+      setActiveModule(firstModule.id, phase.id);
+    }
+  }
+
+  return (
+    <div
+      className={cn(
+        "group relative flex flex-col rounded-xl shadow-sm border overflow-hidden transition-all duration-300 flex-col h-full",
+        isLocked
+          ? "opacity-80 hover:opacity-100 bg-card border-border"
+          : isCompleted
+            ? "bg-card border-border hover:shadow-lg hover:border-green-500/30"
+            : cn("bg-card border-border hover:shadow-lg", colors.cardBorder),
+        !isLocked && !isCompleted && "hover:shadow-lg"
+      )}
+    >
+      {/* Hover lock overlay for locked cards */}
+      {isLocked && (
+        <div className="absolute inset-0 bg-background/50 dark:bg-black/40 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm rounded-xl">
+          <div className="bg-card p-3 rounded-full shadow-lg mb-2 text-muted-foreground">
+            <Lock className="h-6 w-6" />
+          </div>
+          <p className="text-sm font-bold text-foreground px-6 text-center">
+            {prerequisitePhase
+              ? `Complete "${prerequisitePhase.title}" to unlock`
+              : "Complete the previous phase to unlock"}
+          </p>
+        </div>
+      )}
+
+      {/* Header area with gradient */}
+      <div
+        className={cn(
+          "relative h-32 sm:h-40 w-full overflow-hidden",
+          isLocked && "grayscale group-hover:grayscale-0 transition-all"
+        )}
+      >
+        <div className={cn("absolute inset-0 bg-gradient-to-br", phase.color)} />
+        {/* Decorative elements */}
+        <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
+        <div className="absolute -bottom-4 -left-4 h-20 w-20 rounded-full bg-black/10 blur-xl" />
+
+        {/* Status badge */}
+        <div className="absolute top-3 left-3">
+          {isCompleted ? (
+            <span className="inline-flex items-center gap-1 bg-green-100 dark:bg-green-900/60 backdrop-blur px-2.5 py-1 rounded text-xs font-bold text-green-700 dark:text-green-300 uppercase tracking-wide shadow-sm">
+              <CheckCircle2 className="h-3.5 w-3.5" />
+              Completed
+            </span>
+          ) : isLocked ? (
+            <span className="inline-flex items-center gap-1 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded text-xs font-bold text-gray-500 uppercase tracking-wide shadow-sm">
+              <Lock className="h-3.5 w-3.5" />
+              Locked
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur px-2.5 py-1 rounded text-xs font-bold text-[var(--color-brand-orange)] uppercase tracking-wide shadow-sm">
+              In Progress
+            </span>
+          )}
+        </div>
+
+        {/* Phase number */}
+        <div className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 text-white text-lg font-black backdrop-blur-sm">
+          {phase.number}
+        </div>
+      </div>
+
+      {/* Card body */}
+      <div className="p-4 sm:p-5 flex flex-col flex-grow">
+        {/* Meta: duration + lessons */}
+        <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-2">
+          <span className="flex items-center gap-1">
+            <Clock className="h-3.5 w-3.5" />
+            {phase.duration}
+          </span>
+          <span>·</span>
+          <span className="flex items-center gap-1">
+            <PlayCircle className="h-3.5 w-3.5" />
+            {totalLessons} Lesson{totalLessons !== 1 ? "s" : ""}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h3 className={cn(
+          "text-lg sm:text-xl font-bold mb-2 line-clamp-2",
+          isLocked ? "text-muted-foreground" : "text-foreground"
+        )}>
+          {phase.title}
+        </h3>
+
+        {/* Description */}
+        <p className="text-muted-foreground text-sm mb-4 sm:mb-5 line-clamp-2">
+          {phase.subtitle}
+        </p>
+
+        {/* Bottom section */}
+        <div className="mt-auto">
+          {isCompleted ? (
+            <>
+              {/* Certificate available */}
+              <div className="flex items-center gap-2 mb-4 text-sm text-green-600 dark:text-green-400 font-medium bg-green-50 dark:bg-green-900/20 p-2 rounded">
+                <ShieldCheck className="h-4 w-4" />
+                Certificate Available
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleCardClick}
+                  className="flex-1 py-2 px-3 bg-card border border-border text-foreground hover:bg-muted rounded-lg text-sm font-bold transition-colors"
+                >
+                  <Eye className="h-3.5 w-3.5 inline mr-1" />
+                  Review
+                </button>
+                <button
+                  type="button"
+                  className="flex-1 py-2 px-3 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-bold transition-colors flex items-center justify-center gap-1"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Cert
+                </button>
+              </div>
+            </>
+          ) : isLocked ? (
+            <div className="pt-4 border-t border-dashed border-border">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <Lightbulb className="h-4 w-4" />
+                <span>
+                  Prerequisite: {prerequisitePhase?.title ?? "Previous phase"}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Progress bar */}
+              <div className="flex justify-between items-end mb-2">
+                <span className="text-sm font-semibold text-foreground">
+                  {progressPct}% Completed
+                </span>
+              </div>
+              <div className="w-full bg-muted rounded-full h-2 mb-4">
+                <div
+                  className={cn("h-2 rounded-full bg-[var(--color-brand-orange)]")}
+                  style={{ width: `${progressPct}%` }}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={handleCardClick}
                 className={cn(
-                  "relative overflow-hidden rounded-2xl bg-gradient-to-br p-6 sm:p-8 text-white shadow-lg",
-                  colors.gradient
+                  "w-full py-2.5 px-4 rounded-lg text-sm font-bold transition-colors flex items-center justify-center gap-2",
+                  progressPct > 0
+                    ? "bg-card border border-border text-foreground hover:bg-muted"
+                    : "bg-[var(--color-brand-orange)] hover:bg-[var(--color-brand-orange)]/90 text-white"
                 )}
               >
-                {/* Decorative circle */}
-                <div className="absolute -top-12 -right-12 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
-                <div className="absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-black/10 blur-xl" />
-
-                {/* Lock overlay when phase is locked */}
-                {!phaseUnlocked && (
-                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/30 backdrop-blur-sm rounded-2xl">
-                    <Lock className="h-8 w-8 text-white/80 mb-2" />
-                    <p className="text-sm font-semibold text-white/90">Complete the previous checkpoint to unlock</p>
-                  </div>
-                )}
-
-                <div className="relative flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/20 text-sm font-bold backdrop-blur-sm">
-                        {phase.number}
-                      </span>
-                      <span className="text-xs font-semibold uppercase tracking-widest opacity-80">
-                        {phase.weeks}
-                      </span>
-                    </div>
-                    <h2 className="text-2xl sm:text-3xl font-bold leading-tight">
-                      {phase.title}
-                    </h2>
-                    <p className="text-sm sm:text-base opacity-90 max-w-lg leading-relaxed">
-                      {phase.subtitle}
-                    </p>
-                  </div>
-
-                  {phase.checkpoint && (
-                    <BrandButton
-                      variant="ghost"
-                      size="sm"
-                      className="bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-sm self-start"
-                      onClick={() => setSection("quizzes")}
-                    >
-                      <GraduationCap className="h-4 w-4" />
-                      Checkpoint
-                    </BrandButton>
-                  )}
-                </div>
-              </div>
-
-              {/* ── Phase goals ── */}
-              <div className={cn("rounded-xl border p-5 sm:p-6", colors.light, "border-border/40")}>
-                <div className="flex items-center gap-2 mb-4">
-                  <div className={cn("flex h-7 w-7 items-center justify-center rounded-lg", colors.iconBg)}>
-                    <Target className={cn("h-4 w-4", colors.accent)} />
-                  </div>
-                  <span className={cn("text-xs font-bold uppercase tracking-wider", colors.accent)}>
-                    Phase Goals
-                  </span>
-                </div>
-                <ul className="grid gap-3 sm:grid-cols-2">
-                  {phase.goals.map((g, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className={cn("h-4 w-4 mt-0.5 shrink-0 opacity-70", colors.accent)} />
-                      <span className="text-sm leading-relaxed">{g}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* ── Module cards ── */}
-              <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
-                {phase.modules.map((m) => {
-                  const colorsM = getPhaseColors(phase.number);
-                  const isLocked = (!phaseUnlocked) || (isTrial && !(TRIAL_MODULE_IDS as readonly string[]).includes(m.id));
-                  return (
-                    <button
-                      key={m.id}
-                      type="button"
-                      disabled={isLocked}
-                      className={cn(
-                        "group relative flex flex-col rounded-xl border bg-card p-5 sm:p-6 text-left transition-all duration-200",
-                        isLocked
-                          ? "opacity-50 cursor-not-allowed"
-                          : "hover:shadow-lg hover:-translate-y-0.5 hover:border-border",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-                        colorsM.ring
-                      )}
-                      onClick={isLocked ? undefined : () => setActiveModule(m.id, phase.id)}
-                    >
-                      {/* Top row: badge + lock/arrow */}
-                      <div className="flex items-center justify-between mb-3">
-                        <span
-                          className={cn(
-                            "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
-                            colorsM.badge
-                          )}
-                        >
-                          <Layers className="h-3 w-3" />
-                          Module {m.code}
-                        </span>
-                        {isLocked ? (
-                          <Lock className="h-4 w-4 text-muted-foreground/50" />
-                        ) : (
-                          <ChevronRight className="h-4 w-4 text-muted-foreground/50 group-hover:text-foreground group-hover:translate-x-1 transition-all" />
-                        )}
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="font-semibold text-base sm:text-lg leading-snug mb-3">
-                        {m.title}
-                      </h3>
-
-                      {/* Content preview chips */}
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {isLocked ? (
-                          <span className="text-xs text-muted-foreground italic">Enroll to access full content</span>
-                        ) : (
-                          <>
-                            {m.content.slice(0, 3).map((c, i) => {
-                              const label = c.heading.split(":")[0].split("(")[0].trim();
-                              return (
-                                <span
-                                  key={i}
-                                  className="inline-flex items-center rounded-md bg-muted/60 px-2 py-0.5 text-[10px] font-medium text-muted-foreground max-w-[180px]"
-                                >
-                                  <span className="truncate">{label}</span>
-                                </span>
-                              );
-                            })}
-                            {m.content.length > 3 && (
-                              <span className="inline-flex items-center rounded-md bg-muted/40 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                                +{m.content.length - 3} more
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </div>
-
-                      {/* Footer: exercises + content count */}
-                      <div className="mt-auto flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
-                        <span className="inline-flex items-center gap-1">
-                          <BookOpen className="h-3 w-3" />
-                          {m.content.length} sections
-                        </span>
-                        {m.exercises && m.exercises.length > 0 && (
-                          <span className="inline-flex items-center gap-1">
-                            <PenLine className="h-3 w-3" />
-                            {m.exercises.length} exercise{m.exercises.length > 1 ? "s" : ""}
-                          </span>
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* ── Submission checklist ── */}
-              {phase.submissionChecklist && (
-                <div className="rounded-xl border border-dashed border-border/60 bg-muted/20 p-5 sm:p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <ListChecks className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Submission Checklist — {phase.weeks}
-                    </span>
-                  </div>
-                  <ul className="grid gap-2 sm:grid-cols-2">
-                    {phase.submissionChecklist.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2.5">
-                        <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border border-border text-[10px] text-muted-foreground font-medium">
-                          {i + 1}
-                        </span>
-                        <span className="text-sm text-muted-foreground leading-relaxed">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </section>
-          );
-        })}
+                {progressPct > 0 ? "Resume Course" : "Start Learning"}
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -360,13 +528,13 @@ function ModuleView({
           className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
-          Back to modules
+          Back to courses
         </button>
-        <div className="rounded-xl border border-border/60 bg-muted/20 p-8 text-center">
+        <div className="rounded-xl border border-border bg-card p-8 text-center">
           <Lock className="h-8 w-8 mx-auto text-muted-foreground/60 mb-4" />
           <h2 className="font-semibold text-lg mb-2">Module not available in trial</h2>
           <p className="text-sm text-muted-foreground mb-5">
-            Sign up for free to unlock all 11 modules, track progress, and submit exercises.
+            Sign up for free to unlock all modules, track progress, and submit exercises.
           </p>
           <button
             type="button"
@@ -374,7 +542,7 @@ function ModuleView({
               logout();
               onBack();
             }}
-            className="inline-flex items-center gap-2 rounded-lg bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-90"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-brand-orange)] text-white px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-90"
           >
             Sign up to unlock
             <ArrowRight className="h-4 w-4" />
@@ -421,13 +589,13 @@ function ModuleView({
         className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
-        All curriculum
+        All courses
       </button>
 
       {/* ── Module header ── */}
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl bg-gradient-to-br p-6 sm:p-8 lg:p-10 text-white shadow-lg",
+          "relative overflow-hidden rounded-2xl bg-gradient-to-br p-6 sm:8 lg:p-10 text-white shadow-lg",
           colors.gradient
         )}
       >
@@ -489,7 +657,7 @@ function ModuleView({
               {module.exercises.map((ex) => (
                 <div
                   key={ex.id}
-                  className="flex items-center justify-between gap-4 rounded-xl border border-orange-100 dark:border-orange-900/40 bg-card/80 backdrop-blur-sm p-4"
+                  className="flex items-center justify-between gap-4 rounded-xl border border-border bg-card/80 backdrop-blur-sm p-4"
                 >
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold text-sm">
@@ -552,7 +720,7 @@ function ModuleView({
         {prev ? (
           <button
             type="button"
-            className="group flex items-center gap-3 rounded-xl border border-border/60 bg-card p-4 text-left transition-all hover:border-border hover:shadow-sm"
+            className="group flex items-center gap-3 rounded-xl border border-border bg-card p-4 text-left transition-all hover:border-border hover:shadow-sm"
             onClick={() => setActiveModule(prev.module.id, prev.phase.id)}
           >
             <ArrowLeft className="h-4 w-4 text-muted-foreground group-hover:-translate-x-0.5 transition-transform shrink-0" />
@@ -571,7 +739,7 @@ function ModuleView({
         {next && (
           <button
             type="button"
-            className="group flex items-center justify-end gap-3 rounded-xl border border-border/60 bg-card p-4 text-right transition-all hover:border-border hover:shadow-sm sm:col-start-2"
+            className="group flex items-center justify-end gap-3 rounded-xl border border-border bg-card p-4 text-right transition-all hover:border-border hover:shadow-sm sm:col-start-2"
             onClick={() => setActiveModule(next.module.id, next.phase.id)}
           >
             <div className="min-w-0">
@@ -602,9 +770,9 @@ function ModuleSectionView({
   const colors = getPhaseColors(phaseNumber);
 
   return (
-    <div className="rounded-xl border border-border/50 bg-card overflow-hidden">
+    <div className="rounded-xl border border-border bg-card overflow-hidden">
       {/* Section header */}
-      <div className={cn("border-b border-border/40 px-5 sm:px-6 py-4", colors.light)}>
+      <div className={cn("border-b border-border px-5 sm:px-6 py-4", colors.light)}>
         <h3 className="flex items-center gap-2.5 text-base sm:text-lg font-semibold">
           <BookOpen className={cn("h-4.5 w-4.5 shrink-0", colors.accent)} />
           {section.heading}
@@ -626,7 +794,7 @@ function ModuleSectionView({
             {section.items.map((item, i) => (
               <li key={i} className="text-sm sm:text-[15px]">
                 <div className="flex items-start gap-2.5">
-                  <span className={cn("mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full", `bg-current opacity-40 ${colors.accent}`)} />
+                  <span className={cn("mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-40", colors.accent)} />
                   <span className="leading-relaxed">
                     {item.term && <span className="font-semibold">{item.term}</span>}
                     {item.term && item.description && (
@@ -641,7 +809,7 @@ function ModuleSectionView({
                   <ul className="mt-2 ml-5 space-y-1.5">
                     {item.subItems.map((sub, j) => (
                       <li key={j} className="text-sm text-muted-foreground flex items-start gap-2">
-                        <span className={cn("mt-1.5 h-1 w-1 shrink-0 rounded-full opacity-50", `bg-current ${colors.accent}`)} />
+                        <span className={cn("mt-1.5 h-1 w-1 shrink-0 rounded-full opacity-50 bg-current", colors.accent)} />
                         <span className="leading-relaxed">{sub}</span>
                       </li>
                     ))}
@@ -659,7 +827,7 @@ function ModuleSectionView({
               <div
                 key={i}
                 className={cn(
-                  "rounded-xl border border-border/40 p-4 sm:p-5",
+                  "rounded-xl border border-border p-4 sm:p-5",
                   colors.light
                 )}
               >
@@ -680,23 +848,19 @@ function ModuleSectionView({
         {/* ── Flow ── */}
         {section.type === "flow" && section.steps && (
           <div className="relative">
-            {/* Connecting line */}
             <div className="absolute left-[19px] top-4 bottom-4 w-px bg-gradient-to-b from-border via-border/60 to-transparent" />
 
             <ol className="space-y-5">
               {section.steps.map((step, i) => (
                 <li key={i} className="relative flex gap-4">
-                  {/* Number badge */}
                   <div
                     className={cn(
-                      "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold shadow-sm ring-4 ring-background",
-                      `bg-gradient-to-br ${colors.gradient} text-white`
+                      "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold shadow-sm ring-4 ring-background text-white bg-gradient-to-br",
+                      colors.gradient
                     )}
                   >
                     {i + 1}
                   </div>
-
-                  {/* Content */}
                   <div className="pt-1 min-w-0">
                     <p className="font-semibold text-sm sm:text-base">{step.title}</p>
                     <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
@@ -711,10 +875,10 @@ function ModuleSectionView({
 
         {/* ── Table ── */}
         {section.type === "table" && section.columns && section.rows && (
-          <div className="overflow-x-auto rounded-xl border border-border/40">
+          <div className="overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-sm">
               <thead>
-                <tr className={cn("border-b border-border/60", colors.light)}>
+                <tr className={cn("border-b border-border", colors.light)}>
                   {section.columns.map((col, i) => (
                     <th
                       key={i}
@@ -733,7 +897,7 @@ function ModuleSectionView({
                   <tr
                     key={i}
                     className={cn(
-                      "border-b border-border/30 last:border-0 transition-colors hover:bg-muted/30",
+                      "border-b border-border last:border-0 transition-colors hover:bg-muted/30",
                       i % 2 === 1 && "bg-muted/20"
                     )}
                   >
