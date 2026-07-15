@@ -23,7 +23,6 @@ export function publicStudent<T extends Student>(s: T): Omit<T, "password"> {
 export type StudentWithRelations = Student & {
   progress?: ProgressEntry[];
   enrollments?: (Cohort & { cohort: Cohort })[];
-  tagsAssigned?: { tag: { id: string; name: string; color: string } }[];
 };
 
 /** Get a single student by ID, with progress + enrollments + tags. */
@@ -33,7 +32,6 @@ export async function getStudentById(id: string) {
     include: {
       progress: { orderBy: { phaseNumber: "asc" } },
       enrollments: { include: { cohort: true } },
-      tagsAssigned: { include: { tag: true } },
       capstones: true,
     },
   });
@@ -152,7 +150,6 @@ export async function getCohortWithStudents(id: string) {
         },
         orderBy: { enrolledAt: "desc" },
       },
-      instructor: { select: { id: true, name: true, email: true } },
     },
   });
 }
@@ -181,7 +178,7 @@ export function computeOverallPercent(progress: ProgressEntry[] | undefined): nu
       done += p.exercisesDone;
     }
     total += 1;
-    if (p.quizScore !== null && p.quizScore / Math.max(1, p.quizTotal) >= 0.6) done += 1;
+    if (p.quizScore !== null && p.quizScore / Math.max(1, p.quizTotal ?? 1) >= 0.6) done += 1;
     if (p.phaseNumber === 4) {
       total += 1;
       if (p.capstoneDone) done += 1;
@@ -235,7 +232,7 @@ export async function logAction(opts: {
       entityType: opts.entityType,
       entityId: opts.entityId,
       summary: opts.summary,
-      changes: opts.changes ? JSON.stringify(opts.changes) : null,
+      details: opts.changes ? JSON.stringify(opts.changes) : null,
       ipAddress: opts.ipAddress ?? null,
     },
   });
@@ -258,7 +255,7 @@ export async function notifyStudent(opts: {
       type: opts.type ?? "INFO",
       title: opts.title,
       message: opts.message,
-      link: opts.link ?? null,
+      actionUrl: opts.link ?? null,
     },
   });
 }
@@ -266,6 +263,6 @@ export async function notifyStudent(opts: {
 /** Get unread notification count for a student. */
 export async function getUnreadCount(studentId: string): Promise<number> {
   return db.notification.count({
-    where: { studentId, readAt: null },
+    where: { studentId, read: false },
   });
 }

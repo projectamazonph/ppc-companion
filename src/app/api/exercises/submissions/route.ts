@@ -141,7 +141,6 @@ export async function POST(req: NextRequest) {
           status: status as any,
           score: typeof body.score === "number" ? body.score : existing.score,
           feedback: body.feedback ?? existing.feedback,
-          gradedBy: body.gradedBy ?? existing.gradedBy,
           gradedAt: body.gradedAt ? new Date(body.gradedAt) : existing.gradedAt,
         },
       });

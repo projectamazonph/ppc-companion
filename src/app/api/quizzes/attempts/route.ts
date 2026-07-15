@@ -137,17 +137,19 @@ export async function POST(req: NextRequest) {
 
     // Update ProgressEntry for this phase with the latest score
     const phaseNumber = quiz.module?.phase?.number ?? 1;
+    const moduleId = quiz.moduleId;
     await db.progressEntry.upsert({
-      where: { studentId_phaseNumber: { studentId: body.studentId, phaseNumber },
-     create: {
+      where: { studentId_phaseNumber: { studentId: body.studentId, phaseNumber } },
+      create: {
         studentId: body.studentId,
+        moduleId,
         phaseNumber,
         quizScore: body.score,
-       quizTotal: body.total,
-     },
+        quizTotal: body.total,
+      },
       update: {
         quizScore: body.score,
-        quizOtal: body.total,
+        quizTotal: body.total,
       },
     });
 

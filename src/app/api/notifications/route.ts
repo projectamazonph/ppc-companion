@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     }
 
     const where: any = { studentId };
-    if (unreadOnly) where.readAt = null;
+    if (unreadOnly) where.read = false;
 
     const notifications = await db.notification.findMany({
       where,
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
     });
 
     const unreadCount = await db.notification.count({
-      where: { studentId, readAt: null },
+      where: { studentId, read: false },
     });
 
     return NextResponse.json({
@@ -78,8 +78,8 @@ export async function PUT(req: NextRequest) {
       }
 
       const result = await db.notification.updateMany({
-        where: { studentId: body.studentId, readAt: null },
-        data: { readAt: new Date() },
+        where: { studentId: body.studentId, read: false },
+        data: { read: true },
       });
       return NextResponse.json({ markedRead: result.count });
     }
@@ -99,7 +99,7 @@ export async function PUT(req: NextRequest) {
 
       const updated = await db.notification.update({
         where: { id: body.id },
-        data: { readAt: new Date() },
+        data: { read: true },
       });
       return NextResponse.json({ notification: updated });
     }

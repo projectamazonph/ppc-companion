@@ -77,7 +77,7 @@ export async function PUT(
         type: data.status === "GRADED" ? "GRADE" : "INFO",
         title: `${existing.exercise.code} ${data.status === "GRADED" ? "graded" : "returned"}`,
         message: `Your submission for "${existing.exercise.title}" has been ${data.status.toLowerCase()} by ${authUser.name}.${data.feedback ? ` Feedback: "${data.feedback.slice(0, 100)}"` : ""}`,
-        link: "/myprofile",
+        actionUrl: "/myprofile",
       },
     });
 
