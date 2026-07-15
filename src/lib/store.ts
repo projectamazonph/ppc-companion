@@ -156,7 +156,7 @@ export const useAppStore = create<AppState>()(
         }));
         // M4 FIX: Add error logging for failed sync
         const user = get().user;
-        if (user?.id && shouldSync()) {
+        if (user && shouldSync(user)) {
           syncExerciseSubmission({
             studentId: user.id,
             exerciseCode: id,
@@ -183,7 +183,7 @@ export const useAppStore = create<AppState>()(
           quizResults: { ...state.quizResults, [result.quizId]: result },
         }));
         const user = get().user;
-        if (user?.id && shouldSync()) {
+        if (user && shouldSync(user)) {
           syncQuizAttempt({
             studentId: user.id,
             quizLocalId: result.quizId,
@@ -201,10 +201,10 @@ export const useAppStore = create<AppState>()(
           },
         }));
         const user = get().user;
-        if (user?.id && shouldSync()) {
+        if (user && shouldSync(user)) {
           syncCapstoneToggle({
             studentId: user.id,
-            capstoneId: id,
+            deliverableId: id,
             completed: !get().capstoneCompleted[id],
           }).catch((err) => console.error("[sync] capstone toggle failed:", err));
         }

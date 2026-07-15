@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import type { Role, StudentStatus } from "@prisma/client";
 import { requireRole, isErrorResponse } from "@/lib/auth-server";
+import bcrypt from "bcryptjs";
 
 // Strip the password field from a student object before returning to client
 function publicStudent(s: any) {
@@ -81,6 +82,12 @@ export async function POST(req: NextRequest) {
     if (!body.name || typeof body.name !== "string") {
       return NextResponse.json({ error: "name is required" }, { status: 400 });
     }
+    if (!body.password || typeof body.password !== "string" || body.password.length < 8) {
+      return NextResponse.json(
+        { error: "password is required and must be at least 8 characters" },
+        { status: 400 }
+      );
+    }
 
     // Check email uniqueness
     const existing = await db.student.findUnique({ where: { email: body.email } });
@@ -108,9 +115,11 @@ export async function POST(req: NextRequest) {
         ? body.targetAcos
         : 30;
 
+    const hashedPassword = await bcrypt.hash(body.password, 12);
     const student = await db.student.create({
       data: {
         email: body.email,
+        password: hashedPassword,
         name: body.name,
         role,
         status,

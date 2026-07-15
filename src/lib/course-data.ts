@@ -70,7 +70,7 @@ export type Quiz = {
     modelAnswer?: string;
     acceptableAnswers?: string[];
     explanation?: string;
-    options?: { id: string; label: string; correct?: boolean }[];
+    options?: { id: string; label: string; correct?: boolean; description?: string }[];
   }[];
 };
 

@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useAppStore } from "@/lib/store";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   School,
   Users,
@@ -10,14 +13,16 @@ import {
   Award,
   UserPlus,
   BookOpen,
+  GraduationCap,
   BarChart3,
   ArrowUpRight,
   MoreHorizontal,
   Loader2,
   AlertCircle,
-  GraduationCap,
   FileCheck,
   RefreshCw,
+  Search,
+  Bell,
 } from "lucide-react";
 
 // =============================================================
@@ -86,10 +91,12 @@ function StatusBadge({ status }: { status: string }) {
 export function AdminDashboardSection() {
   const setSection = useAppStore((s) => s.setSection);
   const user = useAppStore((s) => s.user);
+  const { toast } = useToast();
 
   const [data, setData] = useState<StatsResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -99,19 +106,21 @@ export function AdminDashboardSection() {
         setError(null);
         const res = await fetch("/api/admin/stats");
         if (!res.ok) {
-          const body = await res.json().catch(() => ({}));
+          const body = (await res.json().catch(() => ({}))) as { error?: string };
           throw new Error(body.error ?? `HTTP ${res.status}`);
         }
-        const json: StatsResponse = await res.json();
+        const json = (await res.json()) as StatsResponse;
         if (!cancelled) setData(json);
-      } catch (e: any) {
-        if (!cancelled) setError(e.message);
+      } catch (e: unknown) {
+        if (!cancelled) setError(e instanceof Error ? e.message : "Something went wrong");
       } finally {
         if (!cancelled) setLoading(false);
       }
     }
     load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (loading) {
@@ -132,13 +141,14 @@ export function AdminDashboardSection() {
           <AlertCircle className="h-8 w-8" />
           <p className="text-sm font-medium">Failed to load dashboard</p>
           <p className="text-xs text-muted-foreground">{error}</p>
-          <button
+          <Button
+            variant="outline"
             onClick={() => window.location.reload()}
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
+            className="mt-1"
           >
             <RefreshCw className="h-3.5 w-3.5" />
             Retry
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -147,18 +157,11 @@ export function AdminDashboardSection() {
   const stats = data?.stats;
 
   const statCards = [
-    { title: "Total Students", value: stats?.totalStudents ?? 0, subtitle: "All registered users", icon: School, color: "blue" as const, trend: "Live" },
-    { title: "Active Students", value: stats?.activeStudents ?? 0, subtitle: "Currently enrolled", icon: Users, color: "green" as const, trend: "Active" },
-    { title: "Completion Rate", value: stats ? `${stats.avgCompletion}%` : "0%", subtitle: "Avg across all phases", icon: Award, color: "amber" as const },
-    { title: "Submissions", value: stats?.totalSubmissions ?? 0, subtitle: "Exercise submissions", icon: FileCheck, color: "purple" as const },
+    { title: "Total Students", value: stats?.totalStudents ?? 0, subtitle: "All registered users", icon: School, trend: "Live" },
+    { title: "Active Students", value: stats?.activeStudents ?? 0, subtitle: "Currently enrolled", icon: Users, trend: "Active" },
+    { title: "Completion Rate", value: stats ? `${stats.avgCompletion}%` : "0%", subtitle: "Avg across all phases", icon: Award },
+    { title: "Submissions", value: stats?.totalSubmissions ?? 0, subtitle: "Exercise submissions", icon: FileCheck },
   ];
-
-  const colorStyles = {
-    blue: "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
-    green: "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400",
-    amber: "bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400",
-    purple: "bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
-  };
 
   const quickActions = [
     { icon: UserPlus, label: "Manage Users", section: "students" as const },
@@ -167,45 +170,84 @@ export function AdminDashboardSection() {
     { icon: BarChart3, label: "Audit Log", section: "audit" as const },
   ];
 
+  const registrations = data?.recentRegistrations ?? [];
+  const query = search.trim().toLowerCase();
+  const filtered = query
+    ? registrations.filter((s) =>
+        `${s.name} ${s.email} ${s.role}`.toLowerCase().includes(query)
+      )
+    : registrations;
+
+  const handleRowAction = (student: RecentStudent) => {
+    toast({
+      title: "Manage student",
+      description: `Options for ${student.name} are coming soon.`,
+    });
+  };
+
   return (
-    <div className="space-y-6 sm:space-y-8">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight">Admin Dashboard</h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-1">
-            Aggregate platform overview for {user?.name ?? "Administrator"}
-          </p>
+    <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:space-y-8 sm:px-6 lg:px-8">
+      {/* Top bar */}
+      <header className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+            <School className="h-5 w-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">Admin Dashboard</h1>
+            <p className="text-sm text-muted-foreground">
+              Aggregate platform overview for {user?.name ?? "Administrator"}
+            </p>
+          </div>
         </div>
-        <button
-          onClick={() => setSection("students")}
-          className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-brand-orange)] text-white px-4 py-2.5 text-sm font-bold hover:bg-[var(--color-brand-orange)]/90 transition-colors"
-        >
-          <UserPlus className="h-4 w-4" />
-          Add Student
-        </button>
-      </div>
+        <div className="flex items-center gap-3">
+          <div className="relative hidden w-64 sm:block">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search students or courses..."
+              className="pl-10"
+              aria-label="Search registrations"
+            />
+          </div>
+          <Button onClick={() => setSection("students")}>
+            <UserPlus className="h-4 w-4" />
+            Add Student
+          </Button>
+          <button
+            type="button"
+            aria-label="Notifications"
+            className="relative flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted"
+          >
+            <Bell className="h-5 w-5" />
+            <span className="absolute right-2.5 top-2.5 size-2 rounded-full border border-card bg-rose-500" />
+          </button>
+        </div>
+      </header>
 
       {/* Stats Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat) => {
           const StatIcon = stat.icon;
           return (
-            <div key={stat.title} className="bg-card rounded-xl border border-border p-5 hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between mb-3">
-                <div className={cn("p-2.5 rounded-lg", colorStyles[stat.color])}>
+            <div
+              key={stat.title}
+              className="rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
+            >
+              <div className="mb-4 flex items-start justify-between">
+                <div className="rounded-lg bg-primary/10 p-2 text-primary">
                   <StatIcon className="h-5 w-5" />
                 </div>
                 {stat.trend && (
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400">
                     <TrendingUp className="h-3 w-3" />
                     {stat.trend}
                   </span>
                 )}
               </div>
-              <p className="text-xs font-medium text-muted-foreground">{stat.title}</p>
-              <h3 className="text-2xl font-black text-foreground mt-1">{stat.value}</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">{stat.subtitle}</p>
+              <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
+              <h3 className="stat-value mt-1 text-2xl font-bold text-foreground">{stat.value}</h3>
             </div>
           );
         })}
@@ -213,17 +255,17 @@ export function AdminDashboardSection() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-lg font-bold mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <h2 className="mb-4 text-lg font-bold text-foreground">Quick Actions</h2>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {quickActions.map((action) => {
             const ActionIcon = action.icon;
             return (
               <button
                 key={action.label}
                 onClick={() => setSection(action.section)}
-                className="flex flex-col items-center justify-center gap-3 p-6 bg-card border border-border rounded-xl hover:border-[var(--color-brand-orange)]/50 hover:bg-accent/50 transition-all group text-center h-32"
+                className="group flex h-32 flex-col items-center justify-center gap-3 rounded-xl border border-border bg-card p-6 text-center transition-all hover:border-primary/50 hover:bg-primary/10"
               >
-                <ActionIcon className="h-8 w-8 text-[var(--color-brand-orange)] group-hover:scale-110 transition-transform" />
+                <ActionIcon className="h-8 w-8 text-primary transition-transform group-hover:scale-110" />
                 <span className="text-sm font-bold text-foreground">{action.label}</span>
               </button>
             );
@@ -232,47 +274,68 @@ export function AdminDashboardSection() {
       </div>
 
       {/* Recent Registrations Table */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold">Recent Registrations</h2>
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-foreground">Recent Registrations</h2>
           <button
             onClick={() => setSection("students")}
-            className="inline-flex items-center gap-1 text-sm font-bold text-[var(--color-brand-orange)] hover:underline"
+            className="inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline"
           >
             View All
             <ArrowUpRight className="h-3.5 w-3.5" />
           </button>
         </div>
 
-        {data?.recentRegistrations && data.recentRegistrations.length > 0 ? (
-          <div className="bg-card rounded-xl border border-border overflow-hidden">
+        <div className="relative sm:hidden">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search students or courses..."
+            className="pl-10"
+            aria-label="Search registrations"
+          />
+        </div>
+
+        {filtered.length > 0 ? (
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
                   <tr className="border-b border-border bg-muted/30">
-                    <th className="py-3.5 px-6 text-xs font-bold uppercase tracking-wider text-muted-foreground">Student Name</th>
-                    <th className="py-3.5 px-6 text-xs font-bold uppercase tracking-wider text-muted-foreground">Role</th>
-                    <th className="py-3.5 px-6 text-xs font-bold uppercase tracking-wider text-muted-foreground">Date Joined</th>
-                    <th className="py-3.5 px-6 text-xs font-bold uppercase tracking-wider text-muted-foreground">Status</th>
-                    <th className="py-3.5 px-6 text-right" />
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Student Name</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Role</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Date Joined</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Status</th>
+                    <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {data.recentRegistrations.map((student) => (
-                    <tr key={student.id} className="hover:bg-muted/20 transition-colors">
-                      <td className="py-4 px-6">
+                  {filtered.map((student) => (
+                    <tr key={student.id} className="transition-colors hover:bg-muted/20">
+                      <td className="px-6 py-4">
                         <div>
                           <p className="text-sm font-semibold text-foreground">{student.name}</p>
                           <p className="text-xs text-muted-foreground">{student.email}</p>
                         </div>
                       </td>
-                      <td className="py-4 px-6 text-sm text-muted-foreground capitalize">{student.role.toLowerCase()}</td>
-                      <td className="py-4 px-6 text-sm text-muted-foreground">
-                        {new Date(student.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                      <td className="px-6 py-4 text-sm capitalize text-muted-foreground">{student.role.toLowerCase()}</td>
+                      <td className="px-6 py-4 text-sm text-muted-foreground">
+                        {new Date(student.createdAt).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
                       </td>
-                      <td className="py-4 px-6"><StatusBadge status={student.status} /></td>
-                      <td className="py-4 px-6 text-right">
-                        <button className="inline-flex items-center justify-center h-8 w-8 rounded-lg hover:bg-muted transition-colors text-muted-foreground">
+                      <td className="px-6 py-4">
+                        <StatusBadge status={student.status} />
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <button
+                          onClick={() => handleRowAction(student)}
+                          aria-label={`Manage ${student.name}`}
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted"
+                        >
                           <MoreHorizontal className="h-4 w-4" />
                         </button>
                       </td>
@@ -283,11 +346,21 @@ export function AdminDashboardSection() {
             </div>
           </div>
         ) : (
-          <div className="bg-card rounded-xl border border-border flex items-center justify-center h-24 text-muted-foreground">
-            <p className="text-sm">No registrations yet</p>
+          <div className="flex h-24 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground">
+            <p className="text-sm">{query ? "No matching registrations" : "No registrations yet"}</p>
           </div>
         )}
       </div>
+
+      {/* Footer */}
+      <footer className="flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row">
+        <p>© {new Date().getFullYear()} PPC Companion. All rights reserved.</p>
+        <div className="flex gap-4">
+          <a className="transition-colors hover:text-primary" href="#">Privacy</a>
+          <a className="transition-colors hover:text-primary" href="#">Terms</a>
+          <a className="transition-colors hover:text-primary" href="#">Help</a>
+        </div>
+      </footer>
     </div>
   );
 }
