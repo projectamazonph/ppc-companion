@@ -1,0 +1,29 @@
+/* Reference — reference.module.css */
+
+.section { display: flex; flex-direction: column; gap: var(--space-6, 24px); }
+
+.card {
+  background: var(--card, #FFFFFF);
+  border-radius: var(--radius-lg, 10px);
+  border: 1px solid var(--border, #E5E5E0);
+  padding: var(--space-5, 20px);
+}
+
+.cardHeader { display: flex; align-items: flex-start; gap: var(--space-3, 12px); margin-bottom: var(--space-4, 16px); }
+.cardIcon { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: var(--radius-md, 6px); flex-shrink: 0; }
+.cardTitle { font-size: 16px; font-weight: 600; color: var(--foreground, #171717); }
+
+.formulaBlock {
+  background: var(--muted, #F4F3EE);
+  border: 1px solid var(--border, #E5E5E0);
+  border-radius: var(--radius-md, 6px);
+  padding: var(--space-4, 16px);
+  font-family: var(--font-mono, monospace);
+  font-size: 14px;
+  color: var(--foreground, #171717);
+  text-align: center;
+  margin: var(--space-3, 12px) 0;
+}
+
+.listItem { display: flex; gap: var(--space-2, 8px); font-size: 13px; color: var(--muted-foreground, #737373); margin-bottom: var(--space-2, 8px); line-height: 1.5; }
+.listBullet { color: var(--primary, #FF6B35); flex-shrink: 0; font-weight: 700; }

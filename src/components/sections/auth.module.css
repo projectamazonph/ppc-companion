@@ -1,0 +1,308 @@
+/* Auth pages — auth.module.css
+ * Login/Signup page, amph-v2 Field Manual design reference
+ */
+
+.page {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-canvas, #FAFAF7);
+  padding: var(--space-10, 40px) var(--space-4, 16px);
+  color: var(--foreground, #171717);
+}
+
+.wrapper {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* ── Logo ───────────────────────────────────────────────────────────────── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  margin-bottom: var(--space-4, 16px);
+}
+
+.logoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md, 6px);
+  background: var(--primary, #FF6B35);
+  color: #FFFFFF;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--foreground, #171717);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+  margin-bottom: var(--space-6, 24px);
+}
+
+.heading {
+  font-size: 1.875rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.033em;
+  color: var(--foreground, #171717);
+}
+
+@media (min-width: 768px) {
+  .heading {
+    font-size: 2.25rem;
+  }
+}
+
+.subhead {
+  font-size: 16px;
+  color: var(--muted-foreground, #737373);
+  line-height: 1.5;
+}
+
+/* ── Form ───────────────────────────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 16px);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--foreground, #171717);
+}
+
+.inputWrap {
+  position: relative;
+}
+
+.inputIcon {
+  position: absolute;
+  left: var(--space-3, 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-foreground, #737373);
+}
+
+.inputField {
+  height: 48px;
+  padding-left: 44px;
+  border-radius: var(--radius-md, 6px);
+  border: 1px solid var(--border, #E5E5E0);
+  background: var(--bg-canvas, #FAFAF7);
+  font-size: 14px;
+  color: var(--foreground, #171717);
+  outline: none;
+  width: 100%;
+  transition: box-shadow var(--duration-fast, 120ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.inputField:focus {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring, #FF6B35) 20%, transparent);
+}
+
+.inputField::placeholder {
+  color: var(--muted-foreground, #737373);
+  opacity: 0.5;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: var(--space-3, 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted-foreground, #737373);
+  padding: 0;
+}
+
+.passwordToggle:hover {
+  color: var(--foreground, #171717);
+}
+
+.inputWide {
+  padding-left: 44px;
+  padding-right: 44px;
+}
+
+.forgotLink {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary, #FF6B35);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.submitBtn {
+  margin-top: var(--space-2, 8px);
+  height: 48px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--destructive, #DC2626);
+  margin-top: var(--space-1, 4px);
+}
+
+/* ── Divider ────────────────────────────────────────────────────────────── */
+.divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: var(--space-2, 8px) 0;
+  margin: var(--space-4, 16px) 0;
+}
+
+.dividerLine {
+  flex-grow: 1;
+  height: 1px;
+  border-top: 1px solid var(--border, #E5E5E0);
+}
+
+.dividerText {
+  flex-shrink: 0;
+  margin: 0 var(--space-4, 16px);
+  font-size: 14px;
+  color: var(--muted-foreground, #737373);
+}
+
+/* ── Social buttons ─────────────────────────────────────────────────────── */
+.socialGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4, 16px);
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2, 8px);
+  height: 48px;
+  border-radius: var(--radius-md, 6px);
+  border: 1px solid var(--border, #E5E5E0);
+  background: var(--card, #FFFFFF);
+  cursor: pointer;
+  transition: background-color var(--duration-fast, 120ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.socialBtn:hover {
+  background: var(--muted, #F4F3EE);
+}
+
+.socialLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground, #171717);
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+.footerText {
+  margin-top: var(--space-6, 24px);
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted-foreground, #737373);
+}
+
+.footerLink {
+  font-weight: 700;
+  color: var(--primary, #FF6B35);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.footerLink:hover {
+  text-decoration: underline;
+}
+
+/* ── Offer banner ───────────────────────────────────────────────────────── */
+.offerBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3, 12px);
+  margin-top: var(--space-6, 24px);
+  border-radius: var(--radius-lg, 10px);
+  border: 1px solid color-mix(in srgb, var(--primary, #FF6B35) 10%, transparent);
+  background: color-mix(in srgb, var(--primary, #FF6B35) 5%, transparent);
+  padding: var(--space-4, 16px);
+}
+
+.offerIcon {
+  margin-top: 2px;
+  color: var(--primary, #FF6B35);
+  flex-shrink: 0;
+}
+
+.offerTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--foreground, #171717);
+}
+
+.offerDesc {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted-foreground, #737373);
+}
+
+.offerHighlight {
+  font-weight: 600;
+  color: var(--primary, #FF6B35);
+}
+
+/* ── Security badge ──────────────────────────────────────────────────────── */
+.securityBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--space-8, 32px);
+  opacity: 0.6;
+}
+
+.securityIcon {
+  color: var(--muted-foreground, #737373);
+}
+
+.securityText {
+  font-size: 12px;
+  color: var(--muted-foreground, #737373);
+}

@@ -1,0 +1,43 @@
+/* Error Boundary — error-boundary.module.css
+ * Reference: amph-v2 Field Manual design
+ */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: var(--space-8, 32px);
+  text-align: center;
+}
+
+.iconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--destructive, #DC2626) 10%, transparent);
+  margin-bottom: var(--space-4, 16px);
+}
+
+.icon {
+  color: var(--destructive, #DC2626);
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground, #171717);
+  margin-bottom: var(--space-2, 8px);
+}
+
+.message {
+  font-size: 14px;
+  color: var(--muted-foreground, #737373);
+  margin-bottom: var(--space-6, 24px);
+  max-width: 28rem;
+  line-height: 1.5;
+}

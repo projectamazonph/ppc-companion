@@ -7,5 +7,4 @@ node_modules/
 .DS_Store
 tsconfig.tsbuildinfo
 *.tsbuildinfo
-tsconfig.tsbuildinfo
-*.tsbuildinfo
+.cortexkit/

@@ -1,0 +1,265 @@
+/* Curriculum — curriculum.module.css */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6, 24px);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3, 12px);
+}
+
+.filterRow {
+  display: flex;
+  gap: var(--space-2, 8px);
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-2, 8px) var(--space-3, 12px);
+  border-radius: var(--radius-md, 6px);
+  border: 1px solid var(--border, #E5E5E0);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-foreground, #737373);
+  cursor: pointer;
+  transition: all var(--duration-fast, 120ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.filterBtn:hover {
+  background: var(--muted, #F4F3EE);
+}
+
+.filterBtnActive {
+  background: var(--primary, #FF6B35);
+  color: #FFFFFF;
+  border-color: var(--primary, #FF6B35);
+}
+
+.searchWrap {
+  position: relative;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .searchWrap {
+    width: 220px;
+  }
+}
+
+.phaseCard {
+  background: var(--card, #FFFFFF);
+  border-radius: var(--radius-lg, 10px);
+  border: 1px solid var(--border, #E5E5E0);
+  overflow: hidden;
+  transition: box-shadow var(--duration-base, 220ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.phaseCard:hover {
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,0.04));
+}
+
+.phaseCardLocked {
+  opacity: 0.7;
+}
+
+.phaseHeader {
+  padding: var(--space-5, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+}
+
+.phaseTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3, 12px);
+}
+
+.phaseIconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md, 6px);
+  color: #FFFFFF;
+  flex-shrink: 0;
+}
+
+.phaseTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--foreground, #171717);
+  line-height: 1.3;
+}
+
+.phaseSubtitle {
+  font-size: 13px;
+  color: var(--muted-foreground, #737373);
+  line-height: 1.4;
+}
+
+.phaseMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3, 12px);
+  font-size: 12px;
+  color: var(--muted-foreground, #737373);
+}
+
+.phaseMetaItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.phaseBody {
+  padding: 0 var(--space-5, 20px) var(--space-5, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 16px);
+}
+
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+}
+
+.progressBar {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--muted, #F4F3EE);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width var(--duration-base, 220ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.progressLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-foreground, #737373);
+  white-space: nowrap;
+}
+
+.moduleList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.moduleItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  padding: var(--space-3, 12px) var(--space-3, 12px);
+  border-radius: var(--radius-md, 6px);
+  transition: background-color var(--duration-fast, 120ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.moduleItem:hover {
+  background: var(--muted, #F4F3EE);
+}
+
+.moduleItemActive {
+  background: color-mix(in srgb, var(--primary, #FF6B35) 5%, transparent);
+}
+
+.moduleIconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md, 6px);
+  color: #FFFFFF;
+  flex-shrink: 0;
+}
+
+.moduleInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.moduleName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--foreground, #171717);
+  line-height: 1.3;
+}
+
+.moduleDesc {
+  font-size: 11px;
+  color: var(--muted-foreground, #737373);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 1px;
+}
+
+.moduleBadge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm, 4px);
+  flex-shrink: 0;
+}
+
+.lockedIcon {
+  color: var(--muted-foreground, #737373);
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+.checkIcon {
+  color: var(--success, #0E7C3A);
+  flex-shrink: 0;
+}
+
+.playIcon {
+  color: var(--primary, #FF6B35);
+  flex-shrink: 0;
+}
+
+.sortInfo {
+  font-size: 12px;
+  color: var(--muted-foreground, #737373);
+  text-align: center;
+  padding: var(--space-2, 8px) 0;
+}
+
+.infoBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3, 12px);
+  border-radius: var(--radius-lg, 10px);
+  padding: var(--space-4, 16px);
+  background: color-mix(in srgb, var(--primary, #FF6B35) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary, #FF6B35) 15%, transparent);
+  font-size: 13px;
+  color: color-mix(in srgb, var(--foreground) 80%, transparent);
+  line-height: 1.5;
+}

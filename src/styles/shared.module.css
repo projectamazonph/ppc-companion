@@ -1,0 +1,123 @@
+/* ============================================================================
+ * Shared CSS Module utilities — reusable classes that compose via `composes:`
+ * Reference: amph-v2 Field Manual design tokens
+ * ============================================================================ */
+
+/* ── Focus ring ─────────────────────────────────────────────────────────── */
+.focusRing {
+  outline: none;
+}
+.focusRing:focus-visible {
+  outline: 2px solid var(--accent, #FF6B35);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm, 4px);
+}
+
+/* ── Truncate ───────────────────────────────────────────────────────────── */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lineClamp2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Transitions ────────────────────────────────────────────────────────── */
+.transitionFast {
+  transition: all var(--duration-fast, 120ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.transitionBase {
+  transition: all var(--duration-base, 220ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.transitionColors {
+  transition: background-color var(--duration-fast, 120ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+    color var(--duration-fast, 120ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+    border-color var(--duration-fast, 120ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
+.thinScrollbar {
+  scrollbar-width: thin;
+}
+.thinScrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.thinScrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thinScrollbar::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 999px;
+}
+
+/* ── Surface cards ──────────────────────────────────────────────────────── */
+.cardSurface {
+  background: var(--surface-1, #FFFFFF);
+  border: 1px solid var(--border, #E5E5E0);
+  border-radius: var(--radius-lg, 10px);
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+.fadeInUp {
+  animation: fadeInUp var(--duration-base, 220ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Tabular numbers ────────────────────────────────────────────────────── */
+.tabularNums {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ── Responsive helpers ─────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .hideMobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .showMobile {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hideTablet {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .showTablet {
+    display: none !important;
+  }
+}

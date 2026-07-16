@@ -1,0 +1,109 @@
+/* Page Header — page-header.module.css
+ * Reference: amph-v2 Field Manual design
+ */
+
+.root {
+  margin-bottom: var(--space-6, 24px);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 4px);
+}
+
+@media (min-width: 640px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2, 8px);
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--foreground, #171717);
+}
+
+@media (min-width: 640px) {
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 1.875rem;
+  }
+}
+
+/* ── Badge variants ─────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid;
+  padding: 1px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.badgeDefault {
+  background: color-mix(in srgb, var(--primary, #FF6B35) 15%, transparent);
+  color: var(--primary-foreground, #FFFFFF);
+  border-color: color-mix(in srgb, var(--primary, #FF6B35) 30%, transparent);
+}
+
+.badgeAccent {
+  background: color-mix(in srgb, var(--accent, #FF6B35) 15%, transparent);
+  color: var(--accent-foreground, #171717);
+  border-color: color-mix(in srgb, var(--accent, #FF6B35) 30%, transparent);
+}
+
+.badgeSuccess {
+  background: color-mix(in srgb, var(--success, #0E7C3A) 15%, transparent);
+  color: var(--success-foreground, #FFFFFF);
+  border-color: color-mix(in srgb, var(--success, #0E7C3A) 30%, transparent);
+}
+
+.badgeWarning {
+  background: color-mix(in srgb, var(--warning, #D97706) 15%, transparent);
+  color: var(--warning-foreground, #FFFFFF);
+  border-color: color-mix(in srgb, var(--warning, #D97706) 30%, transparent);
+}
+
+.badgeError {
+  background: color-mix(in srgb, var(--destructive, #DC2626) 15%, transparent);
+  color: var(--destructive-foreground, #FFFFFF);
+  border-color: color-mix(in srgb, var(--destructive, #DC2626) 30%, transparent);
+}
+
+/* ── Description ────────────────────────────────────────────────────────── */
+.description {
+  font-size: 12px;
+  color: var(--muted-foreground, #737373);
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+@media (min-width: 640px) {
+  .description {
+    font-size: 14px;
+  }
+}
+
+/* ── Actions ────────────────────────────────────────────────────────────── */
+.actions {
+  margin-top: var(--space-4, 16px);
+}

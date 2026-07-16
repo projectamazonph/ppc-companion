@@ -1,0 +1,37 @@
+/* Tools — tools.module.css */
+
+.section { display: flex; flex-direction: column; gap: var(--space-6, 24px); }
+
+.toolGrid { display: grid; grid-template-columns: 1fr; gap: var(--space-4, 16px); }
+@media (min-width: 640px) { .toolGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .toolGrid { grid-template-columns: repeat(3, 1fr); } }
+
+.toolCard {
+  background: var(--card, #FFFFFF);
+  border-radius: var(--radius-lg, 10px);
+  border: 1px solid var(--border, #E5E5E0);
+  padding: var(--space-5, 20px);
+  cursor: pointer;
+  transition: all var(--duration-base, 220ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  text-decoration: none;
+  display: block;
+}
+
+.toolCard:hover {
+  box-shadow: var(--shadow-md, 0 4px 8px rgba(0,0,0,0.06));
+  border-color: var(--primary, #FF6B35);
+}
+
+.toolIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md, 6px);
+  margin-bottom: var(--space-3, 12px);
+}
+
+.toolTitle { font-size: 16px; font-weight: 600; color: var(--foreground, #171717); }
+.toolDesc { font-size: 13px; color: var(--muted-foreground, #737373); margin-top: var(--space-1, 4px); line-height: 1.5; }
+.toolBadge { margin-top: var(--space-3, 12px); }

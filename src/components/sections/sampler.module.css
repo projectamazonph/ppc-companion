@@ -1,0 +1,102 @@
+/* Sampler View — sampler.module.css */
+
+.section { display: flex; flex-direction: column; gap: var(--space-6, 24px); max-width: 48rem; margin: 0 auto; }
+
+.heroCard {
+  background: var(--card, #FFFFFF);
+  border-radius: var(--radius-lg, 10px);
+  border: 1px solid var(--border, #E5E5E0);
+  padding: var(--space-6, 24px);
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--foreground, #171717);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-3, 12px);
+}
+
+.heroDesc { font-size: 14px; color: var(--muted-foreground, #737373); line-height: 1.6; max-width: 36rem; margin: 0 auto; }
+
+.startBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  margin-top: var(--space-6, 24px);
+  padding: var(--space-3, 12px) var(--space-6, 24px);
+  border-radius: var(--radius-md, 6px);
+  background: var(--primary, #FF6B35);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: filter var(--duration-fast, 120ms);
+}
+
+.startBtn:hover { filter: brightness(1.1); }
+
+.stepCard {
+  background: var(--card, #FFFFFF);
+  border-radius: var(--radius-lg, 10px);
+  border: 1px solid var(--border, #E5E5E0);
+  padding: var(--space-5, 20px);
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4, 16px);
+}
+
+.stepTitle { font-size: 16px; font-weight: 700; color: var(--foreground, #171717); }
+.stepBadge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary, #FF6B35);
+  background: color-mix(in srgb, var(--primary, #FF6B35) 10%, transparent);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.stepQuestion { font-size: 15px; font-weight: 600; color: var(--foreground, #171717); margin-bottom: var(--space-3, 12px); }
+
+.textInput {
+  width: 100%;
+  min-height: 120px;
+  border-radius: var(--radius-md, 6px);
+  border: 1px solid var(--border, #E5E5E0);
+  background: var(--bg-canvas, #FAFAF7);
+  padding: var(--space-3, 12px);
+  font-size: 14px;
+  color: var(--foreground, #171717);
+  resize: vertical;
+  font-family: inherit;
+  outline: none;
+}
+.textInput:focus { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring, #FF6B35) 20%, transparent); }
+
+.scoreCard {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary, #FF6B35) 8%, transparent), transparent);
+  border: 1px solid color-mix(in srgb, var(--primary, #FF6B35) 20%, transparent);
+  border-radius: var(--radius-lg, 10px);
+  padding: var(--space-6, 24px);
+  text-align: center;
+}
+
+.scoreValue { font-size: 3rem; font-weight: 800; color: var(--primary, #FF6B35); line-height: 1; }
+.scoreLabel { font-size: 14px; color: var(--muted-foreground, #737373); margin-top: var(--space-2, 8px); }
+
+.ctaCard {
+  background: color-mix(in srgb, var(--primary, #FF6B35) 5%, transparent);
+  border: 2px solid var(--primary, #FF6B35);
+  border-radius: var(--radius-lg, 10px);
+  padding: var(--space-6, 24px);
+  text-align: center;
+}
+
+.ctaTitle { font-size: 1.25rem; font-weight: 700; color: var(--foreground, #171717); margin-bottom: var(--space-2, 8px); }
+.ctaDesc { font-size: 14px; color: var(--muted-foreground, #737373); margin-bottom: var(--space-4, 16px); }

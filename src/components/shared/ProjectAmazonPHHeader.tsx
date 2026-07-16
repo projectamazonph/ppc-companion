@@ -3,13 +3,12 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { clsx } from "clsx";
+import styles from "./header.module.css";
 
 interface ProjectAmazonPHHeaderProps {
-  /** Override the project name shown below "ProjectAmazonPH". Defaults to the current hostname label. */
   projectName?: string;
-  /** Optional URL the logo links to. Defaults to https://projectamazonph.com */
   href?: string;
-  /** Optional className to override container styles */
   className?: string;
 }
 
@@ -26,18 +25,15 @@ export function ProjectAmazonPHHeader({
   className,
 }: ProjectAmazonPHHeaderProps) {
   return (
-    <div
-      className={`flex items-center gap-3 ${className ?? ""}`}
-    >
+    <div className={clsx(styles.root, className)}>
       <Link
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] rounded-lg"
+        className={styles.link}
         aria-label={`${BRAND.name} — ${projectName ?? "Home"}`}
       >
-        {/* Logo mark */}
-        <div className="relative w-9 h-9 shrink-0 rounded-lg overflow-hidden bg-[#1A1A2E] shadow-sm ring-1 ring-white/10 group-hover:ring-[#FF6B35]/40 transition-all duration-200">
+        <div className={styles.logoBox}>
           <Image
             src={BRAND.logo}
             alt={`${BRAND.name} logo`}
@@ -46,15 +42,9 @@ export function ProjectAmazonPHHeader({
             sizes="36px"
           />
         </div>
-
-        {/* Brand + project name stack */}
-        <div className="flex flex-col min-w-0">
-          <span className="font-heading font-bold text-[13px] text-[#FF6B35] leading-none tracking-wide truncate">
-            {BRAND.name}
-          </span>
-          <span className="text-[10px] text-white/50 leading-none mt-0.5 font-medium tracking-wider uppercase truncate">
-            {projectName ?? "Official Platform"}
-          </span>
+        <div className={styles.textStack}>
+          <span className={styles.brandName}>{BRAND.name}</span>
+          <span className={styles.projectName}>{projectName ?? "Official Platform"}</span>
         </div>
       </Link>
     </div>

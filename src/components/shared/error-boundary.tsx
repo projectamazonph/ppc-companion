@@ -3,6 +3,7 @@
 import { Component, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Warning as AlertTriangle, ArrowsCounterClockwise as RotateCcw } from "@phosphor-icons/react";
+import styles from "./error-boundary.module.css";
 
 interface Props {
   children: ReactNode;
@@ -32,12 +33,12 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         this.props.fallback ?? (
-          <div className="flex flex-col items-center justify-center min-h-[300px] p-8 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-rose-500/10 mb-4">
-              <AlertTriangle className="h-8 w-8 text-rose-500" />
+          <div className={styles.root}>
+            <div className={styles.iconBox}>
+              <AlertTriangle className={styles.icon} />
             </div>
-            <h2 className="text-xl font-bold text-foreground mb-2">Something went wrong</h2>
-            <p className="text-sm text-muted-foreground mb-6 max-w-md">
+            <h2 className={styles.title}>Something went wrong</h2>
+            <p className={styles.message}>
               {this.state.error?.message || "An unexpected error occurred."}
             </p>
             <Button onClick={this.handleReset} variant="outline" className="gap-2">

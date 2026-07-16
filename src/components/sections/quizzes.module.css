@@ -1,0 +1,80 @@
+/* Quizzes — quizzes.module.css */
+
+.section { display: flex; flex-direction: column; gap: var(--space-6, 24px); }
+
+.quizCard {
+  background: var(--card, #FFFFFF);
+  border-radius: var(--radius-lg, 10px);
+  border: 1px solid var(--border, #E5E5E0);
+  overflow: hidden;
+}
+
+.quizHeader {
+  padding: var(--space-5, 20px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3, 12px);
+}
+
+.quizTitle { font-size: 16px; font-weight: 600; color: var(--foreground, #171717); }
+.quizDesc { font-size: 13px; color: var(--muted-foreground, #737373); margin-top: 2px; }
+
+.questionCard {
+  padding: var(--space-5, 20px);
+  border-top: 1px solid var(--border, #E5E5E0);
+}
+
+.questionPrompt { font-size: 15px; font-weight: 600; color: var(--foreground, #171717); margin-bottom: var(--space-4, 16px); }
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  padding: var(--space-3, 12px);
+  border-radius: var(--radius-md, 6px);
+  cursor: pointer;
+  transition: background-color var(--duration-fast, 120ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  margin-bottom: var(--space-2, 8px);
+  border: 1px solid transparent;
+}
+
+.optionRow:hover { background: var(--muted, #F4F3EE); }
+
+.optionSelected {
+  border-color: var(--primary, #FF6B35);
+  background: color-mix(in srgb, var(--primary, #FF6B35) 5%, transparent);
+}
+
+.optionCorrect {
+  border-color: var(--success, #0E7C3A);
+  background: color-mix(in srgb, var(--success, #0E7C3A) 5%, transparent);
+}
+
+.optionWrong {
+  border-color: var(--destructive, #DC2626);
+  background: color-mix(in srgb, var(--destructive, #DC2626) 5%, transparent);
+}
+
+.optionText { flex: 1; font-size: 14px; color: var(--foreground, #171717); }
+
+.radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border, #E5E5E0);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration-fast, 120ms);
+}
+
+.radioChecked { border-color: var(--primary, #FF6B35); }
+.radioChecked::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--primary, #FF6B35); }
+
+.radioCorrect { border-color: var(--success, #0E7C3A); }
+.radioCorrect::after { background: var(--success, #0E7C3A); }
+
+.radioWrong { border-color: var(--destructive, #DC2626); }
+.radioWrong::after { background: var(--destructive, #DC2626); }

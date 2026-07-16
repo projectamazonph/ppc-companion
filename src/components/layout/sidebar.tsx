@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { clsx } from "clsx";
 import { useAppStore, type Section, useProgressStats, pathToSection, sectionToPath } from "@/lib/store";
-import { cn } from "@/lib/utils";
 import { SquaresFour as LayoutDashboard, BookOpen, Pen as PenLine, GraduationCap, Calculator, BookBookmark as BookMarked, Trophy, Flame, CheckCircle as CheckCircle2, Users, UserCircle, ClipboardText as ClipboardList, Student as School, Scroll as ScrollText, Download, CaretLeft as ChevronLeft, CaretRight as ChevronRight, SignOut as LogOut, X, Bell, Gauge, Compass } from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -12,10 +12,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-// =============================================================
-// Nav item definition
-// =============================================================
+import styles from "./sidebar.module.css";
 
 type NavItem = {
   id: Section;
@@ -27,7 +24,6 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  // Main sections — visible to everyone
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, description: "Your training overview", roles: ["student", "instructor", "admin", "guest"], group: "main" },
   { id: "sampler", label: "PPC Sampler", icon: Compass, description: "Try a real PPC task (15 min)", roles: ["student", "instructor", "admin", "guest"], group: "main" },
   { id: "curriculum", label: "Curriculum", icon: BookOpen, description: "All 4 phases & modules", roles: ["student", "instructor", "admin", "guest"], group: "main" },
@@ -38,18 +34,8 @@ const navItems: NavItem[] = [
   { id: "capstone", label: "Capstone", icon: Trophy, description: "Final project tracker", roles: ["student", "instructor", "admin", "guest"], group: "main" },
   { id: "downloads", label: "Downloads", icon: Download, description: "Templates & cheat sheets", roles: ["student", "instructor", "admin", "guest"], group: "main" },
   { id: "notifications", label: "Notifications", icon: Bell, description: "Activity alerts & updates", roles: ["student", "instructor", "admin", "guest"], group: "main" },
-
-  // Student-only — their own profile
   { id: "myprofile", label: "My Profile", icon: UserCircle, description: "Your progress & activity", roles: ["student"], group: "main" },
-
-  // Instructor — their students + grading
-
-  // Admin — full management
 ];
-
-// =============================================================
-// Sidebar (desktop — collapsible)
-// =============================================================
 
 export function Sidebar({
   onNavigate,
@@ -61,7 +47,6 @@ export function Sidebar({
   onClose?: () => void;
 }) {
   const pathname = usePathname();
-  // Active section is derived from URL — see app-shell.tsx for rationale.
   const activeSection = pathToSection(pathname);
   const user = useAppStore((s) => s.user);
   const stats = useProgressStats();
@@ -73,13 +58,9 @@ export function Sidebar({
   const adminItems = visibleItems.filter((item) => item.group === "admin");
 
   const handleNav = (id: Section) => {
-    // No need to call setSection — the URL change triggers a re-render and
-    // activeSection is re-derived from the new pathname. We just close mobile
-    // menus on navigation.
     onNavigate?.();
   };
 
-  // Compute initials for avatar
   const userInitials = user?.name
     ?.split(" ")
     .map((p) => p[0])
@@ -105,87 +86,46 @@ export function Sidebar({
       ? "Guest"
       : "Student";
 
-  // ── Collapsed width only on desktop ──
-  const sidebarWidth = mobile
-    ? "w-60"
-    : collapsed
-    ? "w-[68px]"
-    : "w-60";
+  const desktopCollapsed = collapsed && !mobile;
 
   return (
-    <div
-      className={cn(
-        "flex h-full flex-col bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out",
-        sidebarWidth
-      )}
-    >
-      {/* ── Logo / Brand ── */}
-      <div
-        className={cn(
-          "flex items-center border-b border-sidebar-border/60",
-          collapsed && !mobile ? "justify-center px-0 py-4" : "gap-3 px-4 py-4"
-        )}
-      >
-        {/* Gradient icon mark */}
-        <div
-          className={cn(
-            "flex shrink-0 items-center justify-center rounded-xl bg-orange-500 text-white shadow-lg shadow-orange-600/20",
-            collapsed && !mobile ? "h-9 w-9" : "h-9 w-9"
-          )}
-        >
-          <Flame className="h-4.5 w-4.5" />
+    <div className={clsx(styles.sidebar, desktopCollapsed ? styles.narrow : styles.wide)}>
+      <div className={clsx(styles.brand, desktopCollapsed && styles.brandCentered)}>
+        <div className={clsx(styles.brandLogo, styles.brandLogoLarge)}>
+          <Flame className="h-[18px] w-[18px]" />
         </div>
 
-        {/* Text — hidden when collapsed on desktop */}
         {(!collapsed || mobile) && (
-          <div className="min-w-0 flex-1">
-            <h1 className="text-[13px] font-semibold tracking-tight leading-tight truncate text-sidebar-foreground">
-              ProjectAmazonPH
-            </h1>
-            <p className="text-[11px] text-sidebar-foreground/50 leading-tight">
-              PPC Companion
-            </p>
+          <div className={styles.brandText}>
+            <h1 className={styles.brandName}>ProjectAmazonPH</h1>
+            <p className={styles.brandTagline}>PPC Companion</p>
           </div>
         )}
 
-        {/* Mobile close button */}
         {mobile && onClose && (
-          <button
-            onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors lg:hidden"
-            aria-label="Close menu"
-          >
+          <button onClick={onClose} className={styles.closeBtn} aria-label="Close menu">
             <X className="h-4 w-4" />
           </button>
         )}
       </div>
 
-      {/* ── Collapse toggle (desktop only) ── */}
       {!mobile && (
-        <div className="flex justify-end px-3 pt-2 pb-1">
+        <div className={styles.collapseToggle}>
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-sidebar-foreground/40 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+            className={styles.collapseBtn}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            {collapsed ? (
-              <ChevronRight className="h-4 w-4" />
-            ) : (
-              <ChevronLeft className="h-4 w-4" />
-            )}
+            {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </button>
         </div>
       )}
 
-      {/* ── Navigation ── */}
-      <nav className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-2">
-        {/* Section label */}
+      <nav className={styles.nav}>
         {(!collapsed || mobile) && (
-          <p className="px-2.5 pb-1.5 pt-2 text-[10px] font-medium uppercase tracking-widest text-sidebar-foreground/35">
-            Overview
-          </p>
+          <p className={styles.navLabel}>Overview</p>
         )}
-        <div className="space-y-0.5">
+        <div className={styles.navList}>
           {mainItems.map((item) => (
             <NavButton
               key={item.id}
@@ -193,7 +133,7 @@ export function Sidebar({
               active={activeSection === item.id}
               onClick={() => handleNav(item.id)}
               stats={stats}
-              collapsed={collapsed && !mobile}
+              collapsed={desktopCollapsed}
             />
           ))}
         </div>
@@ -201,14 +141,10 @@ export function Sidebar({
         {adminItems.length > 0 && (
           <>
             {(!collapsed || mobile) && (
-              <p className="px-2.5 pb-1.5 pt-5 text-[10px] font-medium uppercase tracking-widest text-sidebar-foreground/35">
-                {userRole === "admin" ? "Administration" : "Teaching"}
-              </p>
+              <p className={styles.navLabel}>{userRole === "admin" ? "Administration" : "Teaching"}</p>
             )}
-            {collapsed && !mobile && (
-              <div className="mx-auto my-2 h-px w-5 bg-sidebar-border/60" />
-            )}
-            <div className="space-y-0.5">
+            {desktopCollapsed && <div className="mx-auto my-2 h-px w-5 bg-sidebar-border/60" />}
+            <div className={styles.navList}>
               {adminItems.map((item) => (
                 <NavButton
                   key={item.id}
@@ -216,7 +152,7 @@ export function Sidebar({
                   active={activeSection === item.id}
                   onClick={() => handleNav(item.id)}
                   stats={stats}
-                  collapsed={collapsed && !mobile}
+                  collapsed={desktopCollapsed}
                 />
               ))}
             </div>
@@ -224,85 +160,53 @@ export function Sidebar({
         )}
       </nav>
 
-      {/* ── Progress summary (students/guests) ── */}
       {(userRole === "student" || userRole === "guest") &&
         (!collapsed || mobile) && (
-          <div className="border-t border-sidebar-border/60 px-4 py-3 space-y-1.5">
-            <div className="flex items-center justify-between text-[11px]">
-              <span className="flex items-center gap-1.5 text-sidebar-foreground/50">
+          <div className={styles.progressSection}>
+            <div className={styles.progressRow}>
+              <span className={styles.progressLabel}>
                 <CheckCircle2 className="h-3 w-3 text-blue-500/80" />
                 Exercises
               </span>
-              <span className="font-medium text-sidebar-foreground/80 tabular-nums">
-                {stats.exercisesAttempted}
-              </span>
+              <span className={styles.progressValue}>{stats.exercisesAttempted}</span>
             </div>
-            <div className="flex items-center justify-between text-[11px]">
-              <span className="flex items-center gap-1.5 text-sidebar-foreground/50">
+            <div className={styles.progressRow}>
+              <span className={styles.progressLabel}>
                 <GraduationCap className="h-3 w-3 text-blue-500/80" />
                 Quiz score
               </span>
-              <span className="font-medium text-sidebar-foreground/80 tabular-nums">
-                {stats.totalCorrect}/{stats.totalQuestions || "—"}
-              </span>
+              <span className={styles.progressValue}>{stats.totalCorrect}/{stats.totalQuestions || "—"}</span>
             </div>
-            <div className="flex items-center justify-between text-[11px]">
-              <span className="flex items-center gap-1.5 text-sidebar-foreground/50">
+            <div className={styles.progressRow}>
+              <span className={styles.progressLabel}>
                 <Trophy className="h-3 w-3 text-blue-500/80" />
                 Capstone
               </span>
-              <span className="font-medium text-sidebar-foreground/80 tabular-nums">
-                {stats.capstoneDone}/{stats.capstoneTotal}
-              </span>
+              <span className={styles.progressValue}>{stats.capstoneDone}/{stats.capstoneTotal}</span>
             </div>
           </div>
         )}
 
-      {/* ── User profile ── */}
       {user && (
-        <div
-          className={cn(
-            "border-t border-sidebar-border/60",
-            collapsed && !mobile ? "px-2 py-3" : "px-3 py-3"
-          )}
-        >
-          {collapsed && !mobile ? (
-            /* Collapsed: just the avatar */
-            <div className="flex justify-center">
-              <div
-                className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-full text-white text-[10px] font-semibold shadow-sm",
-                  roleColor
-                )}
-              >
-                {userInitials}
-              </div>
+        <div className={clsx(styles.userSection, desktopCollapsed ? styles.userSectionCompact : styles.userSectionExpanded)}>
+          {desktopCollapsed ? (
+            <div className={clsx(styles.userAvatar, roleColor)}>
+              {userInitials}
             </div>
           ) : (
-            /* Expanded: full profile row */
-            <div className="flex items-center gap-2.5">
-              <div
-                className={cn(
-                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white text-[10px] font-semibold shadow-sm",
-                  roleColor
-                )}
-              >
+            <div className={styles.userCard}>
+              <div className={clsx(styles.userAvatar, roleColor)}>
                 {userInitials}
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[12px] font-medium leading-tight truncate text-sidebar-foreground">
-                  {user.name}
-                </p>
-                <p className="text-[10px] text-sidebar-foreground/45 leading-tight truncate">
-                  {user.email}
-                </p>
+              <div className={styles.userInfo}>
+                <p className={styles.userName}>{user.name}</p>
+                <p className={styles.userEmail}>{user.email}</p>
               </div>
               <button
                 onClick={() => {
-                  const firstName = user?.name?.split(" ")[0] ?? "there";
                   useAppStore.getState().logout();
                 }}
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-sidebar-foreground/40 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+                className={styles.logoutBtn}
                 aria-label="Sign out"
               >
                 <LogOut className="h-3.5 w-3.5" />
@@ -310,11 +214,9 @@ export function Sidebar({
             </div>
           )}
           {(!collapsed || mobile) && (
-            <div className="mt-2 flex items-center gap-1.5">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              <span className="text-[10px] text-sidebar-foreground/40">
-                {roleLabel} · v2026
-              </span>
+            <div className={styles.userStatus}>
+              <span className={styles.statusDot} />
+              <span className={styles.statusText}>{roleLabel} · v2026</span>
             </div>
           )}
         </div>
@@ -322,10 +224,6 @@ export function Sidebar({
     </div>
   );
 }
-
-// =============================================================
-// Nav button
-// =============================================================
 
 function NavButton({
   item,
@@ -346,58 +244,38 @@ function NavButton({
     <Link
       href={sectionToPath(item.id)}
       onClick={onClick}
-      className={cn(
-        "group relative flex w-full items-center rounded-lg text-left transition-all duration-150",
-        collapsed ? "justify-center p-2.5" : "gap-2.5 px-2.5 py-2",
-        active
-          ? "bg-sidebar-accent/80 text-sidebar-accent-foreground font-medium"
-          : "text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+      className={clsx(
+        styles.navItem,
+        collapsed ? styles.navItemCollapsed : styles.navItemExpanded,
+        active && styles.navItemActive
       )}
     >
-      {/* Active indicator — left border accent */}
-      {active && (
-        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-blue-500" />
-      )}
+      {active && <span className={styles.activeIndicator} />}
 
-      {/* Icon container */}
-      <span
-        className={cn(
-          "flex shrink-0 items-center justify-center rounded-md transition-colors",
-          collapsed ? "h-8 w-8" : "h-7 w-7",
-          active
-            ? "bg-blue-500/10 text-blue-500"
-            : "text-sidebar-foreground/40 group-hover:text-sidebar-foreground/70"
-        )}
-      >
+      <span className={clsx(
+        styles.navIconBox,
+        collapsed ? styles.navIconBoxSm : styles.navIconBoxLg,
+        active ? styles.navIconActive : styles.navIconInactive
+      )}>
         <Icon className="h-4 w-4" />
       </span>
 
-      {/* Label + description */}
       {!collapsed && (
-        <div className="flex-1 min-w-0">
-          <div className="text-[13px] leading-tight truncate">{item.label}</div>
+        <div className={styles.navText}>
+          <div className={styles.navLabel}>{item.label}</div>
           {!active && (
-            <div className="text-[10px] text-sidebar-foreground/35 leading-tight truncate mt-0.5">
-              {item.description}
-            </div>
+            <div className={styles.navDesc}>{item.description}</div>
           )}
         </div>
       )}
 
-      {/* Badges */}
       {!collapsed && item.id === "capstone" && stats.capstoneDone > 0 && (
-        <Badge
-          variant="secondary"
-          className="bg-blue-500/10 text-blue-500 border-0 text-[10px] px-1.5 font-medium"
-        >
+        <Badge variant="secondary" className="bg-blue-500/10 text-blue-500 border-0 text-[10px] px-1.5 font-medium">
           {stats.capstoneDone}/5
         </Badge>
       )}
       {!collapsed && item.id === "quizzes" && stats.quizzesTaken > 0 && (
-        <Badge
-          variant="secondary"
-          className="bg-blue-500/10 text-blue-500 border-0 text-[10px] px-1.5 font-medium"
-        >
+        <Badge variant="secondary" className="bg-blue-500/10 text-blue-500 border-0 text-[10px] px-1.5 font-medium">
           {stats.quizzesTaken}/4
         </Badge>
       )}

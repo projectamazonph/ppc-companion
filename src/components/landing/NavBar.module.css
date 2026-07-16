@@ -1,12 +1,16 @@
-/* NavBar.module.css */
+/* NavBar — landing page navigation
+ * Reference: Field Manual design tokens
+ */
+
 .nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(26, 26, 46, 0.92);
+  background: var(--nav-bg, rgba(10, 22, 40, 0.95));
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 0 24px;
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--nav-border, rgba(255, 255, 255, 0.06));
+  padding: 0 var(--space-6, 24px);
 }
 
 .navInner {
@@ -27,7 +31,7 @@
 }
 
 .navLogo span {
-  color: #ff6b35;
+  color: var(--accent, #FF6B35);
 }
 
 .navCta {

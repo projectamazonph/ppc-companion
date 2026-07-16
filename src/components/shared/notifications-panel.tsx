@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { clsx } from "clsx";
 import { Bell, Checks as CheckCheck, Info, WarningCircle as AlertCircle, Warning as AlertTriangle, CheckCircle as CheckCircle2, ArrowSquareOut as ExternalLink } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/lib/store";
-import { cn } from "@/lib/utils";
+import styles from "./notifications.module.css";
 
 type Notification = {
   id: string;
@@ -25,13 +26,13 @@ const typeIcons = {
   GRADE: CheckCircle2,
 };
 
-const typeColors = {
-  INFO: "text-blue-500 bg-blue-500/10",
-  SUCCESS: "text-emerald-500 bg-emerald-500/10",
-  WARNING: "text-amber-500 bg-amber-500/10",
-  ERROR: "text-rose-500 bg-rose-500/10",
-  ASSIGNMENT: "text-violet-500 bg-violet-500/10",
-  GRADE: "text-emerald-500 bg-emerald-500/10",
+const typeIconStyles: Record<string, string> = {
+  INFO: styles.iconInfo,
+  SUCCESS: styles.iconSuccess,
+  WARNING: styles.iconWarning,
+  ERROR: styles.iconError,
+  ASSIGNMENT: styles.iconInfo,
+  GRADE: styles.iconSuccess,
 };
 
 export function NotificationsPanel() {
@@ -113,60 +114,47 @@ export function NotificationsPanel() {
   if (!user) return null;
 
   return (
-    <div className="relative">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-9 w-9 relative text-muted-foreground"
-        aria-label="Notifications"
-        onClick={() => setOpen(!open)}
-      >
+    <div className={styles.trigger}>
+      <button className={styles.bellBtn} aria-label="Notifications" onClick={() => setOpen(!open)}>
         <Bell className="h-[18px] w-[18px]" />
         {unreadCount > 0 && (
-          <span className="absolute top-1.5 right-1.5 flex h-4 min-w-[14px] items-center justify-center rounded-full bg-blue-500 px-1 text-[9px] font-bold text-white ring-2 ring-background">
-            {unreadCount > 9 ? "9+" : unreadCount}
-          </span>
+          <span className={styles.badge}>{unreadCount > 9 ? "9+" : unreadCount}</span>
         )}
-      </Button>
+      </button>
 
       {open && (
         <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-full mt-2 z-50 w-80 sm:w-96 rounded-xl border border-border/60 bg-popover shadow-xl">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-border/40">
+          <div className={styles.backdrop} onClick={() => setOpen(false)} />
+          <div className={styles.panel}>
+            <div className={styles.panelHeader}>
               <div>
-                <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
-                <p className="text-[11px] text-muted-foreground/60">
+                <h3 className={styles.panelTitle}>Notifications</h3>
+                <p className={styles.panelSubtitle}>
                   {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
                 </p>
               </div>
               {unreadCount > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 text-xs gap-1 text-blue-500 hover:text-blue-600"
-                  onClick={markAllRead}
-                >
+                <button className={styles.markAllBtn} onClick={markAllRead}>
                   <CheckCheck className="h-3.5 w-3.5" />
                   Mark all read
-                </Button>
+                </button>
               )}
             </div>
 
-            <div className="max-h-[360px] overflow-y-auto">
+            <div className={styles.list}>
               {loading && notifications.length === 0 ? (
-                <div className="flex items-center justify-center py-8">
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-muted-foreground/20 border-t-blue-500" />
+                <div className={styles.loadingState}>
+                  <div className={styles.spinner} />
                 </div>
               ) : notifications.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-8 text-muted-foreground/50">
-                  <Bell className="h-8 w-8 mb-2" />
-                  <p className="text-xs">No notifications yet</p>
+                <div className={styles.emptyState}>
+                  <Bell className={clsx("h-8 w-8", styles.emptyIcon)} />
+                  <p className={styles.emptyText}>No notifications yet</p>
                 </div>
               ) : (
                 notifications.map((n) => {
                   const Icon = typeIcons[n.type] || Info;
-                  const colorClass = typeColors[n.type] || typeColors.INFO;
+                  const iconStyle = typeIconStyles[n.type] || styles.iconInfo;
                   return (
                     <button
                       key={n.id}
@@ -177,30 +165,19 @@ export function NotificationsPanel() {
                           setOpen(false);
                         }
                       }}
-                      className={cn(
-                        "w-full text-left px-4 py-3 flex gap-3 transition-colors hover:bg-accent/50 border-b border-border/20 last:border-0",
-                        !n.readAt && "bg-blue-500/[0.03]"
-                      )}
+                      className={clsx(styles.item, !n.readAt && styles.itemUnread)}
                     >
-                      <span className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-full mt-0.5", colorClass)}>
+                      <span className={clsx(styles.iconCircle, iconStyle)}>
                         <Icon className="h-4 w-4" />
                       </span>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2">
-                          <p className="text-[13px] font-medium text-foreground leading-tight truncate">
-                            {n.title}
-                          </p>
-                          <span className="text-[10px] text-muted-foreground/50 shrink-0 mt-0.5">
-                            {timeAgo(n.createdAt)}
-                          </span>
+                      <div className={styles.itemBody}>
+                        <div className={styles.itemHeader}>
+                          <p className={styles.itemTitle}>{n.title}</p>
+                          <span className={styles.itemTime}>{timeAgo(n.createdAt)}</span>
                         </div>
-                        <p className="text-[12px] text-muted-foreground/80 leading-relaxed mt-0.5 line-clamp-2">
-                          {n.message}
-                        </p>
+                        <p className={styles.itemMessage}>{n.message}</p>
                       </div>
-                      {!n.readAt && (
-                        <span className="h-2 w-2 rounded-full bg-blue-500 shrink-0 mt-2" />
-                      )}
+                      {!n.readAt && <span className={styles.unreadDot} />}
                     </button>
                   );
                 })

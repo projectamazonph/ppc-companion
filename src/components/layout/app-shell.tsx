@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { clsx } from "clsx";
 import { Sidebar } from "./sidebar";
 import { useAppStore, useProgressStats, pathToSection } from "@/lib/store";
 import {
@@ -34,6 +35,7 @@ import { ProjectAmazonPHHeader } from "@/components/shared/ProjectAmazonPHHeader
 import { NotificationsPanel } from "@/components/shared/notifications-panel";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 import { cn } from "@/lib/utils";
+import styles from "./app-shell.module.css";
 
 const sectionLabels: Record<string, { title: string; subtitle: string }> = {
   dashboard: { title: "Dashboard", subtitle: "Your training overview & progress" },
@@ -52,7 +54,6 @@ const sectionLabels: Record<string, { title: string; subtitle: string }> = {
 };
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  // Lazy-initialize theme from localStorage (avoids setState-in-effect lint)
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof window === "undefined") return "light";
     const stored = localStorage.getItem("ppc-theme");
@@ -62,9 +63,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const pathname = usePathname();
-  // Derive the active section from the URL — the source of truth is now the
-  // browser address bar, not the Zustand store. This keeps the topbar label
-  // in sync with sidebar highlights even on browser back/forward.
   const activeSection = pathToSection(pathname);
   const resetProgress = useAppStore((s) => s.resetProgress);
   const user = useAppStore((s) => s.user);
@@ -72,7 +70,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const stats = useProgressStats();
   const { toast } = useToast();
 
-  // Apply theme class to <html> when it changes
   useEffect(() => {
     if (typeof window === "undefined") return;
     document.documentElement.classList.toggle("dark", theme === "dark");
@@ -103,7 +100,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     });
   };
 
-  // Compute initials for avatar
   const userInitials = user?.name
     ?.split(" ")
     .map((p) => p[0])
@@ -121,7 +117,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       : "bg-orange-500";
 
   const meta = sectionLabels[activeSection] ?? sectionLabels.dashboard;
-  // Compute overall progress percentage (simple blend)
   const overall =
     Math.min(100,
       Math.round(
@@ -133,77 +128,48 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     );
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* ═══════════════════════════════════════════════════════════
-          Top bar
-          ═══════════════════════════════════════════════════════════ */}
-      <header className="sticky top-3 z-30 mx-4 lg:mx-6 rounded-md border border-border bg-card shadow-sm">
-        <div className="flex h-12 items-center gap-3 px-4">
-          {/* Mobile sidebar trigger */}
+    <div className={styles.shell}>
+      <header className={styles.topBar}>
+        <div className={styles.topBarInner}>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden -ml-1 shrink-0 flex flex-col items-center justify-center h-11 w-11 rounded-lg hover:bg-muted/50 transition-colors"
+            className={styles.mobileMenuBtn}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
             <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Open menu"}</span>
-            <div className="relative flex flex-col items-center justify-center w-5 h-4">
-              <span
-                className={`absolute block h-[2px] w-5 rounded-full bg-foreground transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-                  mobileMenuOpen ? "translate-y-0 rotate-45" : "-translate-y-[5px]"
-                }`}
-              />
-              <span
-                className={`absolute block h-[2px] w-5 rounded-full bg-foreground transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-                  mobileMenuOpen ? "opacity-0 scale-0" : "opacity-100 scale-100"
-                }`}
-              />
-              <span
-                className={`absolute block h-[2px] w-5 rounded-full bg-foreground transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-                  mobileMenuOpen ? "translate-y-0 -rotate-45" : "translate-y-[5px]"
-                }`}
-              />
+            <div className={clsx(styles.hamburgerBox, mobileMenuOpen && styles.hamburgerOpen)}>
+              <span className={clsx(styles.hamburgerLine, styles.hamburgerTop)} />
+              <span className={clsx(styles.hamburgerLine, styles.hamburgerMid)} />
+              <span className={clsx(styles.hamburgerLine, styles.hamburgerBot)} />
             </div>
           </button>
 
-          {/* ProjectAmazonPH brand header */}
           <ProjectAmazonPHHeader projectName="PPC Companion" />
 
-          {/* Page title + subtitle */}
-          <div className="flex-1 min-w-0">
-            <h2 className="text-[15px] font-semibold tracking-tight truncate leading-tight text-foreground">
-              {meta.title}
-            </h2>
-            <p className="text-[11px] text-muted-foreground/70 truncate leading-tight mt-0.5">
-              {meta.subtitle}
-            </p>
+          <div className={styles.pageMeta}>
+            <h2 className={styles.pageTitle}>{meta.title}</h2>
+            <p className={styles.pageSubtitle}>{meta.subtitle}</p>
           </div>
 
-          {/* Right-side actions */}
-          <div className="flex items-center gap-0.5 sm:gap-1 shrink-0">
-            {/* Search trigger */}
+          <div className={styles.actions}>
             <div
-              className={cn(
-                "hidden md:flex items-center gap-2 rounded-lg border px-2.5 py-1.5 transition-all",
-                searchFocused
-                  ? "bg-background border-blue-400/50 shadow-sm shadow-blue-500/10 w-52"
-                  : "bg-muted/40 border-transparent w-40"
+              className={clsx(
+                styles.searchBox,
+                searchFocused ? styles.searchBoxFocused : styles.searchBoxDefault
               )}
             >
-              <Search className="h-3.5 w-3.5 text-muted-foreground/50 shrink-0" />
+              <Search className={styles.searchIcon} />
               <input
                 type="text"
                 placeholder="Search…"
-                className="w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground/40 outline-none"
+                className={styles.searchInput}
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setSearchFocused(false)}
               />
-              <kbd className="hidden lg:inline-flex text-[9px] text-muted-foreground/40 bg-muted/60 rounded px-1 py-0.5 font-mono">
-                ⌘K
-              </kbd>
+              <kbd className={styles.searchKbd}>⌘K</kbd>
             </div>
 
-            {/* Progress badge */}
-            <div className="hidden md:flex items-center">
+            <div className={styles.progressBadge}>
               <Badge
                 variant="outline"
                 className="bg-blue-500/5 border-blue-500/15 text-blue-600 dark:text-blue-400 px-2.5 py-1 font-medium"
@@ -217,35 +183,25 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </Badge>
             </div>
 
-            {/* Notification bell with panel */}
-            <div className="mobile-tap-target flex items-center"><NotificationsPanel /></div>
+            <div className="flex items-center"><NotificationsPanel /></div>
 
-            {/* Theme toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
               onClick={toggleTheme}
+              className={styles.actionIcon}
               aria-label="Toggle theme"
-              className="h-9 w-9 text-muted-foreground"
             >
               {mounted && theme === "dark" ? (
-                <Sun className="h-[18px] w-[18px]" />
+                <Sun className="w-[18px] h-[18px]" />
               ) : (
-                <Moon className="h-[18px] w-[18px]" />
+                <Moon className="w-[18px] h-[18px]" />
               )}
-            </Button>
+            </button>
 
-            {/* Reset */}
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Reset progress"
-                  className="h-9 w-9 text-muted-foreground"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                </Button>
+                <button className={styles.actionIcon} aria-label="Reset progress">
+                  <RotateCcw className="w-4 h-4" />
+                </button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -267,32 +223,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </AlertDialogContent>
             </AlertDialog>
 
-            {/* Divider */}
-            <div className="hidden sm:block h-6 w-px bg-border mx-1" />
+            <div className={styles.separator} />
 
-            {/* User menu */}
             {user && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button
-                    className="flex items-center gap-2.5 rounded-full hover:bg-muted/50 transition-colors shrink-0 py-1 pl-1 pr-2.5"
-                    aria-label="User menu"
-                  >
-                    <div
-                      className={cn(
-                        "flex h-8 w-8 items-center justify-center rounded-full text-white text-[10px] font-semibold shadow-sm ring-2 ring-background shrink-0",
-                        roleColor
-                      )}
-                    >
+                  <button className={styles.userBtn} aria-label="User menu">
+                    <div className={clsx(styles.userAvatar, roleColor)}>
                       {userInitials}
                     </div>
-                    <div className="hidden md:block text-left min-w-0">
-                      <p className="text-[12px] font-medium leading-tight max-w-[110px] lg:max-w-[140px] truncate text-foreground">
-                        {user.name}
-                      </p>
-                      <p className="text-[10px] text-muted-foreground capitalize leading-tight">
-                        {user.role}
-                      </p>
+                    <div className={styles.userInfo}>
+                      <p className={styles.userName}>{user.name}</p>
+                      <p className={styles.userRole}>{user.role}</p>
                     </div>
                   </button>
                 </DropdownMenuTrigger>
@@ -363,39 +305,26 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      {/* ═══════════════════════════════════════════════════════════
-          Main split layout
-          ═══════════════════════════════════════════════════════════ */}
-      <div className="flex flex-1 min-h-0">
-        {/* Desktop sidebar */}
-        <aside className="hidden lg:block shrink-0 border-r border-border">
-          <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
+      <div className={styles.layout}>
+        <aside className={styles.sidebarWrapper}>
+          <div className={styles.sidebarSticky}>
             <Sidebar />
           </div>
         </aside>
 
-        {/* Content */}
-        <main className="flex-1 min-w-0 overflow-x-hidden bg-background">
-          <div className="container py-8">
-            <div key={activeSection} className="animate-fade-in-up">
+        <main className={styles.main}>
+          <div className={styles.content}>
+            <div key={activeSection} className={styles.contentInner}>
               {children}
             </div>
           </div>
         </main>
       </div>
 
-      {/* ═══════════════════════════════════════════════════════════
-          Mobile overlay sidebar
-          ═══════════════════════════════════════════════════════════ */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-          {/* Sidebar panel */}
-          <div className="absolute left-0 top-0 h-full w-72 shadow-2xl shadow-black/20 animate-slide-in-left safe-top">
+        <div className={styles.mobileOverlay}>
+          <div className={styles.overlayBackdrop} onClick={() => setMobileMenuOpen(false)} />
+          <div className={styles.overlaySidebar}>
             <Sidebar
               mobile
               onClose={() => setMobileMenuOpen(false)}
@@ -405,21 +334,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      {/* ═══════════════════════════════════════════════════════════
-          Footer
-          ═══════════════════════════════════════════════════════════ */}
-        <footer className="mt-auto border-t border-border/40 bg-background">
-          <div className="mx-auto max-w-[1200px] px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-muted-foreground/60 text-center sm:text-left">
-          <p className="min-w-0">
-            <span className="font-medium text-foreground/70">
-              {programOverview.title}
-            </span>
-            <span className="mx-2 text-border/40 hidden sm:inline">/</span>
-            <span className="block sm:inline text-muted-foreground/50">
-              v{programOverview.version} — {programOverview.duration}
-            </span>
+      <footer className={styles.footer}>
+        <div className={styles.footerInner}>
+          <p>
+            <span className={styles.footerTitle}>{programOverview.title}</span>
+            <span className={styles.footerVersion}>v{programOverview.version} — {programOverview.duration}</span>
           </p>
-          <p className="text-muted-foreground/40">Student Workbook</p>
+          <p>Student Workbook</p>
         </div>
       </footer>
     </div>

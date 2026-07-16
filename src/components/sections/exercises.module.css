@@ -1,0 +1,52 @@
+/* Exercises — exercises.module.css */
+
+.section { display: flex; flex-direction: column; gap: var(--space-6, 24px); }
+
+.exerciseCard {
+  background: var(--card, #FFFFFF);
+  border-radius: var(--radius-lg, 10px);
+  border: 1px solid var(--border, #E5E5E0);
+  padding: var(--space-5, 20px);
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--foreground, #171717);
+  margin-bottom: var(--space-3, 12px);
+}
+
+.cardSubtitle {
+  font-size: 14px;
+  color: var(--muted-foreground, #737373);
+  line-height: 1.5;
+  margin-bottom: var(--space-4, 16px);
+}
+
+.question { margin-bottom: var(--space-4, 16px); }
+.questionLabel { font-size: 14px; font-weight: 600; color: var(--foreground, #171717); margin-bottom: var(--space-2, 8px); }
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  border-radius: var(--radius-md, 6px);
+  border: 1px solid var(--border, #E5E5E0);
+  background: var(--bg-canvas, #FAFAF7);
+  padding: var(--space-3, 12px);
+  font-size: 14px;
+  color: var(--foreground, #171717);
+  resize: vertical;
+  font-family: inherit;
+  outline: none;
+}
+.textarea:focus { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring, #FF6B35) 20%, transparent); }
+
+.answerBox {
+  background: var(--muted, #F4F3EE);
+  border: 1px solid var(--border, #E5E5E0);
+  border-radius: var(--radius-md, 6px);
+  padding: var(--space-4, 16px);
+  font-size: 13px;
+  color: var(--foreground, #171717);
+  line-height: 1.6;
+  margin-top: var(--space-2, 8px);
+}
