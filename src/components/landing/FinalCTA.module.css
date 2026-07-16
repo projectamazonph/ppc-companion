@@ -35,6 +35,40 @@
   padding: 18px 48px;
 }
 
+.samplerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ff6b35;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.samplerLink:hover {
+  opacity: 0.85;
+  text-decoration: underline;
+}
+
+.samplerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ff6b35;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.samplerLink:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
 .urgencyRow {
   display: flex;
   align-items: center;

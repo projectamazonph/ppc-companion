@@ -16,6 +16,10 @@ export default function FinalCTA() {
         <i className="ph ph-rocket-launch"></i>
         Simulan Mo Na — ₱2,999 lang
       </a>
+      <a href="/sampler" className={styles.samplerLink}>
+        <i className="ph ph-compass"></i>
+        Or try the free PPC VA sampler first — no account needed
+      </a>
       <div className={styles.urgencyRow}>
         <div className={styles.urgencyItem}>
           <i className="ph ph-lock"></i> Secure checkout

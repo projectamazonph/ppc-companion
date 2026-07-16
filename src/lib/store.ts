@@ -8,6 +8,7 @@ import {
   syncCapstoneToggle,
   shouldSync,
 } from "@/lib/sync";
+import type { SamplerStepId } from "@/lib/sampler-data";
 
 // =============================================================
 // Types
@@ -28,7 +29,9 @@ export type Section =
   | "audit"
   | "notifications"
   | "admin-dashboard"
-  | "downloads" | "pricing";
+  | "downloads"
+  | "pricing"
+  | "sampler";
 
 export type QuizResult = {
   quizId: string;
@@ -81,6 +84,15 @@ export type User = {
   }[];
 };
 
+// =============================================================
+// Sampler state (separate from course/phase progress)
+// -------------------------------------------------------------
+// The PPC Companion sampler is a short trial experience. Its completion is
+// tracked independently and must NEVER be presented as course/cohort
+// completion. Legacy Module/Exercise/Quiz progress is untouched.
+// SamplerStepId is defined in @/lib/sampler-data (single source of truth).
+// =============================================================
+
 export type AppState = {
   // Auth
   user: User | null;
@@ -118,6 +130,17 @@ export type AppState = {
   // Weekly checklist completion
   checklistCompleted: Record<string, boolean>;
   toggleChecklist: (id: string) => void;
+
+  // ---- PPC Companion → AMPH v2 SAMPLER (separate from course progress) ----
+  // Sampler completion is NOT course/phase completion. Kept fully isolated so
+  // we never pretend a sampler win equals the full AMPH v2 curriculum.
+  samplerStepResults: Partial<Record<SamplerStepId, { completedAt: number; score?: number }>>;
+  samplerStartedAt: number | null;
+  samplerCompletedAt: number | null;
+  markSamplerStarted: () => void;
+  completeSamplerStep: (stepId: SamplerStepId, score?: number) => void;
+  completeSampler: () => void;
+  getSamplerProgress: () => { completed: number; total: number; done: boolean };
 
   // Reset everything
   resetProgress: () => void;
@@ -219,6 +242,32 @@ export const useAppStore = create<AppState>()(
           },
         })),
 
+      // ---- PPC Companion → AMPH v2 SAMPLER -------------------------------
+      // Fully isolated progress. Sampler completion is NEVER course completion.
+      samplerStepResults: {},
+      samplerStartedAt: null,
+      samplerCompletedAt: null,
+      markSamplerStarted: () =>
+        set((s) => ({ samplerStartedAt: s.samplerStartedAt ?? Date.now() })),
+      completeSamplerStep: (stepId, score) =>
+        set((state) => ({
+          samplerStepResults: {
+            ...state.samplerStepResults,
+            [stepId]: { completedAt: Date.now(), ...(score !== undefined ? { score } : {}) },
+          },
+        })),
+      completeSampler: () =>
+        set((state) => {
+          const ids: SamplerStepId[] = ["see-the-work", "check-listing", "make-decision", "career-path"];
+          const all = ids.every((id) => state.samplerStepResults[id]);
+          return all ? { samplerCompletedAt: Date.now() } : {};
+        }),
+      getSamplerProgress: () => {
+        const ids: SamplerStepId[] = ["see-the-work", "check-listing", "make-decision", "career-path"];
+        const done = ids.filter((id) => get().samplerStepResults[id]).length;
+        return { completed: done, total: ids.length, done: done === ids.length };
+      },
+
       resetProgress: () =>
         set({
           exerciseAnswers: {},
@@ -242,6 +291,10 @@ export const useAppStore = create<AppState>()(
         quizResults: state.quizResults,
         capstoneCompleted: state.capstoneCompleted,
         checklistCompleted: state.checklistCompleted,
+        // Sampler progress persisted separately from course progress.
+        samplerStepResults: state.samplerStepResults,
+        samplerStartedAt: state.samplerStartedAt,
+        samplerCompletedAt: state.samplerCompletedAt,
       }),
     }
   )
@@ -275,6 +328,7 @@ export function pathToSection(path: string | null | undefined): Section {
     "admin-dashboard",
     "downloads",
     "pricing",
+    "sampler",
   ];
   return (allowed as string[]).includes(cleaned)
     ? (cleaned as Section)
