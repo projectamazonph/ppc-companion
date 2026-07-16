@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import styles from "./sampler.module.css";
 import {
   Compass,
   ListChecks,
@@ -100,7 +101,7 @@ export function SamplerView() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
+    <div className={styles.section}>
       <SamplerHeader progress={progress} />
 
       {/* Step progress rail */}

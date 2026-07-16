@@ -7,6 +7,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
+import styles from "./reference.module.css";
 import {
   MagnifyingGlass as Search, BookBookmark as BookMarked, Calculator, ListChecks, Tag, Envelope as Mail, CalendarDots as CalendarDays, CheckCircle as CheckCircle2, ArrowRight, Sparkle as Sparkles, FileText, Clock, Warning as AlertTriangle, Hash, CaretRight as ChevronRight, type Icon } from "@phosphor-icons/react";
 
@@ -61,7 +62,7 @@ export function ReferenceSection() {
   const [activeTab, setActiveTab] = useState("glossary");
 
   return (
-    <div className="space-y-8">
+    <div className={styles.section}>
       {/* Page header */}
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">

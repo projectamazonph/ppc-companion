@@ -4,6 +4,7 @@ import { useAppStore } from "@/lib/store";
 import { phases, TRIAL_MODULE_IDS, type Module, type ModuleSection } from "@/lib/course-data";
 import { BrandButton } from "@/components/shared/buttons";
 import { cn } from "@/lib/utils";
+import styles from "./course-view.module.css";
 import {
   ArrowLeft, ArrowRight, Medal as Award, BookOpen, CheckCircle as CheckCircle2, CaretDown as ChevronDown, Clock, FileText, GraduationCap, Question as HelpCircle, Stack as Layers, Lightbulb, Lock, Pen as PenLine, Play, PlayCircle, Sparkle as Sparkles, User } from "@phosphor-icons/react";
 
@@ -216,7 +217,7 @@ function ModuleView({
   const progressPct = Math.round(((moduleIdx + 1) / totalModules) * 100);
 
   return (
-    <div className="space-y-6 sm:space-y-8">
+    <div className={styles.section}>
       {/* Back button */}
       <button
         type="button"

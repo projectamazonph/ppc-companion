@@ -11,6 +11,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
+import styles from "./exercises.module.css";
 import { Pen as PenLine, CheckCircle as CheckCircle2, XCircle, Calculator, FloppyDisk as Save, Eye, EyeSlash as EyeOff, Sparkle as Sparkles, BookOpen, Target, Question as HelpCircle, CaretRight as ChevronRight, Trophy, Circle, Check, Lightbulb } from "@phosphor-icons/react";
 
 // ─── Phase color maps ────────────────────────────────────────────────────────
@@ -137,7 +138,7 @@ export function ExercisesSection() {
   const progressPct = progress.total > 0 ? Math.round((progress.answered / progress.total) * 100) : 0;
 
   return (
-    <div className="space-y-6">
+    <div className={styles.section}>
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>

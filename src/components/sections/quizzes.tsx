@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import styles from "./quizzes.module.css";
 import {
   GraduationCap, CheckCircle as CheckCircle2, XCircle, Trophy, ArrowsCounterClockwise as RotateCcw, Lightbulb, ArrowRight, Target, FileText, ChartBar as BarChart3, Eye, EyeSlash as EyeOff, Sparkle as Sparkles, CheckCircle as CircleCheck, XCircle as CircleX, Circle as CircleDot, Flag, CaretDown as ChevronDown, House as Home, BookOpen, Users, User, Monitor as MonitorDot, Bell } from "@phosphor-icons/react";
 
@@ -31,7 +32,7 @@ export function QuizzesSection() {
   const current = quizzes.find((q) => q.quiz.id === activeId) ?? quizzes[0];
 
   return (
-    <div className="space-y-8 sm:space-y-10">
+    <div className={styles.section}>
       {/* Page header */}
       <div className="max-w-2xl">
         <div className="flex items-center gap-3 mb-2">

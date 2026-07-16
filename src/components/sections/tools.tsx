@@ -9,6 +9,7 @@ import { BrandButton } from "@/components/shared/buttons";
 import { formulas } from "@/lib/course-data";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import styles from "./tools.module.css";
 import { Calculator, MagnifyingGlass as Search, Stack as Layers, ArrowsClockwise as RefreshCw, TrendUp as TrendingUp, TrendDown as TrendingDown, Lightning as Zap, Plus, Trash as Trash2, Lightbulb, CheckCircle as CheckCircle2, Warning as AlertTriangle, Pause, ArrowUpRight, ArrowDownRight, ArrowsCounterClockwise as RotateCcw, Compass, ArrowsOut as Expand, Star, Shield, Copy, Check, ChartBar as BarChart3, Target, CurrencyDollar as DollarSign, CursorClick as MousePointerClick, ShoppingCart, Eye, Receipt, Question as CircleHelp, Sparkle as Sparkles } from "@phosphor-icons/react";
 
 // =============================================================
@@ -115,7 +116,7 @@ function MetricsCalculator() {
       : "bg-muted text-muted-foreground border-0";
 
   return (
-    <div className="space-y-6">
+    <div className={styles.section}>
       {/* Input section */}
       <div className="rounded-xl border border-border/60 bg-card p-5">
         <div className="flex items-center gap-2 mb-4">

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { BrandButton } from "@/components/shared/buttons";
 import { cn } from "@/lib/utils";
+import styles from "./capstone.module.css";
 import { Trophy, CheckCircle as CheckCircle2, Circle, Lightbulb, Target, Package, ClipboardText as ClipboardList, CalendarBlank as Calendar, ChartBar as BarChart3, Presentation, Sparkle as Sparkles, ArrowRight, Rocket, Star, CaretDown as ChevronDown, CaretUp as ChevronUp, BookOpen, Wrench, MagnifyingGlass as Search } from "@phosphor-icons/react";
 
 const DELIVERABLE_ICONS = [Package, ClipboardList, Calendar, BarChart3, Presentation];
@@ -51,7 +52,7 @@ export function CapstoneSection() {
   }, [done, allComplete, total]);
 
   return (
-    <div className="space-y-8 sm:space-y-10">
+    <div className={styles.section}>
       {/* ── Page Header ── */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
