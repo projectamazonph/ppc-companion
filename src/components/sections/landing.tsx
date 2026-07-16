@@ -4,11 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAppStore, type User } from "@/lib/store";
+import { useAppStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { FadeUp, StaggerGrid } from "@/components/shared/scroll-reveal";
 import { ArrowRight, BookOpen, Calculator, CheckCircle as CheckCircle2, GraduationCap, Stack as Layers, Clock, Pen as PenLine, Trophy, Users, Star, List as Menu, X, Envelope as Mail, Lock, Eye, EyeSlash as EyeOff, CircleNotch as Loader2, Sparkle as Sparkles, TrendUp as TrendingUp, Target, ShieldCheck, Quotes as Quote, MagnifyingGlass as Search, Play } from "@phosphor-icons/react";
@@ -92,208 +89,17 @@ const navLinks = [
 ];
 
 // =============================================================
-// Auth modal (preserves existing login / signup / guest flow)
-// =============================================================
-
-function AuthModal({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) {
-  const router = useRouter();
-  const login = useAppStore((s) => s.login);
-  const { toast } = useToast();
-  const [authMode, setAuthMode] = useState<"login" | "signup">("signup");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const endpoint =
-        authMode === "login" ? "/api/auth/login" : "/api/auth/signup";
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          authMode === "login" ? { email, password } : { email, password, name }
-        ),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Something went wrong");
-      const user = data.user as User;
-      login(user);
-      toast({
-        title: authMode === "login" ? "Welcome back!" : "Account created",
-        description: "Taking you to your dashboard…",
-      });
-      router.push("/dashboard");
-    } catch (err) {
-      toast({
-        title: "Could not sign in",
-        description: err instanceof Error ? err.message : "Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGuest = () => {
-    login({
-      id: "guest",
-      name: "Guest Student",
-      email: "guest@ppc-companion.app",
-      role: "student",
-    } as User);
-    toast({ title: "Exploring as guest", description: "Your progress won't be saved." });
-    router.push("/dashboard");
-  };
-
-  return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-        >
-          <motion.div
-            className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl"
-            initial={{ scale: 0.96, y: 12 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.96, y: 12 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="mb-5 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Image src="/logo.svg" alt="PPC Companion" width={28} height={28} />
-                <h2 className="text-lg font-bold text-foreground">
-                  {authMode === "login" ? "Welcome back" : "Start free"}
-                </h2>
-              </div>
-              <button
-                onClick={onClose}
-                className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted"
-                aria-label="Close"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              {authMode === "signup" && (
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="name">Full name</Label>
-                  <Input
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Maria Santos"
-                    required
-                  />
-                </div>
-              )}
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="email">Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="px-10"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    aria-label="Toggle password"
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                </div>
-              </div>
-
-              <Button type="submit" disabled={loading} className="mt-1 h-11 text-base font-bold">
-                {loading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : authMode === "login" ? (
-                  "Sign in"
-                ) : (
-                  "Create free account"
-                )}
-              </Button>
-            </form>
-
-            <div className="my-4 flex items-center gap-3 text-xs text-muted-foreground">
-              <span className="h-px flex-1 bg-border" />
-              or
-              <span className="h-px flex-1 bg-border" />
-            </div>
-
-            <Button variant="outline" className="h-11 w-full" onClick={handleGuest}>
-              Continue as guest
-            </Button>
-
-            <p className="mt-4 text-center text-sm text-muted-foreground">
-              {authMode === "login" ? "New here?" : "Already have an account?"}{" "}
-              <button
-                type="button"
-                onClick={() => setAuthMode((m) => (m === "login" ? "signup" : "login"))}
-                className="font-semibold text-primary hover:underline"
-              >
-                {authMode === "login" ? "Create an account" : "Sign in"}
-              </button>
-            </p>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-// =============================================================
 // Landing page
 // =============================================================
 
 export function LandingPage() {
   const router = useRouter();
   const user = useAppStore((s) => s.user);
-  const [authOpen, setAuthOpen] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
 
   useEffect(() => {
     if (user) router.push("/dashboard");
   }, [user, router]);
-
-  const openAuth = () => setAuthOpen(true);
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background text-foreground">
@@ -796,8 +602,6 @@ export function LandingPage() {
           ))}
         </div>
       </div>
-
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
     </div>
   );
 }
