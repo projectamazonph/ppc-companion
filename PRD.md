@@ -1,14 +1,16 @@
-# PRD — Amazon PPC Manager Companion App
+# PRD — PPC Companion (Free Sampler for AMPH v2)
 
-**Version:** 1.0 | **Status:** Approved | **Last Updated:** 2026-07-02
+**Version:** 1.0 | **Status:** Approved | **Last Updated:** 2026-07-16
 
 ---
 
 ## Product Overview
 
-The PPC Companion is an **interactive training platform** for the Amazon PPC Manager program — an 8–12 week structured curriculum that transforms Filipino virtual assistants into certified Amazon PPC specialists. Students progress through 4 phases (10 modules) with auto-graded quizzes, interactive exercises, real PPC tools, and a capstone project. Instructors and admins manage cohorts, track progress, and oversee the training pipeline.
+PPC Companion is a **free, mobile-friendly sampler** built by **ProjectAmazonPH** for aspiring Filipino Virtual Assistants. It lets a prospective student try a safe, realistic Amazon PPC task — understand the work an Amazon PPC specialist actually does — and then continue into the appropriate **AMPH v2** course for full training and certification.
 
-**Core Value Proposition:** Structured, production-grade PPC training that bridges the gap between general VA work and high-value PPC specialization (₱15k → ₱80k+/month career trajectory).
+PPC Companion is **not** a second complete PPC course. The original full training platform (a structured 4-phase / 10-module curriculum with auto-graded quizzes, interactive exercises, real PPC tools, and a capstone project) is preserved as the underlying content source that feeds AMPH v2. New visitors meet the sampler first; the complete curriculum and certification live in AMPH v2.
+
+**Core Value Proposition:** A no-risk, no-experience-needed taste of real Amazon PPC VA work that converts interested Filipinos into enrolled AMPH v2 students (₱15k → ₱80k+/month career trajectory).
 
 ---
 
@@ -83,7 +85,7 @@ The PPC Companion is an **interactive training platform** for the Amazon PPC Man
 | Mobile app (React Native) | Low |
 | API for third-party integrations | Low |
 | Gamification (badges, leaderboards, XP) | Medium |
-| AI-powered exercise feedback | Medium |
+| Guided exercise feedback | Medium |
 
 ---
 

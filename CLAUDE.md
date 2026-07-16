@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Amazon PPC Manager — Companion App: a Next.js 16 training platform for an 8–12 week Amazon PPC course. Students work through a 4-phase curriculum (course-view, exercises, quizzes, capstone project); instructors/admins get cohort management, grading, and analytics. See `AGENTS.md` for the canonical stack/conventions summary and `docs/decisions.md` for ADRs behind the major choices below.
+Amazon PPC Manager — Companion App (PPC Companion): a Next.js 16 **free sampler** by ProjectAmazonPH that gives aspiring Filipino VAs a safe, realistic taste of Amazon PPC work, then funnels them into the full **AMPH v2** program. The app preserves the original 4-phase / 10-module training platform (exercises, quizzes, capstone, cohort management) as the content source behind AMPH v2. See `AGENTS.md` for the canonical stack/conventions summary and `docs/decisions.md` for ADRs behind the major choices below.
 
 ## Commands
 

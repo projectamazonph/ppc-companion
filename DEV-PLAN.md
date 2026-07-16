@@ -138,7 +138,7 @@
 | Email service integration | High | Postmark/SendGrid for notifications, password reset |
 | Real-time collaboration | Medium | WebSocket for live cohort sessions |
 | Advanced analytics | Medium | Student success prediction, engagement metrics |
-| AI-powered feedback | Medium | OpenAI integration for exercise grading |
+| Guided feedback | Medium | Structured, rule-based exercise grading and hints |
 | Gamification | Low | Badges, leaderboards, XP system |
 | Mobile app | Low | React Native companion |
 | API layer | Low | Public API for third-party integrations |
