@@ -401,7 +401,7 @@ export const phases: Phase[] = [
     subtitle: "How Amazon works + core PPC metrics",
     weeks: "Weeks 1–2",
     duration: "2 weeks",
-    color: "from-amber-500 to-orange-600",
+    color: "bg-amber-500",
     goals: [
       "Explain what happens when a customer shops on Amazon.",
       "Define and calculate core PPC metrics (CTR, CPC, ACoS, ROAS, TACoS, etc.).",
@@ -659,7 +659,7 @@ export const phases: Phase[] = [
     subtitle: "Ad types, match types & 2026 strategy",
     weeks: "Weeks 3–4",
     duration: "2 weeks",
-    color: "from-rose-500 to-red-600",
+    color: "bg-rose-500",
     goals: [
       "Know every main Amazon ad type and where it appears.",
       "Understand Amazon match types and product targeting.",
@@ -951,7 +951,7 @@ export const phases: Phase[] = [
     subtitle: "Keyword research, campaign structure & optimization",
     weeks: "Weeks 5–8",
     duration: "4 weeks",
-    color: "from-emerald-500 to-teal-600",
+    color: "bg-emerald-500",
     goals: [
       "Do full keyword research for a product.",
       "Design a multi-layered campaign structure on paper/Sheets.",
@@ -1266,7 +1266,7 @@ export const phases: Phase[] = [
     subtitle: "Reporting, client comms & final project",
     weeks: "Weeks 9–12",
     duration: "4 weeks",
-    color: "from-violet-500 to-purple-600",
+    color: "bg-violet-500",
     goals: [
       "Create a clear weekly report using data.",
       "Explain PPC results and strategy to a non-technical client.",

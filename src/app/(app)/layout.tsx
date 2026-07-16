@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppStore, pathToSection } from "@/lib/store";
 import { AppShell } from "@/components/layout/app-shell";
@@ -20,13 +20,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const user = useAppStore((s) => s.user);
   const setSection = useAppStore((s) => s.setSection);
-  const [hydrated, setHydrated] = useState(false);
 
-  // Zustand persist hydrates on mount. Until it does, we don't know who the
-  // user is, so we render a skeleton and *don't* redirect.
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
+  // Zustand persist rehydrates after mount. `useSyncExternalStore` reports
+  // false on the server / first client render and true once mounted — no
+  // effect-driven setState, so it's React Compiler-safe.
+  const hydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   // After hydration, enforce the auth guard.
   useEffect(() => {

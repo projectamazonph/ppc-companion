@@ -7,51 +7,40 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { KeywordDeepDive } from "./keyword-deep-dive";
 import { cn } from "@/lib/utils";
-import {
-  Search,
-  Plus,
-  Trash2,
-  Lightbulb,
-  CheckCircle2,
-  AlertTriangle,
-  TrendingUp,
-  TrendingDown,
-  Pause,
-  ArrowUpRight,
-  ArrowDownRight,
-  RotateCcw,
-} from "lucide-react";
+import { MagnifyingGlass as Search, Plus, Trash as Trash2, Lightbulb, CheckCircle as CheckCircle2, Warning as AlertTriangle, TrendUp as TrendingUp, TrendDown as TrendingDown, Pause, ArrowUpRight, ArrowDownRight, ArrowsCounterClockwise as RotateCcw } from "@phosphor-icons/react";
 
-type Row = {
+export type Row = {
   id: string;
   searchTerm: string;
   clicks: string;
   spend: string;
   orders: string;
   sales: string;
+  description: string;
 };
 
 const PRESET_ROWS: Row[] = [
-  { id: "p1", searchTerm: "insulated water bottle", clicks: "45", spend: "67.50", orders: "8", sales: "240" },
-  { id: "p2", searchTerm: "cheap water bottle", clicks: "32", spend: "28.80", orders: "0", sales: "0" },
-  { id: "p3", searchTerm: "water bottle 32oz", clicks: "28", spend: "42", orders: "5", sales: "150" },
-  { id: "p4", searchTerm: "glass water bottle", clicks: "18", spend: "27", orders: "0", sales: "0" },
-  { id: "p5", searchTerm: "hiking water bottle with filter", clicks: "12", spend: "18", orders: "3", sales: "90" },
+  { id: "p1", searchTerm: "insulated water bottle", clicks: "45", spend: "67.50", orders: "8", sales: "240", description: "Hero term — strong converter. Promote to Exact." },
+  { id: "p2", searchTerm: "cheap water bottle", clicks: "32", spend: "28.80", orders: "0", sales: "0", description: "Low-intent traffic. Candidate negative." },
+  { id: "p3", searchTerm: "water bottle 32oz", clicks: "28", spend: "42", orders: "5", sales: "150", description: "Exact hero — scaling profitably." },
+  { id: "p4", searchTerm: "glass water bottle", clicks: "18", spend: "27", orders: "0", sales: "0", description: "No orders after 18 clicks — negate." },
+  { id: "p5", searchTerm: "hiking water bottle with filter", clicks: "12", spend: "18", orders: "3", sales: "90", description: "Long-tail, converting. Expand phrase." },
 ];
 
-function parseNum(s: string): number {
+export function parseNum(s: string): number {
   const n = parseFloat(s.replace(/[$,%\s]/g, ""));
   return isNaN(n) ? 0 : n;
 }
 
-type Recommendation = {
+export type Recommendation = {
   action: "promote" | "negative" | "increase" | "decrease" | "pause" | "keep";
   bidChange: number; // percent
   reason: string;
 };
 
-function recommend(row: Row, targetAcos: number): Recommendation | null {
+export function recommend(row: Row, targetAcos: number): Recommendation | null {
   const clicks = parseNum(row.clicks);
   const spend = parseNum(row.spend);
   const orders = parseNum(row.orders);
@@ -98,7 +87,7 @@ function recommend(row: Row, targetAcos: number): Recommendation | null {
   };
 }
 
-const actionMeta: Record<Recommendation["action"], { label: string; color: string; icon: typeof CheckCircle2 }> = {
+export const actionMeta: Record<Recommendation["action"], { label: string; color: string; icon: typeof CheckCircle2 }> = {
   promote: { label: "Promote to Exact", color: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-0", icon: ArrowUpRight },
   negative: { label: "Add as Negative", color: "bg-rose-500/15 text-rose-700 dark:text-rose-300 border-0", icon: Trash2 },
   increase: { label: "Increase Bid", color: "bg-blue-500/15 text-blue-700 dark:text-blue-300 border-0", icon: TrendingUp },
@@ -110,12 +99,13 @@ const actionMeta: Record<Recommendation["action"], { label: string; color: strin
 export function SearchTermAnalyzer() {
   const [rows, setRows] = useState<Row[]>(PRESET_ROWS);
   const [targetAcos, setTargetAcos] = useState("30");
+  const [deepDiveRow, setDeepDiveRow] = useState<Row | null>(null);
   const { toast } = useToast();
 
   const addRow = () => {
     setRows((r) => [
       ...r,
-      { id: `row-${Date.now()}`, searchTerm: "", clicks: "", spend: "", orders: "", sales: "" },
+      { id: `row-${Date.now()}`, searchTerm: "", clicks: "", spend: "", orders: "", sales: "", description: "" },
     ]);
   };
   const updateRow = (id: string, field: keyof Row, value: string) => {
@@ -153,7 +143,7 @@ export function SearchTermAnalyzer() {
     <Card className="border-border/60">
       <CardHeader>
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 to-red-600 text-white shadow-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FF6B35] text-white shadow-sm">
             <Search className="h-5 w-5" />
           </div>
           <div>
@@ -179,7 +169,7 @@ export function SearchTermAnalyzer() {
               inputMode="decimal"
             />
           </div>
-          <Button onClick={addRow} size="sm" variant="default" className="bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700">
+          <Button onClick={addRow} size="sm" variant="default" className="bg-[#FF6B35] hover:brightness-105">
             <Plus className="h-3.5 w-3.5 mr-1.5" />
             Add row
           </Button>
@@ -233,17 +223,21 @@ export function SearchTermAnalyzer() {
 
         {/* Table */}
         <div className="overflow-x-auto -mx-5 sm:mx-0">
-          <table className="w-full text-sm min-w-[820px]">
+           <table className="w-full text-sm min-w-[1200px]">
             <thead>
               <tr className="border-b border-border">
-                <th className="text-left font-semibold py-2 px-3 text-xs uppercase tracking-wider text-muted-foreground">Search term</th>
-                <th className="text-right font-semibold py-2 px-3 text-xs uppercase tracking-wider text-muted-foreground">Clicks</th>
-                <th className="text-right font-semibold py-2 px-3 text-xs uppercase tracking-wider text-muted-foreground">Spend</th>
-                <th className="text-right font-semibold py-2 px-3 text-xs uppercase tracking-wider text-muted-foreground">Orders</th>
-                <th className="text-right font-semibold py-2 px-3 text-xs uppercase tracking-wider text-muted-foreground">Sales</th>
-                <th className="text-right font-semibold py-2 px-3 text-xs uppercase tracking-wider text-muted-foreground">ACoS</th>
-                <th className="text-left font-semibold py-2 px-3 text-xs uppercase tracking-wider text-muted-foreground">Recommendation</th>
-                <th className="py-2 px-2"></th>
+                <th scope="col" className="text-left font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">Search term</th>
+                <th scope="col" className="text-right font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">Clicks</th>
+                <th scope="col" className="text-right font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">Spend</th>
+                <th scope="col" className="text-right font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">Orders</th>
+                <th scope="col" className="text-right font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">Sales</th>
+                <th scope="col" className="text-right font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">ACoS</th>
+                <th scope="col" className="text-right font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">CPC</th>
+                <th scope="col" className="text-right font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">CVR</th>
+                <th scope="col" className="text-right font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">CPA</th>
+                <th scope="col" className="text-left font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">Recommendation</th>
+                <th scope="col" className="text-left font-semibold py-2 px-3 text-[11px] uppercase tracking-wider text-muted-foreground">Notes</th>
+                <th scope="col" className="py-2 px-2"><span className="sr-only">Actions</span></th>
               </tr>
             </thead>
             <tbody>
@@ -252,8 +246,12 @@ export function SearchTermAnalyzer() {
                 const spend = parseNum(row.spend);
                 const sales = parseNum(row.sales);
                 const acos = sales > 0 ? (spend / sales) * 100 : spend > 0 ? Infinity : 0;
+                const orders = parseNum(row.orders);
+                const cpc = clicks > 0 ? spend / clicks : 0;
+                const cvr = clicks > 0 ? (orders / clicks) * 100 : 0;
+                const cpa = orders > 0 ? spend / orders : 0;
                 return (
-                  <tr key={row.id} className="border-b border-border/50 last:border-0 align-top">
+                   <tr key={row.id} className="border-b border-border/50 last:border-0 align-top hover:bg-muted/40 transition-colors">
                     <td className="py-2 px-3">
                       <Input
                         value={row.searchTerm}
@@ -301,6 +299,15 @@ export function SearchTermAnalyzer() {
                     <td className="py-2 px-3 text-right font-mono text-sm tabular-nums">
                       {sales > 0 ? `${acos.toFixed(1)}%` : spend > 0 ? "∞" : "—"}
                     </td>
+                    <td className="py-2 px-3 text-right font-mono text-sm tabular-nums">
+                      {clicks > 0 ? `$${cpc.toFixed(2)}` : "—"}
+                    </td>
+                    <td className="py-2 px-3 text-right font-mono text-sm tabular-nums">
+                      {clicks > 0 ? `${cvr.toFixed(1)}%` : "—"}
+                    </td>
+                    <td className="py-2 px-3 text-right font-mono text-sm tabular-nums">
+                      {orders > 0 ? `$${cpa.toFixed(2)}` : "—"}
+                    </td>
                     <td className="py-2 px-3 min-w-[260px]">
                       {rec ? (
                         <div className="space-y-1">
@@ -324,15 +331,35 @@ export function SearchTermAnalyzer() {
                         <span className="text-xs text-muted-foreground italic">Enter data to see recommendation</span>
                       )}
                     </td>
+                    <td className="py-2 px-3 min-w-[180px]">
+                      <Input
+                        value={row.description}
+                        onChange={(e) => updateRow(row.id, "description", e.target.value)}
+                        placeholder="Add a note…"
+                        className="h-8 text-xs"
+                      />
+                    </td>
                     <td className="py-2 px-2">
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        className="h-7 w-7 text-muted-foreground hover:text-rose-500"
-                        onClick={() => deleteRow(row.id)}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
+                      <div className="flex items-center gap-0.5">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-7 w-7 text-muted-foreground hover:text-[#FF6B35]"
+                          onClick={() => setDeepDiveRow(row)}
+                          aria-label={`Deep dive for ${row.searchTerm || "empty search term"}`}
+                        >
+                          <Search className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-7 w-7 text-muted-foreground hover:text-rose-500"
+                          onClick={() => deleteRow(row.id)}
+                          aria-label={`Delete row for ${row.searchTerm || "empty search term"}`}
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -355,6 +382,12 @@ export function SearchTermAnalyzer() {
             <li className="flex items-start gap-1.5"><Pause className="h-3 w-3 mt-0.5 text-rose-500 shrink-0" /> <span><strong className="text-foreground">Pause / negate:</strong> 10+ clicks with 0 orders — strongly consider stopping the bleed.</span></li>
           </ul>
         </div>
+
+        <KeywordDeepDive
+          row={deepDiveRow}
+          targetAcos={target}
+          onClose={() => setDeepDiveRow(null)}
+        />
       </CardContent>
     </Card>
   );

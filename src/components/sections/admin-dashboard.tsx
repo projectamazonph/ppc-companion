@@ -6,24 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  School,
-  Users,
-  TrendingUp,
-  Award,
-  UserPlus,
-  BookOpen,
-  GraduationCap,
-  BarChart3,
-  ArrowUpRight,
-  MoreHorizontal,
-  Loader2,
-  AlertCircle,
-  FileCheck,
-  RefreshCw,
-  Search,
-  Bell,
-} from "lucide-react";
+import { Student as School, Users, TrendUp as TrendingUp, Medal as Award, UserPlus, BookOpen, GraduationCap, ChartBar as BarChart3, ArrowUpRight, DotsThree as MoreHorizontal, CircleNotch as Loader2, WarningCircle as AlertCircle, FileText as FileCheck, ArrowsClockwise as RefreshCw, MagnifyingGlass as Search, Bell } from "@phosphor-icons/react";
 
 // =============================================================
 // Types

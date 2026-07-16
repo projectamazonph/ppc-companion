@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Bell, CheckCheck, Info, AlertCircle, AlertTriangle, CheckCircle2, ExternalLink } from "lucide-react";
+import { Bell, Checks as CheckCheck, Info, WarningCircle as AlertCircle, Warning as AlertTriangle, CheckCircle as CheckCircle2, ArrowSquareOut as ExternalLink } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -132,7 +132,7 @@ export function NotificationsPanel() {
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-full mt-2 z-50 w-80 sm:w-96 rounded-xl border border-border/60 bg-popover shadow-xl backdrop-blur-xl">
+          <div className="absolute right-0 top-full mt-2 z-50 w-80 sm:w-96 rounded-xl border border-border/60 bg-popover shadow-xl">
             <div className="flex items-center justify-between px-4 py-3 border-b border-border/40">
               <div>
                 <h3 className="text-sm font-semibold text-foreground">Notifications</h3>

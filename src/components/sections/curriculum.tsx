@@ -7,29 +7,7 @@ import { BrandButton } from "@/components/shared/buttons";
 import { cn } from "@/lib/utils";
 import { CourseView, getPhaseColors, findActiveModule } from "@/components/sections/course-view";
 import {
-  ArrowLeft,
-  ArrowRight,
-  Award,
-  BookOpen,
-  CheckCircle2,
-  ChevronDown,
-  Clock,
-  Download,
-  Eye,
-  FileText,
-  GraduationCap,
-  HelpCircle,
-  Layers,
-  Lightbulb,
-  Lock,
-  PenLine,
-  Play,
-  PlayCircle,
-  Search,
-  ShieldCheck,
-  Sparkles,
-  User,
-} from "lucide-react";
+  ArrowLeft, ArrowRight, Medal as Award, BookOpen, CheckCircle as CheckCircle2, CaretDown as ChevronDown, Clock, Download, Eye, FileText, GraduationCap, Question as HelpCircle, Stack as Layers, Lightbulb, Lock, Pen as PenLine, Play, PlayCircle, MagnifyingGlass as Search, ShieldCheck, Sparkle as Sparkles, User } from "@phosphor-icons/react";
 
 type FilterTab = "all" | "foundation" | "advanced" | "completed";
 
@@ -283,7 +261,7 @@ function CourseCard({
     >
       {/* Hover lock overlay for locked cards */}
       {isLocked && (
-        <div className="absolute inset-0 bg-background/50 dark:bg-black/40 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm rounded-xl">
+        <div className="absolute inset-0 bg-background/90 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
           <div className="bg-card p-3 rounded-full shadow-lg mb-2 text-muted-foreground">
             <Lock className="h-6 w-6" />
           </div>
@@ -302,7 +280,7 @@ function CourseCard({
           isLocked && "grayscale group-hover:grayscale-0 transition-all"
         )}
       >
-        <div className={cn("absolute inset-0 bg-gradient-to-br", phase.color)} />
+        <div className={cn("absolute inset-0 ", phase.color)} />
         {/* Decorative elements */}
         <div className="absolute -top-8 -right-8 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
         <div className="absolute -bottom-4 -left-4 h-20 w-20 rounded-full bg-black/10 blur-xl" />
@@ -310,7 +288,7 @@ function CourseCard({
         {/* Status badge */}
         <div className="absolute top-3 left-3">
           {isCompleted ? (
-            <span className="inline-flex items-center gap-1 bg-green-100 dark:bg-green-900/60 backdrop-blur px-2.5 py-1 rounded text-xs font-bold text-green-700 dark:text-green-300 uppercase tracking-wide shadow-sm">
+            <span className="inline-flex items-center gap-1 bg-green-100 dark:bg-green-900/60 px-2.5 py-1 rounded text-xs font-bold text-green-700 dark:text-green-300 uppercase tracking-wide shadow-sm">
               <CheckCircle2 className="h-3.5 w-3.5" />
               Completed
             </span>
@@ -320,14 +298,14 @@ function CourseCard({
               Locked
             </span>
           ) : (
-              <span className="inline-flex items-center gap-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur px-2.5 py-1 rounded text-xs font-bold text-primary uppercase tracking-wide shadow-sm">
+              <span className="inline-flex items-center gap-1 bg-card px-2.5 py-1 rounded text-xs font-bold text-primary uppercase tracking-wide shadow-sm">
               In Progress
             </span>
           )}
         </div>
 
         {/* Phase number */}
-        <div className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 text-white text-lg font-black backdrop-blur-sm">
+        <div className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/30 text-white text-lg font-black">
           {phase.number}
         </div>
       </div>

@@ -2,30 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { motion } from "framer-motion";
 import { useAppStore, type User } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { FadeUp } from "@/components/shared/scroll-reveal";
-import {
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  Loader2,
-  TrendingUp,
-  Star,
-  ShieldCheck,
-} from "lucide-react";
-
-const previewAvatars = [
-  { initial: "M", label: "Maria S." },
-  { initial: "J", label: "Juan D." },
-  { initial: "A", label: "Anna R." },
-];
+import { Envelope as Mail, Lock, Eye, EyeSlash as EyeOff, CircleNotch as Loader2, TrendUp as TrendingUp, Star, ShieldCheck, Warning as WarningCircle } from "@phosphor-icons/react";
 
 export function LoginSection() {
   const router = useRouter();
@@ -37,9 +20,24 @@ export function LoginSection() {
   const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    // Inline client-side validation
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\s*\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+    if (authMode === "signup" && name.trim().length < 2) {
+      setError("Please enter your full name.");
+      return;
+    }
     setLoading(true);
     try {
       const endpoint =
@@ -61,11 +59,7 @@ export function LoginSection() {
       });
       router.push("/dashboard");
     } catch (err) {
-      toast({
-        title: "Could not sign in",
-        description: err instanceof Error ? err.message : "Please try again.",
-        variant: "destructive",
-      });
+      setError(err instanceof Error ? err.message : "Please try again.");
     } finally {
       setLoading(false);
     }
@@ -83,10 +77,8 @@ export function LoginSection() {
   };
 
   return (
-    <div className="flex h-full min-h-screen w-full overflow-hidden bg-background text-foreground">
-      {/* Left column — form */}
-      <div className="flex w-full flex-col justify-center overflow-y-auto px-6 py-10 lg:w-1/2 lg:p-12 xl:p-24">
-        <FadeUp className="mx-auto w-full max-w-[480px]">
+    <div className="flex min-h-screen w-full items-center justify-center bg-background px-4 py-10 text-foreground">
+      <FadeUp className="mx-auto w-full max-w-[400px]">
           {/* Logo */}
           <div className="mb-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
@@ -190,6 +182,16 @@ export function LoginSection() {
                 "Create free account"
               )}
             </Button>
+
+            {error && (
+              <p
+                role="alert"
+                className="mt-1 flex items-center gap-1.5 text-sm font-medium text-destructive"
+              >
+                <WarningCircle className="h-4 w-4 shrink-0" />
+                {error}
+              </p>
+            )}
           </form>
 
           {/* Divider */}
@@ -261,70 +263,6 @@ export function LoginSection() {
             <span className="text-xs text-muted-foreground">Secure SSL Connection</span>
           </div>
         </FadeUp>
-      </div>
-
-      {/* Right column — branding with background image */}
-      <div className="relative hidden overflow-hidden bg-card lg:flex lg:w-1/2">
-        {/* Background image */}
-        <div
-          className="absolute inset-0 z-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCkxGX0GtqgVhtPL1ITKVl30zfUFR2mzu5sMELH6p0GT5V063jwdRchqKxYOAWvbzz3kc-P4oEskKsUkNmz3Cr0P1xWejMhWS5nwTvrfjI4eLHeWXXm4v-vqqnOA6ONxNaQ5uudIkN7uPUI9O2OEQK67hj1WETtEQx4gn9xXNX7eOSZbJbjr0VPu6efZ_0Jh7v7xEFPLEyMO41MK5ROMwqhtRbiPR3d3FAs4zrHfndzwvIlx6rzqw44E6vpG7eICM6sWNsO0fE1jRNC")',
-          }}
-        />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-background/90 via-background/50 to-primary/20" />
-
-        {/* Content */}
-        <div className="relative z-20 flex max-w-lg flex-col justify-center p-12 text-foreground">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md"
-          >
-            <TrendingUp className="h-8 w-8 text-white" />
-          </motion.div>
-
-          <h2 className="mb-4 text-4xl font-bold tracking-tight text-white">
-            Master Amazon PPC &amp; Scale Your Career
-          </h2>
-          <p className="text-lg leading-relaxed font-light text-white/80">
-            Join thousands of Filipino Virtual Assistants transforming their skills into
-            high-income opportunities. Access world-class training, real-time analytics tools,
-            and a supportive community.
-          </p>
-
-          {/* Social proof */}
-          <div className="mt-10 flex items-center gap-4">
-            <div className="flex -space-x-3">
-              {previewAvatars.map((a) => (
-                <div
-                  key={a.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/20 bg-white/10 text-sm font-bold text-white"
-                  aria-label={a.label}
-                >
-                  {a.initial}
-                </div>
-              ))}
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/20 bg-primary text-xs font-bold text-white">
-                +2k
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <div className="flex text-yellow-400">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-yellow-400" />
-                ))}
-              </div>
-              <span className="text-sm font-medium text-white/70">
-                Trusted by VAs worldwide
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

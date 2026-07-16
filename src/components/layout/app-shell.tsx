@@ -5,17 +5,7 @@ import { usePathname } from "next/navigation";
 import { Sidebar } from "./sidebar";
 import { useAppStore, useProgressStats, pathToSection } from "@/lib/store";
 import {
-  Menu,
-  Moon,
-  Sun,
-  RotateCcw,
-  LogOut,
-  User as UserIcon,
-  BookOpen,
-  Target,
-  Search,
-  Bell,
-} from "lucide-react";
+  List as Menu, Moon, Sun, ArrowsCounterClockwise as RotateCcw, SignOut as LogOut, User as UserIcon, BookOpen, Target, MagnifyingGlass as Search, Bell } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -123,12 +113,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const roleColor =
     user?.role === "admin"
-      ? "from-rose-500 to-red-600"
+      ? "bg-rose-500"
       : user?.role === "instructor"
-      ? "from-violet-500 to-purple-600"
+      ? "bg-violet-500"
       : user?.role === "guest"
-      ? "from-stone-400 to-stone-600"
-      : "from-orange-500 to-orange-600";
+      ? "bg-stone-500"
+      : "bg-orange-500";
 
   const meta = sectionLabels[activeSection] ?? sectionLabels.dashboard;
   // Compute overall progress percentage (simple blend)
@@ -147,7 +137,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* ═══════════════════════════════════════════════════════════
           Top bar
           ═══════════════════════════════════════════════════════════ */}
-      <header className="sticky top-3 z-30 mx-4 lg:mx-6 rounded-2xl apple-glass border-none shadow-tinted">
+      <header className="sticky top-3 z-30 mx-4 lg:mx-6 rounded-md border border-border bg-card shadow-sm">
         <div className="flex h-12 items-center gap-3 px-4">
           {/* Mobile sidebar trigger */}
           <button
@@ -290,7 +280,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   >
                     <div
                       className={cn(
-                        "flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br text-white text-[10px] font-semibold shadow-sm ring-2 ring-background shrink-0",
+                        "flex h-8 w-8 items-center justify-center rounded-full text-white text-[10px] font-semibold shadow-sm ring-2 ring-background shrink-0",
                         roleColor
                       )}
                     >
@@ -378,15 +368,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           ═══════════════════════════════════════════════════════════ */}
       <div className="flex flex-1 min-h-0">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:block shrink-0 border-r border-border/60">
+        <aside className="hidden lg:block shrink-0 border-r border-border">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)]">
             <Sidebar />
           </div>
         </aside>
 
         {/* Content */}
-        <main className="flex-1 min-w-0 overflow-x-hidden">
-          <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
+        <main className="flex-1 min-w-0 overflow-x-hidden bg-background">
+          <div className="container py-8">
             <div key={activeSection} className="animate-fade-in-up">
               {children}
             </div>
@@ -418,8 +408,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* ═══════════════════════════════════════════════════════════
           Footer
           ═══════════════════════════════════════════════════════════ */}
-      <footer className="mt-auto border-t border-border/40 bg-background">
-        <div className="mx-auto max-w-6xl px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-muted-foreground/60 text-center sm:text-left">
+        <footer className="mt-auto border-t border-border/40 bg-background">
+          <div className="mx-auto max-w-[1200px] px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-muted-foreground/60 text-center sm:text-left">
           <p className="min-w-0">
             <span className="font-medium text-foreground/70">
               {programOverview.title}

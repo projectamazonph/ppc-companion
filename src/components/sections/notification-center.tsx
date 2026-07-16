@@ -6,21 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import {
-  Bell,
-  Info,
-  CheckCircle,
-  AlertTriangle,
-  XCircle,
-  BookOpen,
-  Star,
-  CheckCheck,
-  Trash2,
-  Loader2,
-  AlertCircle,
-  Archive,
-  Inbox,
-} from "lucide-react";
+import { Bell, Info, CheckCircle, Warning as AlertTriangle, XCircle, BookOpen, Star, Checks as CheckCheck, Trash as Trash2, CircleNotch as Loader2, WarningCircle as AlertCircle, Archive, Tray as Inbox } from "@phosphor-icons/react";
 
 // =============================================================
 // Types

@@ -2,7 +2,7 @@
 
 import { Component, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, RotateCcw } from "lucide-react";
+import { Warning as AlertTriangle, ArrowsCounterClockwise as RotateCcw } from "@phosphor-icons/react";
 
 interface Props {
   children: ReactNode;

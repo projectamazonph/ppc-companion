@@ -11,32 +11,15 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
-import {
-  PenLine,
-  CheckCircle2,
-  XCircle,
-  Calculator,
-  Save,
-  Eye,
-  EyeOff,
-  Sparkles,
-  BookOpen,
-  Target,
-  HelpCircle,
-  ChevronRight,
-  Trophy,
-  Circle,
-  Check,
-  Lightbulb,
-} from "lucide-react";
+import { Pen as PenLine, CheckCircle as CheckCircle2, XCircle, Calculator, FloppyDisk as Save, Eye, EyeSlash as EyeOff, Sparkle as Sparkles, BookOpen, Target, Question as HelpCircle, CaretRight as ChevronRight, Trophy, Circle, Check, Lightbulb } from "@phosphor-icons/react";
 
 // ─── Phase color maps ────────────────────────────────────────────────────────
 
 const phaseGradients: Record<number, string> = {
-  1: "from-violet-500 to-purple-600",
-  2: "from-orange-500 to-orange-600",
-  3: "from-amber-500 to-orange-600",
-  4: "from-emerald-500 to-teal-600",
+  1: "bg-violet-500",
+  2: "bg-orange-500",
+  3: "bg-amber-500",
+  4: "bg-emerald-500",
 };
 
 const phaseAccentText: Record<number, string> = {
@@ -211,7 +194,7 @@ export function ExercisesSection() {
         >
           <span className="flex items-center gap-2">
             {current && (
-              <span className={cn("flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br text-[10px] font-bold text-white", phaseGradients[current.phase.number])}>
+              <span className={cn("flex h-5 w-5 items-center justify-center rounded-md text-[10px] font-bold text-white", phaseGradients[current.phase.number])}>
                 {current.exercise.id.split(".")[0]}
               </span>
             )}
@@ -302,7 +285,7 @@ function ExerciseChip({
       className={cn(
         "group flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-all duration-200",
         active
-          ? cn("border-transparent bg-gradient-to-r shadow-md ring-2", phaseGradients[phaseNumber].replace("from-", "from-").replace(" to-", ""), phaseRing[phaseNumber], "bg-white dark:bg-card shadow-black/5")
+          ? cn("border-transparent shadow-md ring-2", phaseGradients[phaseNumber].replace("from-", "from-").replace(" to-", ""), phaseRing[phaseNumber], "bg-white dark:bg-card shadow-black/5")
           : "border-transparent bg-card/50 hover:bg-card hover:shadow-sm"
       )}
     >
@@ -311,7 +294,7 @@ function ExerciseChip({
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-all duration-200",
           answered
-            ? cn("bg-gradient-to-br text-white shadow-sm", phaseGradients[phaseNumber])
+            ? cn("text-white shadow-sm", phaseGradients[phaseNumber])
             : "bg-muted/60 text-muted-foreground"
         )}
       >
@@ -379,7 +362,7 @@ function PhaseHeader({
 
   return (
     <div className="flex items-center gap-2 px-1">
-      <span className={cn("flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br text-[10px] font-bold text-white shadow-sm", phaseGradients[phaseNum])}>
+      <span className={cn("flex h-6 w-6 items-center justify-center rounded-lg text-[10px] font-bold text-white shadow-sm", phaseGradients[phaseNum])}>
         {phaseNum}
       </span>
       <span className={cn("text-xs font-semibold uppercase tracking-wider", phaseAccentText[phaseNum])}>
@@ -412,7 +395,7 @@ function ExerciseView({
       {/* Header */}
       <div className={cn("border-b border-border/60 px-6 py-5", phaseAccentBg[phaseNumber])}>
         <div className="flex flex-wrap items-center gap-2 mb-3">
-          <span className={cn("inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r px-2.5 py-1 text-xs font-bold text-white shadow-sm", phaseGradients[phaseNumber])}>
+          <span className={cn("inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-bold text-white shadow-sm", phaseGradients[phaseNumber])}>
             {exercise.id}
           </span>
           <Badge variant="outline" className="text-[10px] font-medium border-border/50">
@@ -424,7 +407,7 @@ function ExerciseView({
         </div>
 
         <div className="flex items-start gap-3">
-          <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-md", phaseGradients[phaseNumber])}>
+          <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-md", phaseGradients[phaseNumber])}>
             {/* eslint-disable-next-line react-hooks/static-components */}
             <TypeIcon className="h-5 w-5" />
           </div>
@@ -530,7 +513,7 @@ function OpenExercise({ exercise, phaseNumber }: { exercise: Exercise; phaseNumb
           >
             <div className={cn("rounded-xl border-2 p-5 space-y-3", phaseBorder[phaseNumber], phaseAccentBg[phaseNumber])}>
               <div className="flex items-center gap-2">
-                <div className={cn("flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br text-white", phaseGradients[phaseNumber])}>
+                <div className={cn("flex h-6 w-6 items-center justify-center rounded-md text-white", phaseGradients[phaseNumber])}>
                   <Sparkles className="h-3.5 w-3.5" />
                 </div>
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
@@ -608,7 +591,7 @@ function CalcQuestion({
     >
       {/* Question header */}
       <div className="flex items-start gap-3 mb-4">
-        <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-xs font-bold text-white shadow-sm", phaseGradients[phaseNumber])}>
+        <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white shadow-sm", phaseGradients[phaseNumber])}>
           {index}
         </span>
         <p className="font-semibold text-sm leading-snug pt-0.5">{question.question}</p>
@@ -739,15 +722,15 @@ function DecisionExercise({ exercise, phaseNumber }: { exercise: Exercise; phase
           className={cn(
             "rounded-xl border-2 p-5 flex items-center gap-4",
             perfectScore
-              ? "border-emerald-300 dark:border-emerald-800 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/10"
-              : "border-orange-200 dark:border-orange-800 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/10"
+              ? "border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/20"
+              : "border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/20"
           )}
         >
           <div className={cn(
             "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-md",
             perfectScore
-              ? "bg-gradient-to-br from-emerald-500 to-teal-600"
-              : "bg-gradient-to-br from-orange-500 to-orange-600"
+              ? "bg-emerald-500"
+              : "bg-orange-500"
           )}>
             {perfectScore ? (
               <Trophy className="h-6 w-6" />
@@ -826,7 +809,7 @@ function DecisionCard({
     >
       {/* Scenario header */}
       <div className="flex items-start gap-3 mb-4">
-        <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-xs font-bold text-white shadow-sm", phaseGradients[phaseNumber])}>
+        <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white shadow-sm", phaseGradients[phaseNumber])}>
           {index}
         </span>
         <p className="font-semibold text-sm leading-snug pt-0.5">{decision.scenario}</p>

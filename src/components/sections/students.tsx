@@ -8,75 +8,20 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, } from "@/components/ui/dialog";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, } from "@/components/ui/alert-dialog";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
 import {
-  Users,
-  Plus,
-  Search,
-  MoreHorizontal,
-  Pencil,
-  Trash2,
-  Eye,
-  RefreshCw,
-  Filter,
-  GraduationCap,
-  Mail,
-  Calendar,
-  Target,
-  TrendingUp,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
-  Activity,
-  Clock,
-  FileText,
-  Trophy,
-  Tag as TagIcon,
-  LogIn,
-  Bell,
-  UserCheck,
-  UserX,
-  BarChart3,
-  X,
-  ChevronDown,
-} from "lucide-react";
+  Users, Plus, MagnifyingGlass as Search, DotsThree as MoreHorizontal, Pencil, Trash as Trash2, Eye, ArrowsClockwise as RefreshCw, Funnel as Filter, GraduationCap, Envelope as Mail, CalendarBlank as Calendar, Target, TrendUp as TrendingUp, CheckCircle as CheckCircle2, WarningCircle as AlertCircle, CircleNotch as Loader2, Pulse as Activity, Clock, FileText, Trophy, Tag as TagIcon, SignIn as LogIn, Bell, UserCheck, UserMinus as UserX, ChartBar as BarChart3, X, CaretDown as ChevronDown } from "@phosphor-icons/react";
 
 // =============================================================
 // Types — mirror the Prisma schema
@@ -165,9 +110,9 @@ function getInitials(name: string): string {
 
 function getAvatarGradient(role: Role): string {
   switch (role) {
-    case "STUDENT": return "from-orange-500 to-orange-600";
-    case "INSTRUCTOR": return "from-violet-500 to-purple-600";
-    case "ADMIN": return "from-rose-500 to-pink-600";
+    case "STUDENT": return "bg-orange-500";
+    case "INSTRUCTOR": return "bg-violet-500";
+    case "ADMIN": return "bg-rose-500";
   }
 }
 
@@ -366,28 +311,28 @@ export function StudentsSection() {
           label="Total Students"
           value={totalStudents}
           icon={Users}
-          accentColor="bg-gradient-to-r from-orange-500 to-orange-600"
+          accentColor="bg-orange-500"
           iconBg="bg-blue-500/10 text-blue-600 dark:text-blue-400"
         />
         <StatCard
           label="Active Now"
           value={activeStudents}
           icon={UserCheck}
-          accentColor="bg-gradient-to-r from-emerald-500 to-teal-500"
+          accentColor="bg-emerald-500"
           iconBg="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
         />
         <StatCard
           label="Graduated"
           value={graduated}
           icon={GraduationCap}
-          accentColor="bg-gradient-to-r from-sky-500 to-cyan-500"
+          accentColor="bg-sky-500"
           iconBg="bg-sky-500/10 text-sky-600 dark:text-sky-400"
         />
         <StatCard
           label="Avg Progress"
           value={`${avgProgress}%`}
           icon={BarChart3}
-          accentColor="bg-gradient-to-r from-violet-500 to-purple-500"
+          accentColor="bg-violet-500"
           iconBg="bg-violet-500/10 text-violet-600 dark:text-violet-400"
         />
       </div>
@@ -570,7 +515,7 @@ export function StudentsSection() {
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
                           <div className={cn(
-                            "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white text-[11px] font-bold bg-gradient-to-br shadow-sm",
+                            "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white text-[11px] font-bold shadow-sm",
                             getAvatarGradient(s.role)
                           )}>
                             {getInitials(s.name)}
@@ -610,9 +555,9 @@ export function StudentsSection() {
                               <div
                                 className={cn(
                                   "h-full rounded-full transition-all duration-300",
-                                  progress >= 75 ? "bg-gradient-to-r from-emerald-500 to-teal-500" :
-                                  progress >= 40 ? "bg-gradient-to-r from-orange-500 to-orange-600" :
-                                  progress > 0 ? "bg-gradient-to-r from-amber-500 to-orange-500" :
+                                  progress >= 75 ? "bg-emerald-500" :
+                                  progress >= 40 ? "bg-orange-500" :
+                                  progress > 0 ? "bg-amber-500" :
                                   "bg-muted"
                                 )}
                                 style={{ width: `${progress}%` }}
@@ -1091,7 +1036,7 @@ function StudentDetailDialog({
         <div className="shrink-0 px-6 pt-6 pb-4 border-b border-border/50">
           <div className="flex items-center gap-4">
             <div className={cn(
-              "flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-white text-sm font-bold bg-gradient-to-br shadow-md",
+              "flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-white text-sm font-bold shadow-md",
               getAvatarGradient(student.role)
             )}>
               {getInitials(student.name)}
@@ -1499,18 +1444,18 @@ function ActivityItem({ item }: { item: any }) {
     notification: Bell,
   };
   const colorMap = {
-    submission: "from-orange-500 to-orange-600",
-    quiz_attempt: "from-rose-500 to-pink-600",
-    capstone: "from-violet-500 to-purple-600",
-    login: "from-emerald-500 to-teal-600",
-    notification: "from-amber-500 to-orange-600",
+    submission: "bg-orange-500",
+    quiz_attempt: "bg-rose-500",
+    capstone: "bg-violet-500",
+    login: "bg-emerald-500",
+    notification: "bg-amber-500",
   };
   const Icon = iconMap[item.type as keyof typeof iconMap] ?? Activity;
-  const color = colorMap[item.type as keyof typeof colorMap] ?? "from-stone-500 to-stone-700";
+  const color = colorMap[item.type as keyof typeof colorMap] ?? "bg-stone-500";
 
   return (
     <div className="flex items-start gap-3 rounded-xl border border-border/50 bg-muted/10 p-3.5 hover:bg-muted/20 transition-colors">
-      <div className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br text-white shadow-sm", color)}>
+      <div className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white shadow-sm", color)}>
         <Icon className="h-4 w-4" />
       </div>
       <div className="flex-1 min-w-0">

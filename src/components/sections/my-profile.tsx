@@ -5,19 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Lock,
-  Bell,
-  Download,
-  LogOut,
-  Edit,
-  Verified,
-  ChevronRight,
-  ChevronDown,
-  Award,
-  AlertCircle,
-  Loader2,
-} from "lucide-react";
+import { Lock, Bell, Download, SignOut as LogOut, Pencil as Edit, SealCheck as Verified, CaretRight as ChevronRight, CaretDown as ChevronDown, Medal as Award, WarningCircle as AlertCircle, CircleNotch as Loader2 } from "@phosphor-icons/react";
 
 type Student = {
   id: string;

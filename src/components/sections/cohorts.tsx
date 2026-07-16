@@ -8,50 +8,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, } from "@/components/ui/dialog";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
-import {
-  School,
-  Plus,
-  MoreHorizontal,
-  Pencil,
-  Trash2,
-  Eye,
-  Loader2,
-  AlertCircle,
-  Calendar,
-  Users,
-  RefreshCw,
-  GraduationCap,
-  UserCircle,
-  Clock,
-  X,
-  ChevronRight,
-  Layers,
-} from "lucide-react";
+import { Student as School, Plus, DotsThree as MoreHorizontal, Pencil, Trash as Trash2, Eye, CircleNotch as Loader2, WarningCircle as AlertCircle, CalendarBlank as Calendar, Users, ArrowsClockwise as RefreshCw, GraduationCap, UserCircle, Clock, X, CaretRight as ChevronRight, Stack as Layers } from "@phosphor-icons/react";
 
 type Cohort = {
   id: string;
@@ -863,7 +828,7 @@ function CohortStudentsDialog({
                 className="flex items-center gap-3 rounded-xl border border-border/50 bg-card p-3.5 transition-colors hover:border-border hover:bg-muted/20"
               >
                 {/* Avatar */}
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 to-primary-700 text-white text-xs font-bold shadow-sm">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-white text-xs font-bold shadow-sm">
                   {getInitials(e.student.name)}
                 </div>
 

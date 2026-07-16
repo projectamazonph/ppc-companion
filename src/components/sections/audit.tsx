@@ -6,33 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import {
-  ScrollText,
-  Search,
-  Loader2,
-  AlertCircle,
-  RefreshCw,
-  LogIn,
-  LogOut,
-  Pencil,
-  Trash2,
-  Plus,
-  Download,
-  User,
-  ShieldCheck,
-  ChevronDown,
-  ChevronRight,
-  Clock,
-  Hash,
-  Globe,
-} from "lucide-react";
+import { Scroll as ScrollText, MagnifyingGlass as Search, CircleNotch as Loader2, WarningCircle as AlertCircle, ArrowsClockwise as RefreshCw, SignIn as LogIn, SignOut as LogOut, Pencil, Trash as Trash2, Plus, Download, User, ShieldCheck, CaretDown as ChevronDown, CaretRight as ChevronRight, Clock, Hash, Globe } from "@phosphor-icons/react";
 
 type AuditLog = {
   id: string;

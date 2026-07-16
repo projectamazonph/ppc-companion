@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { GeistSans, GeistMono } from "geist/font";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { PapHeader } from "@/components/header";
@@ -146,13 +145,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${GeistSans.variable} ${GeistMono.variable} antialiased bg-background text-foreground font-sans`}
+        className="antialiased bg-background text-foreground font-sans"
       >
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <div className="grain-overlay" />
         <PapHeader />
         {children}
         <Toaster />
