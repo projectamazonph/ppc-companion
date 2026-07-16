@@ -18,48 +18,48 @@ import { ArrowRight, BookOpen, Calculator, CheckCircle as CheckCircle2, Graduati
 // =============================================================
 
 const stats = [
-  { value: "5,000+", label: "Active Students", description: "Enrolled across the Philippines", icon: Users },
-  { value: "98%", label: "Hired Rate", description: "Within 3 months of certification", icon: TrendingUp },
-  { value: "50+", label: "Training Modules", description: "Covering Basic to Advanced AI PPC", icon: BookOpen },
+  { value: "500+", label: "VAs Coached", description: "Across the Philippines", icon: Users },
+  { value: "₱50M+", label: "Ads Managed", description: "Real Amazon campaigns", icon: TrendingUp },
+  { value: "14 yrs", label: "Amazon Ads Experience", description: "Led by a verified coach", icon: BookOpen },
 ];
 
 const features = [
   {
-    icon: Sparkles,
-    title: "AI-Driven Analysis",
+    icon: ShieldCheck,
+    title: "Built by 14-Year Amazon Ads Veterans",
     description:
-      "Learn to leverage the latest AI tools (ChatGPT, Claude, specialized Amazon bots) to optimize campaigns 10x faster.",
+      "A syllabus shaped by coaches who have managed ₱50M+ in real ad spend for sellers.",
   },
   {
-    icon: ShieldCheck,
-    title: "Certified Curriculum",
+    icon: Sparkles,
+    title: "Real PPC Tasks, Not Theory",
     description:
-      "Study a syllabus built by 7-figure sellers that meets current industry standards.",
+      "Practice the exact work an Amazon PPC specialist does — retail readiness, search-term triage, and campaign decisions.",
   },
   {
     icon: Users,
-    title: "Career Placement",
+    title: "A Clear Path to the Full Course",
     description:
-      "Top graduates get matched directly with Amazon sellers in our partner network looking for certified PPC specialists.",
+      "Finish the free sampler, then continue to the AMPH v2 program built for Filipino Virtual Assistants.",
   },
 ];
 
 const learnItems = [
   {
-    title: "Amazon PPC Fundamentals",
-    description: "Understanding Sponsored Products, Brands, and Display ads.",
+    title: "How an Amazon PPC Specialist Spends the Day",
+    description: "A realistic look at the work behind Sponsored Products, Brands, and Display.",
   },
   {
-    title: "Keyword Research with AI",
-    description: "Using advanced algorithms to find high-converting keywords.",
+    title: "Retail Readiness Check",
+    description: "Is this listing ready to advertise? Stock, Buy Box, price, reviews, and images.",
   },
   {
-    title: "Campaign Optimization Logic",
-    description: "Bid management, negative keyword strategies, and scaling winners.",
+    title: "Search-Term Triage",
+    description: "What to negate, what to keep, and how to explain a safe PPC decision.",
   },
   {
-    title: "Reporting & Client Communication",
-    description: "How to present data to clients to justify your value.",
+    title: "Your Career Path into Amazon PPC VA Work",
+    description: "Where the sampler fits and which AMPH v2 track suits you.",
   },
 ];
 
@@ -364,39 +364,40 @@ export function LandingPage() {
           <div className="flex w-full flex-col gap-6 md:w-1/2">
             <div className="flex flex-col gap-4 text-left">
               <span className="w-fit rounded-full bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
-                New AI Curriculum Updated
+                Free Sampler · By ProjectAmazonPH
               </span>
               <h1 className="text-3xl font-black leading-tight tracking-tight md:text-5xl lg:text-6xl">
-                Master Amazon PPC with{" "}
-                <span className="text-primary">AI Strategies</span>
+                Try a Real Amazon PPC Task —{" "}
+                <span className="text-primary">No Experience Needed</span>
               </h1>
               <h2 className="max-w-xl text-base leading-relaxed text-muted-foreground md:text-xl">
-                The ultimate training designed for Filipino Virtual Assistants. Launch
-                your career with industry-recognized certification and AI-powered
-                campaign management skills.
+                A free, safe taste of the work a real Amazon PPC Virtual Assistant does —
+                built by the ProjectAmazonPH team with 14 years of Amazon Ads experience.
+                Like it? Continue to the full AMPH v2 program.
               </h2>
             </div>
 
             <div className="mt-2 flex w-full flex-col gap-3">
-              <Button
-                onClick={openAuth}
-                className="h-12 w-full text-base font-bold shadow-lg shadow-primary/30"
-              >
-                Enroll for Free
-              </Button>
-              <a href="#curriculum">
+              <a href="/sampler">
+                <Button
+                  className="h-12 w-full text-base font-bold shadow-lg shadow-primary/30"
+                >
+                  Try the Free Sampler
+                </Button>
+              </a>
+              <a href="/projectamazonph">
                 <Button
                   variant="outline"
                   className="h-12 w-full text-base font-bold"
                 >
-                  View Syllabus
+                  See the Full AMPH v2 Program
                 </Button>
               </a>
             </div>
 
             <div className="mt-4 border-t border-border pt-6">
               <p className="mb-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Trusted by 7-figure Sellers
+                Built by the ProjectAmazonPH team
               </p>
               <div className="flex flex-wrap gap-4 opacity-60 grayscale transition-all hover:grayscale-0">
                 {["Sponsored Products", "Sponsored Brands", "Sponsored Display"].map(
@@ -423,17 +424,17 @@ export function LandingPage() {
                 }}
 
               />
-              <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-lg">
-                <div className="rounded-full bg-emerald-500/10 p-2 text-emerald-600 dark:text-emerald-400">
-                  <TrendingUp className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-medium text-muted-foreground">
-                    Average Salary Increase
-                  </p>
-                  <p className="text-base font-bold text-foreground">+150%</p>
-                </div>
-              </div>
+               <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-lg">
+                 <div className="rounded-full bg-emerald-500/10 p-2 text-emerald-600 dark:text-emerald-400">
+                   <TrendingUp className="h-5 w-5" />
+                 </div>
+                 <div>
+                   <p className="text-[10px] font-medium text-muted-foreground">
+                     Typical VA Earnings
+                   </p>
+                   <p className="text-base font-bold text-foreground">₱60K–₱80K / mo</p>
+                 </div>
+               </div>
             </div>
           </div>
         </div>
@@ -468,12 +469,11 @@ export function LandingPage() {
           <FadeUp>
             <div className="mb-8 flex max-w-2xl flex-col gap-3">
               <h2 className="text-2xl font-black tracking-tight">
-                Why Choose Our AI-Powered Training?
+                Why Practice With Our Sampler?
               </h2>
               <p className="text-base text-muted-foreground">
-                Designed specifically for the modern Virtual Assistant landscape. We
-                don&apos;t just teach you the basics; we teach you how to dominate using
-                technology.
+                Designed for Filipino Virtual Assistants who want a real, hands-on taste
+                of Amazon PPC work before committing to the full program.
               </p>
             </div>
           </FadeUp>
@@ -510,8 +510,8 @@ export function LandingPage() {
                 What You Will Learn
               </h2>
               <p className="text-sm text-muted-foreground">
-                Our comprehensive curriculum takes you from beginner to expert in 6
-                weeks.
+                In the free sampler you&apos;ll work through four short, realistic steps —
+                no Amazon account or prior experience required.
               </p>
             </div>
             <div className="space-y-4">
@@ -527,15 +527,26 @@ export function LandingPage() {
                     </p>
                   </div>
                 </div>
-              ))}
+              )}
+            </div>
+            <div className="mt-4 rounded-xl border border-border bg-background p-4">
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-primary">
+                After the free sampler, you&apos;ll be able to:
+              </p>
+              <ul className="space-y-1.5 text-xs text-muted-foreground">
+                <li>• Spot a listing that isn&apos;t ready to advertise — and say why.</li>
+                <li>• Write a short, credible escalation note a manager would accept.</li>
+                <li>• Make one safe search-term decision (negate vs. keep) with reasoning.</li>
+                <li>• Name the right AMPH v2 track for your goals.</li>
+              </ul>
             </div>
             <div className="pt-2">
-              <a href="#stories">
+              <a href="/sampler">
                 <Button
                   variant="ghost"
                   className="w-fit font-bold text-primary hover:text-primary/80"
                 >
-                  View Full Curriculum
+                  Start the Free Sampler
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </a>
@@ -561,10 +572,10 @@ export function LandingPage() {
                   <span className="text-[10px] font-bold text-primary">75%</span>
                 </div>
                 <h3 className="text-sm font-bold text-foreground">
-                  Module 4: Automated Bidding Rules
+                  Sampler Step 3: Search-Term Triage
                 </h3>
                 <p className="mt-0.5 text-[10px] text-muted-foreground">
-                  Instructor: Sarah Jenkins
+                  Decide what to negate, what to keep — and why
                 </p>
               </div>
             </div>
@@ -626,28 +637,31 @@ export function LandingPage() {
               }}
             />
             <h2 className="relative z-10 mb-3 text-2xl font-black tracking-tight text-white md:text-3xl">
-              Upgrade Your Career?
+              Ready for the Full Program?
             </h2>
             <p className="relative z-10 mx-auto mb-6 max-w-2xl text-base text-white/80">
-              Join the waiting list for our next cohort. Free to start learning.
+              PPC Companion is a free taste. The full curriculum, coaching, and
+              certification live in AMPH v2 — built by ProjectAmazonPH for Filipino VAs.
             </p>
             <div className="relative z-10 flex flex-col gap-3">
-              <Button
-                onClick={openAuth}
-                className="h-12 w-full bg-white text-base font-bold text-primary hover:bg-white/90"
-              >
-                Create Free Account
-              </Button>
-              <Button
-                onClick={openAuth}
-                variant="outline"
-                className="h-12 w-full border-white/40 bg-primary text-base font-bold text-white hover:bg-primary/90"
-              >
-                Talk to a Mentor
-              </Button>
+              <a href="/projectamazonph">
+                <Button
+                  className="h-12 w-full bg-white text-base font-bold text-primary hover:bg-white/90"
+                >
+                  See AMPH v2 — from ₱2,999
+                </Button>
+              </a>
+              <a href="/sampler">
+                <Button
+                  variant="outline"
+                  className="h-12 w-full border-white/40 bg-primary text-base font-bold text-white hover:bg-primary/90"
+                >
+                  Try the Free Sampler First
+                </Button>
+              </a>
             </div>
             <p className="relative z-10 mt-4 text-xs text-white/60">
-              No credit card required. Instant access.
+              No credit card required to try the sampler.
             </p>
           </div>
         </div>
@@ -686,7 +700,7 @@ export function LandingPage() {
                 <Mail className="h-4 w-4 text-primary" /> support@projectamazonph.com
               </li>
               <li className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-primary" /> Makati City, Metro Manila
+                <ShieldCheck className="h-4 w-4 text-primary" /> Cebu · Davao · Iloilo · NCR
               </li>
             </ul>
           </div>
