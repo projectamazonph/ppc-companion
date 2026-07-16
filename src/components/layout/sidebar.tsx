@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppStore, type Section, useProgressStats, pathToSection, sectionToPath } from "@/lib/store";
 import { cn } from "@/lib/utils";
-import { SquaresFour as LayoutDashboard, BookOpen, Pen as PenLine, GraduationCap, Calculator, BookBookmark as BookMarked, Trophy, Flame, CheckCircle as CheckCircle2, Users, UserCircle, ClipboardText as ClipboardList, Student as School, Scroll as ScrollText, Download, CaretLeft as ChevronLeft, CaretRight as ChevronRight, SignOut as LogOut, X, Bell, Gauge } from "@phosphor-icons/react";
+import { SquaresFour as LayoutDashboard, BookOpen, Pen as PenLine, GraduationCap, Calculator, BookBookmark as BookMarked, Trophy, Flame, CheckCircle as CheckCircle2, Users, UserCircle, ClipboardText as ClipboardList, Student as School, Scroll as ScrollText, Download, CaretLeft as ChevronLeft, CaretRight as ChevronRight, SignOut as LogOut, X, Bell, Gauge, Compass } from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
@@ -29,6 +29,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   // Main sections — visible to everyone
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, description: "Your training overview", roles: ["student", "instructor", "admin", "guest"], group: "main" },
+  { id: "sampler", label: "PPC Sampler", icon: Compass, description: "Try a real PPC task (15 min)", roles: ["student", "instructor", "admin", "guest"], group: "main" },
   { id: "curriculum", label: "Curriculum", icon: BookOpen, description: "All 4 phases & modules", roles: ["student", "instructor", "admin", "guest"], group: "main" },
   { id: "exercises", label: "Exercises", icon: PenLine, description: "Practice & submit", roles: ["student", "instructor", "admin", "guest"], group: "main" },
   { id: "quizzes", label: "Quizzes", icon: GraduationCap, description: "Phase checkpoints", roles: ["student", "instructor", "admin", "guest"], group: "main" },
