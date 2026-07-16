@@ -220,6 +220,13 @@ export type TriageDecision = "keep" | "investigate" | "negate" | "escalate";
 export type DiagnosticAnswer = {
   termId: string;
   decision: TriageDecision;
+  rationaleId?: string;
+};
+
+export type TriageRationaleOption = {
+  id: string;
+  text: string;
+  correct: boolean;
 };
 
 export type TriageSearchTerm = {
@@ -231,6 +238,9 @@ export type TriageSearchTerm = {
   relevance: "relevant" | "borderline" | "irrelevant";
   expectedDecision: TriageDecision;
   feedback: string;
+  // Multiple-choice rationale so the exercise needs no manual review.
+  rationaleOptions: TriageRationaleOption[];
+  expectedRationaleId: string;
 };
 
 export type TriageScenario = {
@@ -264,6 +274,12 @@ export const TRIAGE_SCENARIO: TriageScenario = {
       expectedDecision: "keep",
       feedback:
         "Relevant and converting under target ACoS — keep watching. No reason to touch it.",
+      rationaleOptions: [
+        { id: "r1a", text: "It's relevant and converting under target ACoS, so there's no reason to touch it yet.", correct: true },
+        { id: "r1b", text: "It has the most clicks, so I should raise its bid to get even more.", correct: false },
+        { id: "r1c", text: "Any term with orders should be negated to protect the budget.", correct: false },
+      ],
+      expectedRationaleId: "r1a",
     },
     {
       id: "t2",
@@ -275,6 +291,12 @@ export const TRIAGE_SCENARIO: TriageScenario = {
       expectedDecision: "negate",
       feedback:
         "Zero orders and off-topic. As a VA you propose it as a negative (escalate for approval) rather than silently editing.",
+      rationaleOptions: [
+        { id: "r2a", text: "It's off-topic with zero orders, so propose it as a negative (escalate for approval), not a silent edit.", correct: true },
+        { id: "r2b", text: "It has fewer clicks than the others, so I'll raise its bid to fix it.", correct: false },
+        { id: "r2c", text: "Low volume means I should keep it running to gather more data.", correct: false },
+      ],
+      expectedRationaleId: "r2a",
     },
     {
       id: "t3",
@@ -286,6 +308,12 @@ export const TRIAGE_SCENARIO: TriageScenario = {
       expectedDecision: "investigate",
       feedback:
         "Borderline relevance, above target ACoS. Pull more data before deciding — do not panic-negate a possibly good term.",
+      rationaleOptions: [
+        { id: "r3a", text: "Borderline relevance and above target ACoS, so I'll pull more data before deciding — not panic-negate.", correct: true },
+        { id: "r3b", text: "Any term above target ACoS should be negated immediately.", correct: false },
+        { id: "r3c", text: "One order means it's converting, so I'll raise the bid now.", correct: false },
+      ],
+      expectedRationaleId: "r3a",
     },
     {
       id: "t4",
@@ -297,6 +325,12 @@ export const TRIAGE_SCENARIO: TriageScenario = {
       expectedDecision: "escalate",
       feedback:
         "Relevant but very low volume with 0 orders in launch — escalate to the manager: this may be a B2B/wholesale intent worth a separate campaign, not a quick negate.",
+      rationaleOptions: [
+        { id: "r4a", text: "Relevant but very low volume with 0 orders in launch — escalate as possible B2B/wholesale intent, not a quick negate.", correct: true },
+        { id: "r4b", text: "Zero orders means I should negate it right away.", correct: false },
+        { id: "r4c", text: "It's relevant, so I'll keep it and raise the bid to force conversions.", correct: false },
+      ],
+      expectedRationaleId: "r4a",
     },
   ],
 };
@@ -315,19 +349,22 @@ const DECISION_WEIGHT: Record<TriageDecision, number> = {
 const MAX_PER_TERM = 3; // 2 for decision + 1 if matches expected
 
 /**
- * Grade a triage submission.
+ * Grade a triage submission. Fully multiple-choice, no free text to review.
  *  - Each term: up to 2 points for a safe, defensible decision + 1 point if it
  *    matches the expected decision (so reasoning that differs but is justified
  *    still scores).
- *  - Reasoning note: up to +2 if it references evidence AND the safe action.
- * Max score scales with the number of terms (4 terms → 16 + 2 = 18).
+ *  - Rationale: +1 if the chosen multiple-choice rationale is correct.
+ * Max score scales with the number of terms (4 terms → 16 + 4 = 20).
  */
 export function gradeTriage(
   answers: DiagnosticAnswer[],
-  reason: string,
+  _reason: string,
   scenario: TriageScenario
 ): { score: number; maxScore: number; breakdown: string[] } {
   const expected = new Map(scenario.searchTerms.map((t) => [t.id, t.expectedDecision]));
+  const rationaleById = new Map(
+    scenario.searchTerms.flatMap((t) => t.rationaleOptions.map((r) => [r.id, r]))
+  );
   const breakdown: string[] = [];
   let score = 0;
   let maxScore = 0;
@@ -335,8 +372,11 @@ export function gradeTriage(
   for (const t of scenario.searchTerms) {
     const ans = answers.find((a) => a.termId === t.id)?.decision;
     maxScore += MAX_PER_TERM;
+    // Multiple-choice rationale (no free text) counts toward max regardless.
+    maxScore += 1;
     if (!ans) {
       breakdown.push(`• "${t.term}": no decision selected.`);
+      breakdown.push(`  ↳ Rationale: not selected — 0/1.`);
       continue;
     }
     // Any of the 4 safe actions scores the base weight; matching expected adds 1.
@@ -346,30 +386,16 @@ export function gradeTriage(
     breakdown.push(
       `• "${t.term}": ${ans}${expected.get(t.id) === ans ? " (expected)" : ""} — ${termScore}/${MAX_PER_TERM}.`
     );
-  }
 
-  // Reasoning bonus (context, not just the button).
-  const note = reason.trim().toLowerCase();
-  let reasoning = 0;
-  const mentionsEvidence =
-    /\b(0 order|zero order|no order|irrelevant|relevant|acos|cvr|click)\b/.test(note) ||
-    note.includes("wasted") ||
-    note.includes("convert");
-  const mentionsSafe =
-    note.includes("escalat") ||
-    note.includes("manager") ||
-    note.includes("flag") ||
-    note.includes("investigate") ||
-    note.includes("negative") ||
-    note.includes("keep") ||
-    note.includes("do not") ||
-    note.includes("don't change") ||
-    note.includes("no bid");
-  if (mentionsEvidence && mentionsSafe) reasoning = 2;
-  else if (mentionsEvidence || mentionsSafe) reasoning = 1;
-  maxScore += 2;
-  score += reasoning;
-  breakdown.push(`• Reasoning note: ${reasoning}/2 (evidence + safe action).`);
+    const chosen = answers.find((a) => a.termId === t.id)?.rationaleId;
+    const r = chosen ? rationaleById.get(chosen) : undefined;
+    if (r?.correct) {
+      score += 1;
+      breakdown.push(`  ↳ Rationale correct — +1.`);
+    } else {
+      breakdown.push(`  ↳ Rationale: ${r?.correct ? "correct" : "not selected / incorrect"} — 0/1.`);
+    }
+  }
 
   return { score, maxScore, breakdown };
 }
