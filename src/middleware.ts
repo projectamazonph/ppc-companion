@@ -55,6 +55,8 @@ const JWT_EXEMPT_ROUTES = [
   "/api/auth/csrf",
   "/api/health",
   "/api/curriculum",
+  // Public PPC Companion → AMPH v2 sampler funnel (no login required)
+  "/api/sampler",
 ];
 
 const MUTATING_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
