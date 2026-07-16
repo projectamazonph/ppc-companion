@@ -5,25 +5,7 @@ import { phases, TRIAL_MODULE_IDS, type Module, type ModuleSection } from "@/lib
 import { BrandButton } from "@/components/shared/buttons";
 import { cn } from "@/lib/utils";
 import {
-  ArrowLeft,
-  ArrowRight,
-  Award,
-  BookOpen,
-  CheckCircle2,
-  ChevronDown,
-  Clock,
-  FileText,
-  GraduationCap,
-  HelpCircle,
-  Layers,
-  Lightbulb,
-  Lock,
-  PenLine,
-  Play,
-  PlayCircle,
-  Sparkles,
-  User,
-} from "lucide-react";
+  ArrowLeft, ArrowRight, Medal as Award, BookOpen, CheckCircle as CheckCircle2, CaretDown as ChevronDown, Clock, FileText, GraduationCap, Question as HelpCircle, Stack as Layers, Lightbulb, Lock, Pen as PenLine, Play, PlayCircle, Sparkle as Sparkles, User } from "@phosphor-icons/react";
 
 // ─── Helpers (shared with curriculum's courses-list view) ─────────────────────
 
@@ -41,7 +23,7 @@ export const phaseColorMap: Record<
   }
 > = {
   1: {
-    gradient: "from-orange-500 via-orange-600 to-amber-700",
+    gradient: "bg-orange-500",
     accent: "text-blue-600 dark:text-blue-400",
     ring: "ring-blue-200 dark:ring-blue-800",
     light: "bg-blue-50 dark:bg-blue-950/30",
@@ -50,7 +32,7 @@ export const phaseColorMap: Record<
     cardBorder: "hover:border-primary/30",
   },
   2: {
-    gradient: "from-violet-600 via-purple-700 to-amber-700",
+    gradient: "bg-violet-600",
     accent: "text-violet-600 dark:text-violet-400",
     ring: "ring-violet-200 dark:ring-violet-800",
     light: "bg-violet-50 dark:bg-violet-950/30",
@@ -59,7 +41,7 @@ export const phaseColorMap: Record<
     cardBorder: "hover:border-violet-500/30",
   },
   3: {
-    gradient: "from-amber-500 via-orange-600 to-red-600",
+    gradient: "bg-amber-500",
     accent: "text-amber-600 dark:text-amber-400",
     ring: "ring-amber-200 dark:ring-amber-800",
     light: "bg-amber-50 dark:bg-amber-950/30",
@@ -68,7 +50,7 @@ export const phaseColorMap: Record<
     cardBorder: "hover:border-amber-500/30",
   },
   4: {
-    gradient: "from-emerald-500 via-teal-600 to-cyan-700",
+    gradient: "bg-emerald-500",
     accent: "text-emerald-600 dark:text-emerald-400",
     ring: "ring-emerald-200 dark:ring-emerald-800",
     light: "bg-emerald-50 dark:bg-emerald-950/30",
@@ -77,7 +59,7 @@ export const phaseColorMap: Record<
     cardBorder: "hover:border-emerald-500/30",
   },
   5: {
-    gradient: "from-rose-500 via-pink-600 to-fuchsia-600",
+    gradient: "bg-rose-500",
     accent: "text-rose-600 dark:text-rose-400",
     ring: "ring-rose-200 dark:ring-rose-800",
     light: "bg-rose-50 dark:bg-rose-950/30",
@@ -298,7 +280,7 @@ function ModuleView({
             </div>
 
             <div className="relative flex aspect-video items-center justify-center bg-muted">
-              <div className="flex size-14 items-center justify-center rounded-full bg-primary/20 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110 sm:size-16">
+              <div className="flex size-14 items-center justify-center rounded-full bg-primary/20 transition-transform duration-300 group-hover:scale-110 sm:size-16">
                 <Play className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
               </div>
               <div className="absolute inset-x-0 bottom-0 h-1 bg-border">
@@ -719,14 +701,14 @@ function ModuleSectionView({
         {/* ── Flow ── */}
         {section.type === "flow" && section.steps && (
           <div className="relative">
-            <div className="absolute left-[19px] top-4 bottom-4 w-px bg-gradient-to-b from-border via-border/60 to-transparent" />
+            <div className="absolute left-[19px] top-4 bottom-4 w-px bg-border" />
 
             <ol className="space-y-5">
               {section.steps.map((step, i) => (
                 <li key={i} className="relative flex gap-4">
                   <div
                     className={cn(
-                      "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold shadow-sm ring-4 ring-background text-white bg-gradient-to-br",
+                      "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold shadow-sm ring-4 ring-background text-white ",
                       colors.gradient
                     )}
                   >

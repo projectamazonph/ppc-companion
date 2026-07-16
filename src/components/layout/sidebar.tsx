@@ -5,29 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppStore, type Section, useProgressStats, pathToSection, sectionToPath } from "@/lib/store";
 import { cn } from "@/lib/utils";
-import {
-  LayoutDashboard,
-  BookOpen,
-  PenLine,
-  GraduationCap,
-  Calculator,
-  BookMarked,
-  Trophy,
-  Flame,
-  CheckCircle2,
-  Users,
-  UserCircle,
-  ClipboardList,
-  School,
-  ScrollText,
-  Download,
-  ChevronLeft,
-  ChevronRight,
-  LogOut,
-  X,
-  Bell,
-  Gauge,
-} from "lucide-react";
+import { SquaresFour as LayoutDashboard, BookOpen, Pen as PenLine, GraduationCap, Calculator, BookBookmark as BookMarked, Trophy, Flame, CheckCircle as CheckCircle2, Users, UserCircle, ClipboardText as ClipboardList, Student as School, Scroll as ScrollText, Download, CaretLeft as ChevronLeft, CaretRight as ChevronRight, SignOut as LogOut, X, Bell, Gauge } from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
@@ -110,12 +88,12 @@ export function Sidebar({
 
   const roleColor =
     user?.role === "admin"
-      ? "from-rose-500 to-red-600"
+      ? "bg-rose-500"
       : user?.role === "instructor"
-      ? "from-violet-500 to-purple-600"
+      ? "bg-violet-500"
       : user?.role === "guest"
-      ? "from-stone-400 to-stone-600"
-      : "from-orange-500 to-orange-600";
+      ? "bg-stone-400"
+      : "bg-orange-500";
 
   const roleLabel =
     user?.role === "admin"
@@ -128,10 +106,10 @@ export function Sidebar({
 
   // ── Collapsed width only on desktop ──
   const sidebarWidth = mobile
-    ? "w-72"
+    ? "w-60"
     : collapsed
     ? "w-[68px]"
-    : "w-72";
+    : "w-60";
 
   return (
     <div
@@ -150,7 +128,7 @@ export function Sidebar({
         {/* Gradient icon mark */}
         <div
           className={cn(
-            "flex shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-600/20",
+            "flex shrink-0 items-center justify-center rounded-xl bg-orange-500 text-white shadow-lg shadow-orange-600/20",
             collapsed && !mobile ? "h-9 w-9" : "h-9 w-9"
           )}
         >
@@ -292,7 +270,7 @@ export function Sidebar({
             <div className="flex justify-center">
               <div
                 className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br text-white text-[10px] font-semibold shadow-sm",
+                  "flex h-8 w-8 items-center justify-center rounded-full text-white text-[10px] font-semibold shadow-sm",
                   roleColor
                 )}
               >
@@ -304,7 +282,7 @@ export function Sidebar({
             <div className="flex items-center gap-2.5">
               <div
                 className={cn(
-                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white text-[10px] font-semibold shadow-sm",
+                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white text-[10px] font-semibold shadow-sm",
                   roleColor
                 )}
               >

@@ -5,19 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { BrandButton } from "@/components/shared/buttons";
 import { cn } from "@/lib/utils";
 import {
-  Download,
-  FileText,
-  FileSpreadsheet,
-  Trophy,
-  BookOpen,
-  Zap,
-  Table2,
-  CheckCircle2,
-  FolderOpen,
-  ArrowDownToLine,
-  Info,
-  Sparkles,
-} from "lucide-react";
+  Download, FileText, FileText as FileSpreadsheet, Trophy, BookOpen, Lightning as Zap, Table as Table2, CheckCircle as CheckCircle2, FolderOpen, ArrowLineDown as ArrowDownToLine, Info, Sparkle as Sparkles } from "@phosphor-icons/react";
 
 // =============================================================
 // Downloadable resource definitions
@@ -45,7 +33,7 @@ const resources: Resource[] = [
     filename: "keyword-research-template.csv",
     fileType: "CSV",
     icon: FileSpreadsheet,
-    color: "from-blue-600 to-blue-700",
+    color: "bg-blue-600",
     category: "Templates",
     relatedExercise: "3.1A",
   },
@@ -57,7 +45,7 @@ const resources: Resource[] = [
     filename: "campaign-blueprint-template.csv",
     fileType: "CSV",
     icon: FileSpreadsheet,
-    color: "from-rose-500 to-red-600",
+    color: "bg-rose-500",
     category: "Templates",
     relatedExercise: "3.2A",
   },
@@ -69,7 +57,7 @@ const resources: Resource[] = [
     filename: "search-term-report-template.csv",
     fileType: "CSV",
     icon: FileSpreadsheet,
-    color: "from-emerald-500 to-teal-600",
+    color: "bg-emerald-500",
     category: "Templates",
     relatedExercise: "3.3A",
   },
@@ -81,7 +69,7 @@ const resources: Resource[] = [
     filename: "weekly-report-template.pdf",
     fileType: "PDF",
     icon: FileText,
-    color: "from-violet-500 to-purple-600",
+    color: "bg-violet-500",
     category: "Templates",
     relatedExercise: "4.1A",
   },
@@ -94,7 +82,7 @@ const resources: Resource[] = [
     filename: "capstone-project-template.pdf",
     fileType: "PDF",
     icon: Trophy,
-    color: "from-violet-500 to-purple-600",
+    color: "bg-violet-500",
     category: "Capstone",
   },
   // Reference
@@ -106,7 +94,7 @@ const resources: Resource[] = [
     filename: "ppc-cheat-sheet.pdf",
     fileType: "PDF",
     icon: Zap,
-    color: "from-blue-600 to-blue-700",
+    color: "bg-blue-600",
     category: "Reference",
   },
   {
@@ -117,7 +105,7 @@ const resources: Resource[] = [
     filename: "glossary.pdf",
     fileType: "PDF",
     icon: BookOpen,
-    color: "from-blue-500 to-cyan-600",
+    color: "bg-blue-500",
     category: "Reference",
   },
 ];
@@ -211,10 +199,9 @@ export function DownloadsSection() {
       </div>
 
       {/* ── Info banner ────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-2xl border border-blue-200/50 dark:border-blue-800/30 bg-gradient-to-br from-blue-50/80 via-indigo-50/40 to-transparent dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-transparent">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100/40 via-transparent dark:from-blue-800/10" />
+      <div className="relative overflow-hidden rounded-2xl border border-blue-200/50 dark:border-blue-800/30 bg-blue-50/80 dark:bg-blue-950/30">
         <div className="relative flex items-start gap-4 p-5 sm:p-6">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/20">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-500 text-white shadow-lg shadow-orange-500/20">
             <Info className="h-5 w-5" />
           </div>
           <div className="min-w-0 space-y-1">
@@ -276,12 +263,12 @@ export function DownloadsSection() {
                 return (
                   <Card
                     key={resource.id}
-                    className="group relative border-border/50 hover:border-border bg-card/50 hover:bg-card backdrop-blur-sm transition-all duration-200 hover:shadow-lg hover:shadow-black/[0.03] dark:hover:shadow-black/20 flex flex-col overflow-hidden"
+                    className="group relative border-border/50 hover:border-border bg-card hover:bg-card transition-all duration-200 hover:shadow-lg hover:shadow-black/[0.03] dark:hover:shadow-black/20 flex flex-col overflow-hidden"
                   >
                     {/* Subtle top accent line */}
                     <div
                       className={cn(
-                        "h-0.5 w-full bg-gradient-to-r opacity-60 group-hover:opacity-100 transition-opacity",
+                        "h-0.5 w-full opacity-60 group-hover:opacity-100 transition-opacity",
                         resource.color
                       )}
                     />
@@ -291,7 +278,7 @@ export function DownloadsSection() {
                       <div className="flex items-start justify-between gap-3 mb-4">
                         <div
                           className={cn(
-                            "flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg transition-transform duration-200 group-hover:scale-105",
+                            "flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-lg transition-transform duration-200 group-hover:scale-105",
                             resource.color
                           )}
                         >

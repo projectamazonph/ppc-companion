@@ -11,7 +11,7 @@ interface PageHeaderProps {
 }
 
 const badgeVariantStyles = {
-  default: "bg-primary-500/15 text-primary-700 dark:text-primary-300 border-primary-500/30",
+  default: "bg-primary/15 text-primary-700 dark:text-primary-300 border-primary-500/30",
   accent: "bg-accent-500/15 text-accent-700 dark:text-accent-300 border-accent-500/30",
   success: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
   warning: "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30",

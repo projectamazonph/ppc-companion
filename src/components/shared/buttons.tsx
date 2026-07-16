@@ -4,25 +4,25 @@ import { forwardRef } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
+import { CircleNotch as Loader2 } from "@phosphor-icons/react";
 
 // =============================================================
 // Brand Button — primary CTA
 // =============================================================
 
 const brandButtonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.97]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
   {
     variants: {
       variant: {
         default:
           "bg-primary text-primary-foreground shadow-[0_1px_2px_rgb(0_0_0/0.04),0_2px_8px_rgb(62_82_114/0.08)] hover:brightness-[1.15] hover:shadow-[0_2px_8px_rgb(0_0_0/0.06),0_8px_24px_rgb(62_82_114/0.1)]",
         accent:
-          "bg-foreground text-background shadow-tinted hover:brightness-[1.8]",
+          "bg-foreground text-background shadow-sm hover:brightness-[1.8]",
         success:
-          "bg-emerald-600 text-white shadow-tinted hover:brightness-[1.15]",
+          "bg-emerald-600 text-white shadow-sm hover:brightness-[1.15]",
         danger:
-          "bg-rose-600 text-white shadow-tinted hover:brightness-[1.15]",
+          "bg-rose-600 text-white shadow-sm hover:brightness-[1.15]",
         outline:
           "border border-border bg-transparent text-foreground hover:bg-foreground/[0.03] active:bg-foreground/[0.06]",
         ghost:
@@ -73,14 +73,14 @@ BrandButton.displayName = "BrandButton";
 // =============================================================
 
 const glassButtonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] border",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] border",
   {
     variants: {
       variant: {
         default:
-          "glass-strong border-white/40 dark:border-white/10 text-foreground hover:bg-white/80 dark:hover:bg-white/10",
+          "bg-card border-border text-foreground hover:bg-muted",
         subtle:
-          "bg-white/40 dark:bg-white/5 border-white/20 dark:border-white/5 text-muted-foreground hover:text-foreground hover:bg-white/60 dark:hover:bg-white/10",
+          "bg-muted/60 border-border text-muted-foreground hover:bg-muted hover:text-foreground",
       },
       size: {
         sm: "h-9 px-4 text-xs",
@@ -136,19 +136,19 @@ export function PremiumArrowButton({
 }) {
   const base =
     variant === "primary"
-      ? "bg-foreground text-background hover:opacity-90"
+      ? "bg-primary text-primary-foreground hover:bg-primary/90"
       : variant === "glass"
-      ? "bg-white/10 text-foreground backdrop-blur-xl border border-white/10 hover:bg-white/15"
+      ? "bg-card border border-border text-foreground hover:bg-muted"
       : "bg-transparent text-foreground border border-border hover:bg-accent/50";
 
   return (
     <button
       onClick={onClick}
-      className={`group relative inline-flex items-center gap-3 rounded-full px-6 py-3 text-sm font-medium transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] ${base} ${className ?? ""}`}
+      className={`group relative inline-flex items-center gap-3 rounded-md px-6 py-3 text-sm font-medium transition-all duration-200 ease-out active:scale-[0.98] ${base} ${className ?? ""}`}
     >
       <span>{children}</span>
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black/10 dark:bg-white/10 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:scale-105">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-[1px] group-hover:-translate-y-[1px]">
+      <span className="flex h-8 w-8 items-center justify-center rounded-md bg-black/10 dark:bg-white/10 transition-all duration-200 ease-out group-hover:translate-x-0.5 group-hover:scale-105">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="transition-transform duration-200 ease-out group-hover:translate-x-[1px] group-hover:-translate-y-[1px]">
           <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </span>

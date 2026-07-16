@@ -11,33 +11,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { FadeUp, StaggerGrid } from "@/components/shared/scroll-reveal";
-import {
-  ArrowRight,
-  BookOpen,
-  Calculator,
-  CheckCircle2,
-  GraduationCap,
-  Layers,
-  Clock,
-  PenLine,
-  Trophy,
-  Users,
-  Star,
-  Menu,
-  X,
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  Loader2,
-  Sparkles,
-  TrendingUp,
-  Target,
-  ShieldCheck,
-  Quote,
-  Search,
-  Play,
-} from "lucide-react";
+import { ArrowRight, BookOpen, Calculator, CheckCircle as CheckCircle2, GraduationCap, Stack as Layers, Clock, Pen as PenLine, Trophy, Users, Star, List as Menu, X, Envelope as Mail, Lock, Eye, EyeSlash as EyeOff, CircleNotch as Loader2, Sparkle as Sparkles, TrendUp as TrendingUp, Target, ShieldCheck, Quotes as Quote, MagnifyingGlass as Search, Play } from "@phosphor-icons/react";
 
 // =============================================================
 // Content
@@ -324,7 +298,7 @@ export function LandingPage() {
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background text-foreground">
       {/* ─── Header ─────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur">
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-card">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           <button
             onClick={() => router.push("/")}
@@ -440,7 +414,7 @@ export function LandingPage() {
 
           <div className="w-full md:w-1/2">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl shadow-primary/10">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent mix-blend-overlay z-10" />
+              <div className="absolute inset-0 bg-primary/20 mix-blend-overlay z-10" />
               <div
                 className="h-full w-full bg-cover bg-center"
                 style={{

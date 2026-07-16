@@ -9,39 +9,7 @@ import { BrandButton } from "@/components/shared/buttons";
 import { formulas } from "@/lib/course-data";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import {
-  Calculator,
-  Search,
-  Layers,
-  RefreshCw,
-  TrendingUp,
-  TrendingDown,
-  Zap,
-  Plus,
-  Trash2,
-  Lightbulb,
-  CheckCircle2,
-  AlertTriangle,
-  Pause,
-  ArrowUpRight,
-  ArrowDownRight,
-  RotateCcw,
-  Compass,
-  Expand,
-  Star,
-  Shield,
-  Copy,
-  Check,
-  BarChart3,
-  Target,
-  DollarSign,
-  MousePointerClick,
-  ShoppingCart,
-  Eye,
-  Receipt,
-  CircleHelp,
-  Sparkles,
-} from "lucide-react";
+import { Calculator, MagnifyingGlass as Search, Stack as Layers, ArrowsClockwise as RefreshCw, TrendUp as TrendingUp, TrendDown as TrendingDown, Lightning as Zap, Plus, Trash as Trash2, Lightbulb, CheckCircle as CheckCircle2, Warning as AlertTriangle, Pause, ArrowUpRight, ArrowDownRight, ArrowsCounterClockwise as RotateCcw, Compass, ArrowsOut as Expand, Star, Shield, Copy, Check, ChartBar as BarChart3, Target, CurrencyDollar as DollarSign, CursorClick as MousePointerClick, ShoppingCart, Eye, Receipt, Question as CircleHelp, Sparkle as Sparkles } from "@phosphor-icons/react";
 
 // =============================================================
 // Shared helpers
@@ -639,7 +607,7 @@ const LAYER_META: Record<Layer, { label: string; budgetPct: number; description:
     description: "Auto + Broad. Find new converting search terms.",
     color: "border-blue-300 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/20",
     icon: Compass,
-    gradient: "from-blue-600 to-blue-700",
+    gradient: "bg-blue-600",
   },
   expansion: {
     label: "Expansion",
@@ -647,7 +615,7 @@ const LAYER_META: Record<Layer, { label: string; budgetPct: number; description:
     description: "Phrase. Scale promising terms with more control.",
     color: "border-rose-300 dark:border-rose-800 bg-rose-50/50 dark:bg-rose-950/20",
     icon: Expand,
-    gradient: "from-rose-500 to-red-600",
+    gradient: "bg-rose-500",
   },
   heroes: {
     label: "Heroes",
@@ -655,7 +623,7 @@ const LAYER_META: Record<Layer, { label: string; budgetPct: number; description:
     description: "Exact. Maximize profit on best keywords.",
     color: "border-emerald-300 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20",
     icon: Star,
-    gradient: "from-emerald-500 to-teal-600",
+    gradient: "bg-emerald-500",
   },
   defense: {
     label: "Defense & Conquest",
@@ -663,7 +631,7 @@ const LAYER_META: Record<Layer, { label: string; budgetPct: number; description:
     description: "ASIN + SD. Defend your listings, attack competitors.",
     color: "border-violet-300 dark:border-violet-800 bg-violet-50/50 dark:bg-violet-950/20",
     icon: Shield,
-    gradient: "from-violet-500 to-purple-600",
+    gradient: "bg-violet-500",
   },
 };
 
@@ -793,7 +761,7 @@ function CampaignBuilder() {
             return (
               <div
                 key={layer}
-                className={cn("h-full bg-gradient-to-r transition-all duration-300", LAYER_META[layer].gradient)}
+                className={cn("h-full transition-all duration-300", LAYER_META[layer].gradient)}
                 style={{ width: `${pct}%` }}
                 title={`${LAYER_META[layer].label}: $${total.toFixed(0)} (${pct.toFixed(0)}%)`}
               />
@@ -808,7 +776,7 @@ function CampaignBuilder() {
             const Icon = LAYER_META[layer].icon;
             return (
               <div key={layer} className="flex items-center gap-1.5">
-                <div className={cn("flex h-4 w-4 items-center justify-center rounded-sm bg-gradient-to-br text-white", LAYER_META[layer].gradient)}>
+                <div className={cn("flex h-4 w-4 items-center justify-center rounded-sm text-white", LAYER_META[layer].gradient)}>
                   <Icon className="h-2.5 w-2.5" />
                 </div>
                 <span className="text-muted-foreground">{LAYER_META[layer].label}</span>
@@ -829,7 +797,7 @@ function CampaignBuilder() {
           <div key={layer} className={cn("rounded-xl border-2 p-5", meta.color)}>
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <div className="flex items-center gap-3">
-                <div className={cn("flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-sm", meta.gradient)}>
+                <div className={cn("flex h-9 w-9 items-center justify-center rounded-xl text-white shadow-sm", meta.gradient)}>
                   <Icon className="h-4 w-4" />
                 </div>
                 <div>
@@ -978,9 +946,9 @@ function CampaignBuilder() {
 type ToolId = "calculator" | "analyzer" | "builder";
 
 const TOOLS: { id: ToolId; label: string; description: string; icon: typeof Calculator; gradient: string }[] = [
-  { id: "calculator", label: "Metrics Calculator", description: "CTR, CPC, ACoS, ROAS", icon: Calculator, gradient: "from-blue-600 to-blue-700" },
-  { id: "analyzer", label: "Search Term Analyzer", description: "Promote, negate, bid", icon: Search, gradient: "from-rose-500 to-red-600" },
-  { id: "builder", label: "Campaign Builder", description: "4-layer structure", icon: Layers, gradient: "from-violet-500 to-purple-600" },
+  { id: "calculator", label: "Metrics Calculator", description: "CTR, CPC, ACoS, ROAS", icon: Calculator, gradient: "bg-blue-600" },
+  { id: "analyzer", label: "Search Term Analyzer", description: "Promote, negate, bid", icon: Search, gradient: "bg-rose-500" },
+  { id: "builder", label: "Campaign Builder", description: "4-layer structure", icon: Layers, gradient: "bg-violet-500" },
 ];
 
 export function ToolsSection() {
@@ -1024,7 +992,7 @@ export function ToolsSection() {
               <div className={cn(
                 "flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl transition-all duration-200",
                 isActive
-                  ? `bg-gradient-to-br ${tool.gradient} text-white shadow-md`
+                  ? `${tool.gradient} text-white shadow-md`
                   : "bg-muted text-muted-foreground group-hover:bg-muted/80"
               )}>
                 <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -1039,7 +1007,7 @@ export function ToolsSection() {
                 <p className="text-[10px] text-muted-foreground mt-0.5 hidden sm:block">{tool.description}</p>
               </div>
               {isActive && (
-                <div className="absolute -bottom-px left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-primary-500" />
+                <div className="absolute -bottom-px left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-primary" />
               )}
             </button>
           );
@@ -1048,7 +1016,7 @@ export function ToolsSection() {
 
       {/* Active tool header */}
       <div className="flex items-center gap-3">
-        <div className={cn("flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-sm", activeMeta.gradient)}>
+        <div className={cn("flex h-9 w-9 items-center justify-center rounded-xl text-white shadow-sm", activeMeta.gradient)}>
           <activeMeta.icon className="h-4 w-4" />
         </div>
         <div>

@@ -8,36 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
-import {
-  Search,
-  Loader2,
-  AlertCircle,
-  Users,
-  UserCheck,
-  TrendingUp,
-  BookOpen,
-  Pencil,
-  CheckCircle2,
-  RotateCcw,
-  GraduationCap,
-  ChevronDown,
-  ChevronUp,
-  Clock,
-  Target,
-  Award,
-  BarChart3,
-  X,
-} from "lucide-react";
+import { MagnifyingGlass as Search, CircleNotch as Loader2, WarningCircle as AlertCircle, Users, UserCheck, TrendUp as TrendingUp, BookOpen, Pencil, CheckCircle as CheckCircle2, ArrowsCounterClockwise as RotateCcw, GraduationCap, CaretDown as ChevronDown, CaretUp as ChevronUp, Clock, Target, Medal as Award, ChartBar as BarChart3, X } from "@phosphor-icons/react";
 
 type Student = {
   id: string;
@@ -77,12 +52,12 @@ function getPhaseLabel(phase: number) {
 
 function getPhaseColor(phase: number) {
   const colors: Record<number, string> = {
-    1: "from-sky-500 to-blue-600",
-    2: "from-violet-500 to-purple-600",
-    3: "from-amber-500 to-orange-600",
-    4: "from-emerald-500 to-teal-600",
+    1: "bg-sky-500",
+    2: "bg-violet-500",
+    3: "bg-amber-500",
+    4: "bg-emerald-500",
   };
-  return colors[phase] ?? "from-gray-500 to-gray-600";
+  return colors[phase] ?? "bg-gray-500";
 }
 
 function getStatusColor(status: string) {
@@ -100,14 +75,14 @@ function getStatusColor(status: string) {
 
 function getAvatarGradient(id: string) {
   const gradients = [
-    "from-orange-500 to-orange-600",
-    "from-violet-500 to-purple-600",
-    "from-emerald-500 to-teal-600",
-    "from-rose-500 to-pink-600",
-    "from-amber-500 to-orange-600",
-    "from-cyan-500 to-sky-600",
-    "from-fuchsia-500 to-pink-600",
-    "from-lime-500 to-green-600",
+    "bg-orange-500",
+    "bg-violet-500",
+    "bg-emerald-500",
+    "bg-rose-500",
+    "bg-amber-500",
+    "bg-cyan-500",
+    "bg-fuchsia-500",
+    "bg-lime-500",
   ];
   const hash = id.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
   return gradients[hash % gradients.length];
@@ -129,7 +104,7 @@ function ProgressBar({ value, max = 4, className }: { value: number; max?: numbe
       </div>
       <div className="h-2 w-full rounded-full bg-muted/60 overflow-hidden">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all duration-700 ease-out"
+          className="h-full rounded-full bg-primary transition-all duration-700 ease-out"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -434,7 +409,7 @@ function StudentCard({
           {/* Avatar */}
           <div
             className={cn(
-              "flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-white text-sm font-bold shadow-sm",
+              "flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-white text-sm font-bold shadow-sm",
               avatarGradient
             )}
           >
@@ -467,7 +442,7 @@ function StudentCard({
             <div className="flex items-center gap-2">
               <div
                 className={cn(
-                  "h-2 w-2 rounded-full bg-gradient-to-br",
+                  "h-2 w-2 rounded-full ",
                   phaseColor
                 )}
               />
@@ -482,7 +457,7 @@ function StudentCard({
           <div className="h-1.5 w-full rounded-full bg-muted/60 overflow-hidden">
             <div
               className={cn(
-                "h-full rounded-full bg-gradient-to-r transition-all duration-700 ease-out",
+                "h-full rounded-full transition-all duration-700 ease-out",
                 phaseColor
               )}
               style={{ width: `${Math.min(100, (student.currentPhase / 4) * 100)}%` }}
@@ -541,7 +516,7 @@ function StudentCard({
               <ChevronDown className="h-3.5 w-3.5" />
               View submissions
               {ungradedCount > 0 && (
-                <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-500 px-1.5 text-[10px] font-bold text-white">
+                <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-white">
                   {ungradedCount}
                 </span>
               )}

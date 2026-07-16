@@ -10,31 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import {
-  GraduationCap,
-  CheckCircle2,
-  XCircle,
-  Trophy,
-  RotateCcw,
-  Lightbulb,
-  ArrowRight,
-  Target,
-  FileText,
-  BarChart3,
-  Eye,
-  EyeOff,
-  Sparkles,
-  CircleCheck,
-  CircleX,
-  CircleDot,
-  Flag,
-  ChevronDown,
-  Home,
-  BookOpen,
-  Users,
-  User,
-  MonitorDot,
-  Bell,
-} from "lucide-react";
+  GraduationCap, CheckCircle as CheckCircle2, XCircle, Trophy, ArrowsCounterClockwise as RotateCcw, Lightbulb, ArrowRight, Target, FileText, ChartBar as BarChart3, Eye, EyeSlash as EyeOff, Sparkle as Sparkles, CheckCircle as CircleCheck, XCircle as CircleX, Circle as CircleDot, Flag, CaretDown as ChevronDown, House as Home, BookOpen, Users, User, Monitor as MonitorDot, Bell } from "@phosphor-icons/react";
 
 // ---------------------------------------------------------------------------
 // QuizzesSection — top-level wrapper
@@ -105,7 +81,7 @@ export function QuizzesSection() {
               <div className="flex items-start justify-between mb-4">
                 <div
                   className={cn(
-                    "flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-sm",
+                    "flex h-11 w-11 items-center justify-center rounded-xl text-white shadow-sm",
                     phase.color
                   )}
                 >
@@ -305,7 +281,7 @@ function QuizView({
   return (
     <div className="rounded-2xl border border-border/60 bg-card shadow-sm overflow-hidden">
       {/* ── Sticky app-style header ─────────────────────────────── */}
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/95 backdrop-blur px-4 sm:px-10 py-3 shadow-sm">
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card px-4 sm:px-10 py-3 shadow-sm">
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="flex size-9 sm:size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <GraduationCap className="h-5 w-5" />

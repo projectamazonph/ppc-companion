@@ -5,21 +5,7 @@ import { useAppStore, useProgressStats } from "@/lib/store";
 import { phases } from "@/lib/course-data";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  BookOpen,
-  Flame,
-  TrendingUp,
-  Zap,
-  Rocket,
-  CheckCircle2,
-  Lock,
-  ChevronRight,
-  Search,
-  Award,
-  Star,
-  Calendar,
-  Target,
-} from "lucide-react";
+import { BookOpen, Flame, TrendUp as TrendingUp, Lightning as Zap, Rocket, CheckCircle as CheckCircle2, Lock, CaretRight as ChevronRight, MagnifyingGlass as Search, Medal as Award, Star, CalendarBlank as Calendar, Target } from "@phosphor-icons/react";
 
 // ─── Stat card configuration ────────────────────────────────────────────────
 const statCards = [
@@ -174,7 +160,7 @@ export function DashboardSection() {
       if (items.length >= 3) break;
     }
     return items;
-  }, [user?.currentPhase]);
+  }, [user]);
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -309,27 +295,27 @@ export function DashboardSection() {
                 <div className="h-32 sm:h-40 relative overflow-hidden">
                   <div
                     className={cn(
-                      "absolute inset-0 bg-gradient-to-br opacity-15",
+                      "absolute inset-0 opacity-15",
                       phase.number === 1
-                        ? "from-emerald-500 to-emerald-600"
+                        ? "bg-emerald-500"
                         : phase.number === 2
-                        ? "from-rose-500 to-rose-600"
+                        ? "bg-rose-500"
                         : phase.number === 3
-                        ? "from-amber-500 to-amber-600"
-                        : "from-violet-500 to-violet-600"
+                        ? "bg-amber-500"
+                        : "bg-violet-500"
                     )}
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div
                       className={cn(
-                        "flex h-16 w-16 items-center justify-center rounded-2xl text-white text-xl font-bold shadow-lg bg-gradient-to-br",
+                        "flex h-16 w-16 items-center justify-center rounded-2xl text-white text-xl font-bold shadow-lg ",
                         phase.number === 1
-                          ? "from-emerald-500 to-emerald-600"
+                          ? "bg-emerald-500"
                           : phase.number === 2
-                          ? "from-rose-500 to-rose-600"
+                          ? "bg-rose-500"
                           : phase.number === 3
-                          ? "from-amber-500 to-amber-600"
-                          : "from-violet-500 to-violet-600"
+                          ? "bg-amber-500"
+                          : "bg-violet-500"
                       )}
                     >
                       {mod.code}
@@ -436,12 +422,12 @@ export function DashboardSection() {
               ];
               const phaseColor =
                 n === 1
-                  ? "from-emerald-500 to-emerald-600"
+                  ? "bg-emerald-500"
                   : n === 2
-                  ? "from-rose-500 to-rose-600"
+                  ? "bg-rose-500"
                   : n === 3
-                  ? "from-amber-500 to-amber-600"
-                  : "from-violet-500 to-violet-600";
+                  ? "bg-amber-500"
+                  : "bg-violet-500";
               const phaseTitle = phases[n - 1]?.title ?? `Phase ${n}`;
 
               return (
@@ -455,7 +441,7 @@ export function DashboardSection() {
                 >
                   <div
                     className={cn(
-                      "flex h-8 w-8 items-center justify-center rounded-lg text-white text-xs font-bold shadow-sm bg-gradient-to-br shrink-0",
+                      "flex h-8 w-8 items-center justify-center rounded-lg text-white text-xs font-bold shadow-sm shrink-0",
                       phaseColor
                     )}
                   >

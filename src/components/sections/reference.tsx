@@ -3,35 +3,12 @@
 import { useState, useMemo } from "react";
 import { useAppStore, checklistItemId } from "@/lib/store";
 import {
-  glossary,
-  formulas,
-  weeklyChecklist,
-  namingFormat,
-  exampleReport,
-  submissionChecklist,
-  type GlossaryTerm,
-} from "@/lib/course-data";
+  glossary, formulas, weeklyChecklist, namingFormat, exampleReport, submissionChecklist, type GlossaryTerm, } from "@/lib/course-data";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import {
-  Search,
-  BookMarked,
-  Calculator,
-  ListChecks,
-  Tag,
-  Mail,
-  CalendarDays,
-  CheckCircle2,
-  ArrowRight,
-  Sparkles,
-  FileText,
-  Clock,
-  AlertTriangle,
-  Hash,
-  ChevronRight,
-  type LucideIcon,
-} from "lucide-react";
+  MagnifyingGlass as Search, BookBookmark as BookMarked, Calculator, ListChecks, Tag, Envelope as Mail, CalendarDots as CalendarDays, CheckCircle as CheckCircle2, ArrowRight, Sparkle as Sparkles, FileText, Clock, Warning as AlertTriangle, Hash, CaretRight as ChevronRight, type Icon } from "@phosphor-icons/react";
 
 // =============================================================
 // Tab configuration
@@ -40,7 +17,7 @@ import {
 interface TabConfig {
   value: string;
   label: string;
-  icon: LucideIcon;
+  icon: Icon;
   description: string;
 }
 
@@ -158,7 +135,7 @@ function SectionHeader({
   description,
   iconBg = "bg-primary/10 text-primary",
 }: {
-  icon: LucideIcon;
+  icon: Icon;
   title: string;
   description: string;
   iconBg?: string;
@@ -435,8 +412,8 @@ function ChecklistPanel() {
             className={cn(
               "h-full rounded-full transition-all duration-500 ease-out",
               isComplete
-                ? "bg-gradient-to-r from-emerald-500 to-teal-500"
-                : "bg-gradient-to-r from-primary to-primary/70"
+                ? "bg-emerald-500"
+                : "bg-primary"
             )}
             style={{ width: `${pct}%` }}
           />
@@ -534,7 +511,7 @@ function ChecklistPanel() {
 
       {/* Completion celebration */}
       {isComplete && (
-        <div className="rounded-xl border-2 border-emerald-200 dark:border-emerald-900 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 p-6 flex items-center gap-4">
+        <div className="rounded-xl border-2 border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-950/20 p-6 flex items-center gap-4">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900">
             <Sparkles className="h-7 w-7 text-emerald-600 dark:text-emerald-400" />
           </div>
@@ -567,7 +544,7 @@ function NamingPanel() {
       />
 
       {/* Format display */}
-      <div className="rounded-xl border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent p-6 sm:p-8 text-center">
+      <div className="rounded-xl border-2 border-primary/20 bg-primary/5 p-6 sm:p-8 text-center">
         <p className="text-[10px] uppercase tracking-widest text-primary/70 font-semibold mb-3">
           Standard Format
         </p>
