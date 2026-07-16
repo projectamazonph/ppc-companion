@@ -57,7 +57,7 @@ A production-grade **8–12 week** training companion built for the Amazon PPC M
 | **State** | Zustand (persisted localStorage) |
 | **Charts** | Recharts |
 | **Animations** | Framer Motion |
-| **Rate Limiting** | Persistent SQLite (Node 22 `node:sqlite`) |
+| **Rate Limiting** | In-memory (middleware); SQLite-backed limiter exists in `src/lib/rate-limit.ts` but isn't wired in yet |
 | **Runtime** | Node.js 22+ / Bun 1.3+ |
 
 ---
@@ -108,7 +108,7 @@ Open [http://localhost:3000](http://localhost:3000)
 │   │   ├── db-queries/        # Database query helpers
 │   │   ├── design-tokens.ts   # Design system tokens
 │   │   ├── env-validate.ts    # Startup env validation
-│   │   ├── rate-limit.ts      # Persistent SQLite rate limiter
+│   │   ├── rate-limit.ts      # SQLite-backed rate limiter (not currently wired into middleware)
 │   │   ├── store.ts           # Zustand state management
 │   │   └── utils.ts           # Misc utilities
 │   ├── middleware.ts          # JWT auth + CSRF + rate limiting
@@ -155,9 +155,9 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## Security
 
-- **Server-side JWT** — All protected routes verify tokens via `requireAuth()`/`requireRole()`
+- **Server-side JWT** — All protected routes verify tokens via `requireAuth()`/`requireRole()` (`src/lib/auth-server.ts`, `jsonwebtoken`); `src/middleware.ts` additionally verifies with `jose` (Edge-compatible) at the edge
 - **CSRF protection** — Origin/Referer check on cookie-authenticated mutating requests; Bearer token auth bypasses
-- **Persistent rate limiting** — SQLite-backed (Node 22 `node:sqlite`), survives restarts, in-memory fallback
+- **Rate limiting** — In-memory, per-Edge-instance limiter in `src/middleware.ts` (resets on redeploy/per instance). `src/lib/rate-limit.ts` implements a persistent `node:sqlite`-backed limiter but is not currently wired into the middleware — wire it in before relying on cross-restart persistence
 - **Env validation** — Startup check for `JWT_SECRET`, `DATABASE_URL`
 - **Ownership enforcement** — Users can only access their own data (admins/instructors bypass)
 - **Password hashing** — bcryptjs

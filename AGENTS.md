@@ -19,8 +19,8 @@
 | **Runtime** | Bun | Package management + scripts |
 | **UI** | Tailwind CSS v4 + custom components | PostCSS config |
 | **State** | Zustand v5 | Client-side state |
-| **Database** | Prisma v6 + SQLite | Local dev; PostgreSQL planned |
-| **Auth** | JWT (jose) + HttpOnly cookies | Custom session management |
+| **Database** | Prisma v6 | `schema.prisma` defaults to PostgreSQL (prod); `schema.sqlite.prisma` is a parallel copy for local SQLite dev — copy it over `schema.prisma` to develop locally |
+| **Auth** | JWT + HttpOnly cookies | `jose` in Edge middleware (`src/middleware.ts`), `jsonwebtoken` in Node route handlers (`src/lib/auth-server.ts`) — two libraries, by design |
 | **Deploy** | Vercel (standalone output) | `next build --webpack` |
 | **Testing** | Vitest | Unit + component + API tests |
 | **Lint** | ESLint (flat config) | `eslint.config.mjs` |
@@ -49,7 +49,7 @@ ppc-companion/
 ## Conventions
 
 ### Code Style
-- **TypeScript strict mode** — no `any` unless absolutely required
+- **TypeScript** — `tsconfig.json` has `strict: true` but also `noImplicitAny: false`; `eslint.config.mjs` explicitly turns off `no-explicit-any`, `no-unused-vars`, and most other strictness rules on top of `eslint-config-next`. `any` is used freely in the existing codebase — don't assume a stricter policy than the configs enforce.
 - **ESLint flat config** — `eslint.config.mjs` at root
 - **Prettier** — format on save (config inferred from project)
 - **Imports:** Use path aliases (`@/` for `src/`)
@@ -123,4 +123,4 @@ git push                    # Auto-deployed via Vercel
 
 ---
 
-*Updated: 2026-07-02 | Part of Ryan's Hermes Agent workspace*
+*Updated: 2026-07-16 | Part of Ryan's Hermes Agent workspace*

@@ -76,8 +76,8 @@ shadcn/ui config is in `components.json` (`style: "new-york"`, Tailwind v4, `bas
 
 Vitest + jsdom + Testing Library (`vitest.config.ts`, setup in `src/test/setup.ts`). Test files live next to source as `*.test.ts(x)` or under `__tests__/` (e.g. `src/lib/__tests__/store.test.ts`). There's no e2e layer and no `tsc` script wired into `package.json` — CI invokes `npx tsc --noEmit` directly, do the same locally.
 
-## Known inconsistencies worth checking before relying on docs
+## Doc maintenance notes
 
-- ESLint (`eslint.config.mjs`) explicitly turns **off** `no-explicit-any`, `no-unused-vars`, and most other strictness rules, despite `AGENTS.md` saying "no `any` unless absolutely required." `tsconfig.json` has `strict: true` but also `noImplicitAny: false`. Follow what the configs actually enforce, not the prose.
-- `docs/architecture.md`'s route tree (`/(student)/`, `/(instructor)/`, `/(admin)/` with a `User` model) does not match the current `src/app/(app)/` structure or the `Student` Prisma model — treat that doc as historical context, not current fact.
-- Root-level docs (`DEV-PLAN.md`, `KANBAN.md`, `PRD.md`, `WORKLOG.md`, `docs/BUILD_LOG.md`, `docs/LOOP_LOG.md`, `docs/ENGINEERING_DIARY.md`, etc.) are working logs from iterative/loop-driven development sessions, not specs — useful for history, not for current-state truth.
+`README.md`, `AGENTS.md`, and `docs/architecture.md` were reconciled with the actual code as of 2026-07-16 (dual Prisma schema, `Student` model, per-route-file structure, the two-JWT-library split, and the fact that `src/lib/rate-limit.ts` isn't wired into `src/middleware.ts` yet are now documented consistently across all three). If you change any of the architecture described above, update all three together rather than just one — they're kept in sync by hand, not generated.
+
+Root-level docs (`DEV-PLAN.md`, `KANBAN.md`, `PRD.md`, `WORKLOG.md`, `docs/BUILD_LOG.md`, `docs/LOOP_LOG.md`, `docs/ENGINEERING_DIARY.md`, etc.) are working logs from iterative/loop-driven development sessions, not specs — useful for history, not for current-state truth. `eslint.config.mjs` and `tsconfig.json` remain the source of truth for lint/type strictness; don't infer stricter rules than what's actually configured.
