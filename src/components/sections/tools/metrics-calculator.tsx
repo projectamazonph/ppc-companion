@@ -11,6 +11,7 @@ import { formulas } from "@/lib/course-data";
 import { useToast } from "@/hooks/use-toast";
 import { Calculator, MagnifyingGlass as Search, Stack as Layers, ArrowsClockwise as RefreshCw, TrendUp as TrendingUp, TrendDown as TrendingDown, Lightning as Zap } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
+import styles from "./metrics-calculator.module.css";
 
 type MetricKey = "impressions" | "clicks" | "spend" | "orders" | "adSales" | "totalRevenue";
 
@@ -108,7 +109,7 @@ export function MetricsCalculator() {
       : "bg-muted text-muted-foreground border-0";
 
   return (
-    <Card className="border-border/60">
+    <Card className={styles.section}>
       <CardHeader>
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md">

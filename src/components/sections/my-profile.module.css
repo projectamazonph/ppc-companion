@@ -1,0 +1,17 @@
+/* my-profile — Field Manual design tokens */
+
+.section {
+  max-width: var(--section-max, 800px);
+  margin: 0 auto;
+  padding: var(--space-6, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8, 32px);
+}
+
+.sectionCard {
+  background: var(--card-bg, var(--color-card, #fff));
+  border: 1px solid var(--card-border, var(--border, #e2e8f0));
+  border-radius: var(--radius-lg, 10px);
+  overflow: hidden;
+}

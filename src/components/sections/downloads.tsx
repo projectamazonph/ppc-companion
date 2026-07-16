@@ -6,6 +6,7 @@ import { BrandButton } from "@/components/shared/buttons";
 import { cn } from "@/lib/utils";
 import {
   Download, FileText, FileText as FileSpreadsheet, Trophy, BookOpen, Lightning as Zap, Table as Table2, CheckCircle as CheckCircle2, FolderOpen, ArrowLineDown as ArrowDownToLine, Info, Sparkle as Sparkles } from "@phosphor-icons/react";
+import styles from "./downloads.module.css";
 
 // =============================================================
 // Downloadable resource definitions
@@ -177,7 +178,7 @@ export function DownloadsSection() {
   const totalFiles = resources.length;
 
   return (
-    <div className="space-y-6 sm:space-y-8">
+    <div className={styles.section}>
       {/* ── Header ─────────────────────────────────────── */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>

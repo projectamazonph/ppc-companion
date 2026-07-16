@@ -35,6 +35,7 @@ import {
   Lightbulb,
   DotsSixVertical as Grip,
 } from "@phosphor-icons/react";
+import styles from "./campaign-builder.module.css";
 
 type Layer = "discovery" | "expansion" | "heroes" | "defense";
 
@@ -357,7 +358,7 @@ export function CampaignBuilder() {
   const activeCampaign = activeId ? campaigns.find((c) => c.id === activeId) ?? null : null;
 
   return (
-    <Card className="border-border/60">
+    <Card className={styles.section}>
       <CardHeader>
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FF6B35] text-white shadow-sm">

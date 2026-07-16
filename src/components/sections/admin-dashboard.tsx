@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Student as School, Users, TrendUp as TrendingUp, Medal as Award, UserPlus, BookOpen, GraduationCap, ChartBar as BarChart3, ArrowUpRight, DotsThree as MoreHorizontal, CircleNotch as Loader2, WarningCircle as AlertCircle, FileText as FileCheck, ArrowsClockwise as RefreshCw, MagnifyingGlass as Search, Bell } from "@phosphor-icons/react";
+import styles from "./admin-dashboard.module.css";
 
 // =============================================================
 // Types
@@ -169,7 +170,7 @@ export function AdminDashboardSection() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:space-y-8 sm:px-6 lg:px-8">
+    <div className={styles.section}>
       {/* Top bar */}
       <header className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">

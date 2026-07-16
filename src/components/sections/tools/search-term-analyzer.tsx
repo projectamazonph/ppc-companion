@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { KeywordDeepDive } from "./keyword-deep-dive";
 import { cn } from "@/lib/utils";
 import { MagnifyingGlass as Search, Plus, Trash as Trash2, Lightbulb, CheckCircle as CheckCircle2, Warning as AlertTriangle, TrendUp as TrendingUp, TrendDown as TrendingDown, Pause, ArrowUpRight, ArrowDownRight, ArrowsCounterClockwise as RotateCcw } from "@phosphor-icons/react";
+import styles from "./search-term-analyzer.module.css";
 
 export type Row = {
   id: string;
@@ -140,7 +141,7 @@ export function SearchTermAnalyzer() {
   }, [analysis]);
 
   return (
-    <Card className="border-border/60">
+    <Card className={styles.section}>
       <CardHeader>
         <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FF6B35] text-white shadow-sm">

@@ -6,6 +6,7 @@ import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Lock, Bell, Download, SignOut as LogOut, Pencil as Edit, SealCheck as Verified, CaretRight as ChevronRight, CaretDown as ChevronDown, Medal as Award, WarningCircle as AlertCircle, CircleNotch as Loader2 } from "@phosphor-icons/react";
+import styles from "./my-profile.module.css";
 
 type Student = {
   id: string;
@@ -116,7 +117,7 @@ export function MyProfileSection() {
   const { student, stats, tags, submissions, progress } = data;
 
   return (
-    <div className="space-y-6">
+    <div className={styles.section}>
       {/* ── Breadcrumb ── */}
       <div className="flex flex-wrap items-center gap-2">
         <button

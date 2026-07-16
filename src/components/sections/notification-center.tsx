@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Bell, Info, CheckCircle, Warning as AlertTriangle, XCircle, BookOpen, Star, Checks as CheckCheck, Trash as Trash2, CircleNotch as Loader2, WarningCircle as AlertCircle, Archive, Tray as Inbox } from "@phosphor-icons/react";
+import styles from "./notification-center.module.css";
 
 // =============================================================
 // Types
@@ -323,7 +324,7 @@ export function NotificationCenterSection() {
   const hasUnread = (data?.unreadCount ?? 0) > 0;
 
   return (
-    <div className="space-y-6">
+    <div className={styles.section}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

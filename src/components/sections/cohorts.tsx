@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
 import { Student as School, Plus, DotsThree as MoreHorizontal, Pencil, Trash as Trash2, Eye, CircleNotch as Loader2, WarningCircle as AlertCircle, CalendarBlank as Calendar, Users, ArrowsClockwise as RefreshCw, GraduationCap, UserCircle, Clock, X, CaretRight as ChevronRight, Stack as Layers } from "@phosphor-icons/react";
+import styles from "./cohorts.module.css";
 
 type Cohort = {
   id: string;
@@ -134,7 +135,7 @@ export function CohortsSection() {
   const totalEnrolled = cohorts.reduce((sum, c) => sum + (c.enrollmentCount ?? 0), 0);
 
   return (
-    <div className="space-y-6">
+    <div className={styles.section}>
       {/* ── Page Header ─────────────────────────────────── */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-1">

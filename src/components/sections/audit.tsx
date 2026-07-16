@@ -9,6 +9,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Scroll as ScrollText, MagnifyingGlass as Search, CircleNotch as Loader2, WarningCircle as AlertCircle, ArrowsClockwise as RefreshCw, SignIn as LogIn, SignOut as LogOut, Pencil, Trash as Trash2, Plus, Download, User, ShieldCheck, CaretDown as ChevronDown, CaretRight as ChevronRight, Clock, Hash, Globe } from "@phosphor-icons/react";
+import styles from "./audit.module.css";
 
 type AuditLog = {
   id: string;
@@ -153,7 +154,7 @@ export function AuditLogSection() {
   };
 
   return (
-    <div className="space-y-5 sm:space-y-6">
+    <div className={styles.section}>
       {/* ── Page Header ─────────────────────────────────────────── */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>

@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
 import { MagnifyingGlass as Search, CircleNotch as Loader2, WarningCircle as AlertCircle, Users, UserCheck, TrendUp as TrendingUp, BookOpen, Pencil, CheckCircle as CheckCircle2, ArrowsCounterClockwise as RotateCcw, GraduationCap, CaretDown as ChevronDown, CaretUp as ChevronUp, Clock, Target, Medal as Award, ChartBar as BarChart3, X } from "@phosphor-icons/react";
+import styles from "./my-students.module.css";
 
 type Student = {
   id: string;
@@ -203,7 +204,7 @@ export function MyStudentsSection() {
   const completedStudents = students.filter((s) => s.currentPhase >= 4).length;
 
   return (
-    <div className="space-y-6">
+    <div className={styles.section}>
       {/* Header */}
       <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
         <div>

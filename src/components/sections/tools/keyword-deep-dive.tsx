@@ -18,6 +18,7 @@ import {
   X,
 } from "@phosphor-icons/react";
 import { actionMeta, parseNum, recommend, type Row } from "./search-term-analyzer";
+import styles from "./keyword-deep-dive.module.css";
 
 type DeepDiveProps = {
   row: Row | null;

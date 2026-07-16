@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { FadeUp, StaggerGrid } from "@/components/shared/scroll-reveal";
 import { ArrowRight, BookOpen, Calculator, CheckCircle as CheckCircle2, GraduationCap, Stack as Layers, Clock, Pen as PenLine, Trophy, Users, Star, List as Menu, X, Envelope as Mail, Lock, Eye, EyeSlash as EyeOff, CircleNotch as Loader2, Sparkle as Sparkles, TrendUp as TrendingUp, Target, ShieldCheck, Quotes as Quote, MagnifyingGlass as Search, Play } from "@phosphor-icons/react";
+import styles from "./landing.module.css";
 
 // =============================================================
 // Content
@@ -102,7 +103,7 @@ export function LandingPage() {
   }, [user, router]);
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background text-foreground">
+    <div className={styles.section}>
       {/* ─── Header ─────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 w-full border-b border-border bg-card">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
