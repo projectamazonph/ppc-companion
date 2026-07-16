@@ -451,18 +451,19 @@ function MakeDecision({
 }) {
   const scenario = TRIAGE_SCENARIO;
   const [decisions, setDecisions] = useState<Record<string, string>>({});
-  const [reason, setReason] = useState("");
+  const [rationales, setRationales] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
 
-  const allDecided = scenario.searchTerms.every((t) => decisions[t.id]);
-  const canSubmit = allDecided && reason.trim().length >= 20;
+  const allDecided = scenario.searchTerms.every((t) => decisions[t.id] && rationales[t.id]);
+  const canSubmit = allDecided;
 
   const submit = () => {
     const answers: DiagnosticAnswer[] = scenario.searchTerms.map((t) => ({
       termId: t.id,
       decision: decisions[t.id] as DiagnosticAnswer["decision"],
+      rationaleId: rationales[t.id],
     }));
-    const { score, maxScore } = gradeTriage(answers, reason, scenario);
+    const { score, maxScore } = gradeTriage(answers, "", scenario);
     setSubmitted(true);
     onCompleteStep(score);
     trackSamplerEvent({
@@ -484,7 +485,7 @@ function MakeDecision({
             <li>Stage: <span className="text-foreground">{scenario.productStage}</span></li>
             <li>Target ACoS: <span className="text-foreground">{scenario.targetAcos}%</span></li>
             <li>Expected CVR: <span className="text-foreground">{scenario.expectedCvr}%</span></li>
-                       <li>Guardrail: <span className="text-foreground">{scenario.guardrail}</span></li>
+                        <li>Guardrail: <span className="text-foreground">{scenario.guardrail}</span></li>
           </ul>
           <p className="mt-2 text-xs italic text-muted-foreground">
             Manager note: {scenario.managerInstruction}
@@ -506,54 +507,63 @@ function MakeDecision({
                 </Badge>
               </div>
               {!submitted ? (
-                <div className="mt-2 flex flex-wrap gap-1.5">
-                  {["keep", "investigate", "negate", "escalate"].map((d) => (
-                    <button
-                      key={d}
-                      onClick={() =>
-                        setDecisions((p) => ({ ...p, [t.id]: d }))
-                      }
-                      className={cn(
-                        "rounded-full border px-2.5 py-1 text-xs capitalize transition-colors",
-                        decisions[t.id] === d
-                          ? "border-orange-500 bg-orange-50 text-orange-700 dark:bg-orange-500/10"
-                          : "border-border hover:bg-accent"
-                      )}
-                    >
-                      {d}
-                    </button>
-                  ))}
-                </div>
+                <>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {["keep", "investigate", "negate", "escalate"].map((d) => (
+                      <button
+                        key={d}
+                        onClick={() =>
+                          setDecisions((p) => ({ ...p, [t.id]: d }))
+                        }
+                        className={cn(
+                          "rounded-full border px-2.5 py-1 text-xs capitalize transition-colors",
+                          decisions[t.id] === d
+                            ? "border-orange-500 bg-orange-50 text-orange-700 dark:bg-orange-500/10"
+                            : "border-border hover:bg-accent"
+                        )}
+                      >
+                        {d}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-3">
+                    <p className="text-xs font-medium text-muted-foreground">Why? Pick the best reason:</p>
+                    <div className="mt-1.5 space-y-1">
+                      {t.rationaleOptions.map((r) => (
+                        <label
+                          key={r.id}
+                          className={cn(
+                            "flex cursor-pointer items-start gap-2 rounded-md border px-2.5 py-1.5 text-xs transition-colors",
+                            rationales[t.id] === r.id
+                              ? "border-orange-500 bg-orange-50 dark:bg-orange-500/10"
+                              : "border-border hover:bg-accent"
+                          )}
+                        >
+                          <input
+                            type="radio"
+                            name={`rationale-${t.id}`}
+                            value={r.id}
+                            checked={rationales[t.id] === r.id}
+                            onChange={() =>
+                              setRationales((p) => ({ ...p, [t.id]: r.id }))
+                            }
+                            className="mt-0.5 accent-orange-500"
+                          />
+                          <span>{r.text}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </>
               ) : (
-                <TriageFeedback term={t} chosen={decisions[t.id] as never} />
+                <TriageFeedback term={t} chosen={decisions[t.id] as never} rationaleId={rationales[t.id]} />
               )}
             </div>
           ))}
         </div>
 
-        <div>
-          <label className="text-sm font-medium">
-            Write your manager-ready note (why these choices):
-          </label>
-          <textarea
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            disabled={submitted}
-            rows={4}
-            placeholder="e.g. I'd keep 'bamboo cutlery set' — relevant, converting under target ACoS. I'd negate 'wooden spoon' — 0 orders, off-topic. I'd escalate the low CVR to the listing owner before raising bids."
-            className="mt-1.5 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-orange-500 disabled:opacity-60"
-          />
-          {!submitted && (
-            <p className="mt-1 text-xs text-muted-foreground">
-              {reason.trim().length < 20
-                ? "Add at least a short explanation (20+ characters)."
-                : "Looks good."}
-            </p>
-          )}
-        </div>
-
         {submitted && (
-          <TriageResult reason={reason} decisions={decisions} scenario={scenario} />
+          <TriageResult decisions={decisions} rationales={rationales} scenario={scenario} />
         )}
 
         <div className="flex items-center justify-between">
@@ -578,38 +588,52 @@ function MakeDecision({
 function TriageFeedback({
   term,
   chosen,
+  rationaleId,
 }: {
   term: (typeof TRIAGE_SCENARIO.searchTerms)[number];
   chosen: "keep" | "investigate" | "negate" | "escalate";
+  rationaleId?: string;
 }) {
   const expected = term.expectedDecision;
   const ok = chosen === expected;
+  const rationaleOk = term.rationaleOptions.find((r) => r.id === rationaleId)?.correct ?? false;
   return (
-    <p
-      className={cn(
-        "mt-2 text-xs font-medium",
-        ok ? "text-emerald-600" : "text-amber-600"
-      )}
-    >
-      {ok ? "✓ Good call." : `Expected: ${expected}.`} {term.feedback}
-    </p>
+    <div className="mt-2 space-y-1">
+      <p
+        className={cn(
+          "text-xs font-medium",
+          ok ? "text-emerald-600" : "text-amber-600"
+        )}
+      >
+        {ok ? "✓ Good call." : `Expected action: ${expected}.`} {term.feedback}
+      </p>
+      <p
+        className={cn(
+          "text-xs font-medium",
+          rationaleOk ? "text-emerald-600" : "text-amber-600"
+        )}
+      >
+        {rationaleOk ? "✓ Reasoning correct." : "Reasoning: see the correct rationale above."}
+      </p>
+    </div>
   );
 }
 
 function TriageResult({
-  reason,
   decisions,
+  rationales,
   scenario,
 }: {
-  reason: string;
   decisions: Record<string, string>;
+  rationales: Record<string, string>;
   scenario: typeof TRIAGE_SCENARIO;
 }) {
   const answers: DiagnosticAnswer[] = scenario.searchTerms.map((t) => ({
     termId: t.id,
     decision: decisions[t.id] as DiagnosticAnswer["decision"],
+    rationaleId: rationales[t.id],
   }));
-  const { score, maxScore, breakdown } = gradeTriage(answers, reason, scenario);
+  const { score, maxScore, breakdown } = gradeTriage(answers, "", scenario);
   return (
     <div className="rounded-lg border border-emerald-300/60 bg-emerald-50/50 p-3 dark:border-emerald-500/30 dark:bg-emerald-500/5">
       <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">
@@ -617,11 +641,11 @@ function TriageResult({
       </p>
       <ul className="mt-2 space-y-1 text-xs text-emerald-900/80 dark:text-emerald-200/80">
         {breakdown.map((b, i) => (
-          <li key={i}>• {b}</li>
+          <li key={i}>{b}</li>
         ))}
       </ul>
       <p className="mt-2 text-xs italic text-muted-foreground">
-        Scoring rewards your reasoning and evidence — not just the button you pick.
+        Fully auto-scored — no submission review needed.
       </p>
     </div>
   );
@@ -648,9 +672,9 @@ function CareerPath({
   }, []);
 
   const recommended =
-    samplerScore !== null && samplerScore >= 7
+    samplerScore !== null && samplerScore >= 15
       ? AMPH_TIERS[1]
-      : samplerScore !== null && samplerScore >= 4
+      : samplerScore !== null && samplerScore >= 10
       ? AMPH_TIERS[2]
       : AMPH_TIERS[2];
 
@@ -680,7 +704,7 @@ function CareerPath({
             </ul>
             {samplerScore !== null && (
               <p className="mt-2 text-xs text-muted-foreground">
-                Triage score: {samplerScore}/10. This shows you tried the work — it is
+                Triage score: {samplerScore}/20. This shows you tried the work — it is
                 not a certificate and does not equal AMPH v2 completion.
               </p>
             )}
