@@ -19,7 +19,7 @@ import { ArrowRight, BookOpen, Calculator, CheckCircle as CheckCircle2, Graduati
 
 const stats = [
   { value: "500+", label: "VAs Coached", description: "Across the Philippines", icon: Users },
-  { value: "₱50M+", label: "Ads Managed", description: "Real Amazon campaigns", icon: TrendingUp },
+  { value: "₱50M+", label: "Ads Managed", description: "Real Amazon ad spend", icon: TrendingUp },
   { value: "14 yrs", label: "Amazon Ads Experience", description: "Led by a verified coach", icon: BookOpen },
 ];
 
@@ -28,7 +28,7 @@ const features = [
     icon: ShieldCheck,
     title: "Built by 14-Year Amazon Ads Veterans",
     description:
-      "A syllabus shaped by coaches who have managed ₱50M+ in real ad spend for sellers.",
+      "A program shaped by coaches who have managed ₱50M+ in real Amazon ad spend for sellers.",
   },
   {
     icon: Sparkles,
@@ -40,7 +40,7 @@ const features = [
     icon: Users,
     title: "A Clear Path to the Full Course",
     description:
-      "Finish the free sampler, then continue to the AMPH v2 program built for Filipino Virtual Assistants.",
+      "Try the free sampler, then continue to the AMPH v2 program built for Filipino Virtual Assistants.",
   },
 ];
 
@@ -58,8 +58,8 @@ const learnItems = [
     description: "What to negate, what to keep, and how to explain a safe PPC decision.",
   },
   {
-    title: "Your Career Path into Amazon PPC VA Work",
-    description: "Where the sampler fits and which AMPH v2 track suits you.",
+    title: "Your Path into Amazon PPC VA Work",
+    description: "Where the free sampler fits and which AMPH v2 track suits you.",
   },
 ];
 
@@ -350,7 +350,7 @@ export function LandingPage() {
                   {l.label}
                 </a>
               ))}
-              <a href="/sampler" className="mt-2">
+              <a href="/sampler" className="mt-2 block">
                 <Button className="w-full font-bold">Try Free Sampler</Button>
               </a>
             </motion.nav>
@@ -424,17 +424,17 @@ export function LandingPage() {
                 }}
 
               />
-               <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-lg">
-                 <div className="rounded-full bg-emerald-500/10 p-2 text-emerald-600 dark:text-emerald-400">
-                   <TrendingUp className="h-5 w-5" />
-                 </div>
-                 <div>
-                   <p className="text-[10px] font-medium text-muted-foreground">
-                     Typical VA Earnings
-                   </p>
-                   <p className="text-base font-bold text-foreground">₱60K–₱80K / mo</p>
-                 </div>
-               </div>
+              <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-lg">
+                <div className="rounded-full bg-emerald-500/10 p-2 text-emerald-600 dark:text-emerald-400">
+                  <TrendingUp className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-medium text-muted-foreground">
+                    Typical VA Earnings
+                  </p>
+                  <p className="text-base font-bold text-foreground">₱60K–₱80K / mo</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -527,16 +527,27 @@ export function LandingPage() {
                     </p>
                   </div>
                 </div>
-              )}
+              ))}
             </div>
             <div className="mt-4 rounded-xl border border-border bg-background p-4">
               <p className="mb-2 text-xs font-bold uppercase tracking-wide text-primary">
                 After the free sampler, you&apos;ll be able to:
               </p>
               <ul className="space-y-1.5 text-xs text-muted-foreground">
-                <li>• Spot a listing that isn&apos;t ready to advertise — and say why.</li>
+                <li>• Spot a listing that isn&apos;t ready to advertise — and say exactly why.</li>
                 <li>• Write a short, credible escalation note a manager would accept.</li>
-                <li>• Make one safe search-term decision (negate vs. keep) with reasoning.</li>
+                <li>• Make one safe search-term decision (negate vs. keep) with clear reasoning.</li>
+                <li>• Name the right AMPH v2 track for your goals.</li>
+              </ul>
+            </div>
+            <div className="mt-4 rounded-xl border border-border bg-background p-4">
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-primary">
+                After the free sampler, you&apos;ll be able to:
+              </p>
+              <ul className="space-y-1.5 text-xs text-muted-foreground">
+                <li>• Spot a listing that isn&apos;t ready to advertise — and say exactly why.</li>
+                <li>• Write a short, credible escalation note a manager would accept.</li>
+                <li>• Make one safe search-term decision (negate vs. keep) with clear reasoning.</li>
                 <li>• Name the right AMPH v2 track for your goals.</li>
               </ul>
             </div>
