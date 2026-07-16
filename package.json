@@ -18,7 +18,7 @@
     "db:migrate:prod": "prisma migrate deploy",
     "db:migrate:create": "prisma migrate dev --create-only",
     "db:seed-prod": "npx tsx scripts/seed-full.ts",
-    "db:verify": "npx prisma validate && npx prisma db push --dry-stack-change",
+    "db:verify": "npx prisma validate",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"

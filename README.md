@@ -2,7 +2,7 @@
 
 > Interactive training platform for Amazon PPC Manager program. Companion portal for students, instructors, and admins.
 
-**v0.5.0** · Next.js 16 · React 19 · TypeScript 5 · Tailwind v4 · Prisma
+**v0.6.0** · Next.js 16 · React 19 · TypeScript 5 · Tailwind v4 · Prisma
 
 ---
 
@@ -49,7 +49,7 @@ A production-grade **8–12 week** training companion built for the Amazon PPC M
 | Layer | Technology |
 |-------|-----------|
 | **Framework** | Next.js 16 (App Router) |
-| **UI** | React 19 + shadcn/ui (Radix primitives) |
+| **UI** | React 19 + shadcn/ui (Radix primitives), migrating to custom "Field Manual" design system |
 | **Styling** | Tailwind CSS v4 + Geist font |
 | **Language** | TypeScript 5 (strict mode) |
 | **Database** | PostgreSQL via Prisma ORM (SQLite for local dev) |
@@ -57,7 +57,7 @@ A production-grade **8–12 week** training companion built for the Amazon PPC M
 | **State** | Zustand (persisted localStorage) |
 | **Charts** | Recharts |
 | **Animations** | Framer Motion |
-| **Rate Limiting** | Persistent SQLite (Node 22 `node:sqlite`) |
+| **Rate Limiting** | `node:sqlite`-backed limiter (in-memory middeware fallback) |
 | **Runtime** | Node.js 22+ / Bun 1.3+ |
 
 ---
@@ -71,12 +71,15 @@ bun install
 cp .env.example .env
 # Edit .env with your JWT_SECRET and DATABASE_URL
 
-# Generate Prisma client
-bunx prisma generate
-# Push schema to database
-bunx prisma db push
+# Local SQLite dev: copy the SQLite schema over the default PostgreSQL one
+cp prisma/schema.sqlite.prisma prisma/schema.prisma
+# (keep both schemas in sync manually — there is no generation step between them)
+
+# Generate Prisma client + push schema
+bun run db:generate
+bun run db:push
 # Bootstrap admin account
-ADMIN_PASSWORD=your-secret bunx tsx scripts/seed-students.ts
+ADMIN_PASSWORD=your-secret bun run db:seed-students
 
 # Run dev server
 bun run dev
@@ -90,20 +93,21 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ```
 ├── src/
-│   ├── app/                   # App Router pages + API routes
-│   │   ├── api/               # 21 REST endpoints (auth, students, cohorts, etc.)
-│   │   ├── globals.css        # Tailwind + design system
-│   │   ├── layout.tsx         # Root layout with app shell
-│   │   └── page.tsx           # Section routing
+│   ├── app/
+│   │   ├── (app)/              # Authenticated route group (per-feature page.tsx → section components)
+│   │   ├── api/                # REST endpoints (auth, students, cohorts, sampler, etc.)
+│   │   ├── globals.css         # Tailwind + design system
+│   │   ├── layout.tsx          # Root layout
+│   │   └── page.tsx            # Public landing / entry
 │   ├── components/
 │   │   ├── layout/            # App shell, sidebar
-│   │   ├── sections/          # 17 feature sections (dashboard, admin, etc.)
+│   │   ├── sections/          # Feature sections (dashboard, admin, etc.)
 │   │   ├── shared/            # Shared UI components
-│   │   └── ui/                # shadcn/ui primitives
+│   │   └── ui/                # shadcn/ui primitives (+ Field Manual custom components)
 │   ├── hooks/                 # Custom hooks (use-mobile, use-toast)
 │   ├── lib/
 │   │   ├── auth-server.ts     # JWT utilities (requireAuth, requireRole)
-│   │   ├── course-data.ts     # Full curriculum content (~1,779 lines)
+│   │   ├── course-data.ts     # Full curriculum content
 │   │   ├── db.ts              # Prisma client singleton
 │   │   ├── db-queries/        # Database query helpers
 │   │   ├── design-tokens.ts   # Design system tokens
@@ -114,8 +118,8 @@ Open [http://localhost:3000](http://localhost:3000)
 │   ├── middleware.ts          # JWT auth + CSRF + rate limiting
 │   └── styles/                # Design system CSS
 ├── prisma/
-│   ├── schema.prisma          # PostgreSQL schema
-│   ├── schema.sqlite.prisma   # SQLite dev schema
+│   ├── schema.prisma          # PostgreSQL (prod) schema — source of truth
+│   ├── schema.sqlite.prisma   # SQLite dev schema (keep in sync manually)
 │   └── migrations/            # Database migrations
 ├── public/downloads/          # Cheat sheets, templates, PDFs
 ├── scripts/                   # Seed scripts
@@ -131,6 +135,7 @@ Open [http://localhost:3000](http://localhost:3000)
 |----------|--------|------|-------------|
 | `/api/auth/login` | POST | Public | Login |
 | `/api/auth/signup` | POST | Public | Register |
+| `/api/auth/csrf` | GET | Public | CSRF token |
 | `/api/auth/me` | GET | JWT | Current user |
 | `/api/auth/change-password` | POST | JWT | Password change |
 | `/api/students` | GET | JWT | Student list |
@@ -139,6 +144,8 @@ Open [http://localhost:3000](http://localhost:3000)
 | `/api/students/[id]/activity` | GET | JWT | Student activity |
 | `/api/cohorts` | GET/POST | JWT | Cohort management |
 | `/api/cohorts/[id]` | GET/PUT/DELETE | JWT | Cohort detail |
+| `/api/progress` | GET | JWT | Progress overview |
+| `/api/curriculum` | GET | JWT | Curriculum content |
 | `/api/exercises` | GET | JWT | Exercise list |
 | `/api/exercises/submissions` | GET/POST | JWT | Exercise submissions |
 | `/api/exercises/submissions/[id]/grade` | POST | JWT | Grade submission |
@@ -149,6 +156,8 @@ Open [http://localhost:3000](http://localhost:3000)
 | `/api/audit` | GET | Admin | Audit trail |
 | `/api/tags` | GET | JWT | Tags |
 | `/api/admin/stats` | GET | Admin | Admin dashboard stats |
+| `/api/sampler` | GET | Public | PPC Companion → AMPH v2 starter sampler funnel |
+| `/api/sampler/event` | POST | Public | Sampler funnel event tracking |
 | `/api/health` | GET | Public | Health check |
 
 ---
