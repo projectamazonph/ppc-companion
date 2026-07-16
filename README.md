@@ -1,6 +1,6 @@
-# Amazon PPC Manager — Companion App
+# PPC Companion — Free Amazon PPC Sampler (by ProjectAmazonPH)
 
-> Interactive training platform for Amazon PPC Manager program. Companion portal for students, instructors, and admins.
+> A free, mobile-friendly taste of real Amazon PPC VA work — and the on-ramp to the full AMPH v2 program.
 
 **v0.6.0** · Next.js 16 · React 19 · TypeScript 5 · Tailwind v4 · Prisma
 
@@ -8,15 +8,21 @@
 
 ## Overview
 
-A production-grade **8–12 week** training companion built for the Amazon PPC Manager program. Students get a structured curriculum with auto-graded quizzes, interactive exercises, PPC tools, and a capstone project. Instructors and admins get cohort management, progress tracking, and dashboards.
+PPC Companion is a **free sampler** built by **ProjectAmazonPH** for aspiring Filipino Virtual Assistants. It lets a prospective student try a safe, realistic Amazon PPC task — understand the work an Amazon PPC specialist actually does — and then continue into the appropriate **AMPH v2** course for full training.
+
+The app also preserves the original full training platform (structured curriculum, auto-graded exercises, quizzes, PPC tools, and a capstone project) as the underlying content source that feeds AMPH v2. New visitors meet the sampler first; the complete curriculum lives in AMPH v2.
 
 ---
 
 ## Features
 
+> **Positioning:** PPC Companion is the free public sampler and companion to **AMPH v2** — not a standalone competing course. The full curriculum and certification live in AMPH v2.
+
 | Area | Capabilities |
 |------|-------------|
-| **Curriculum** | 4 phases · 10 modules · structured learning path · 1,779 lines of course data |
+| **Free Sampler** | 4-step public flow (See the Work → Check the Listing → Make One Safe PPC Decision → See the Career Path) with a retail-readiness scorecard and search-term triage exercise — no Amazon account or prior experience needed |
+| **AMPH v2 Handoff** | Measurable CTA redirect (`/sampler` → AMPH v2 comparison) with campaign attribution (`source=ppc-companion`, `medium=sampler`, `campaign=va-ppc-starter`) |
+| **Curriculum** | 4 phases · 10 modules · structured learning path · 1,779 lines of course data (source content for AMPH v2) |
 | **Exercises** | Auto-graded interactive exercises with real PPC scenarios |
 | **Quizzes** | Checkpoint quizzes per phase with instant scoring |
 | **Dashboard** | Student progress tracking, module completion, score overview |
@@ -33,7 +39,7 @@ A production-grade **8–12 week** training companion built for the Amazon PPC M
 
 ---
 
-## Curriculum — 4 Phases
+## Curriculum — 4 Phases (source content for AMPH v2)
 
 | Phase | Focus | Modules |
 |-------|-------|---------|

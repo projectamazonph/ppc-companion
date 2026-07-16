@@ -6,8 +6,7 @@
 
 ## App Identity
 
-ppc-companion is the analytics and campaign management tool under ProjectAmazonPH.
-Helps Amazon sellers manage and optimize their PPC campaigns with data-driven insights.
+ppc-companion is the **free Amazon PPC sampler** under ProjectAmazonPH — a training companion that lets aspiring Filipino VAs try safe, realistic PPC tasks and then continue into the full **AMPH v2** program. It is a learning product, not a seller analytics or campaign-management tool.
 
 ## Logo
 
