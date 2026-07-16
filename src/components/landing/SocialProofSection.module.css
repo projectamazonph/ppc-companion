@@ -1,29 +1,30 @@
-/* SocialProofSection.module.css */
+/* SocialProofSection — Field Manual design tokens */
+
 .socialProof {
-  background: #0a1628;
+  background: var(--landing-surface, #0a1628);
   padding: 80px 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: 1px solid var(--landing-border, rgba(255, 255, 255, 0.04));
+  border-bottom: 1px solid var(--landing-border, rgba(255, 255, 255, 0.04));
 }
 
 .testimonialGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
+  gap: var(--space-6, 24px);
   max-width: 1040px;
   margin: 0 auto;
 }
 
 .testimonialCard {
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 12px;
-  padding: 24px;
+  background: var(--landing-card, #1a1a2e);
+  border: 1px solid var(--landing-card-border, rgba(255, 255, 255, 0.07));
+  border-radius: var(--radius-lg, 10px);
+  padding: var(--space-6, 24px);
 }
 
 .quote {
   font-size: 0.95rem;
-  color: rgba(232, 232, 240, 0.85);
+  color: var(--landing-text-muted, rgba(232, 232, 240, 0.85));
   line-height: 1.7;
   margin-bottom: 20px;
   font-style: italic;
@@ -32,14 +33,14 @@
 .author {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3, 12px);
 }
 
 .avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+  background: var(--accent-gradient, linear-gradient(135deg, #FF6B35, #FF8C5A));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,13 +55,13 @@
   font-family: var(--font-space-grotesk), sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
-  color: #fff;
+  color: var(--landing-text, #fff);
 }
 
 .meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2, 8px);
   margin-top: 2px;
   flex-wrap: wrap;
 }
@@ -71,14 +72,25 @@
   gap: 3px;
   font-size: 0.7rem;
   font-weight: 600;
-  color: rgba(232, 232, 240, 0.6);
-  background: rgba(255, 255, 255, 0.06);
+  color: var(--landing-muted, rgba(232, 232, 240, 0.6));
+  background: var(--landing-badge-bg, rgba(255, 255, 255, 0.06));
   padding: 2px 8px;
   border-radius: 100px;
 }
 
-.cityBadge i {
-  font-size: 0.65rem;
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.sectionLabel {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent, #FF6B35);
+  margin-bottom: var(--space-2, 8px);
 }
 
 .incomeBadge {
@@ -87,12 +99,8 @@
   gap: 3px;
   font-size: 0.7rem;
   font-weight: 700;
-  color: #28a745;
-  background: rgba(40, 167, 69, 0.1);
+  color: var(--success, #28a745);
+  background: var(--success-bg, rgba(40, 167, 69, 0.1));
   padding: 2px 8px;
   border-radius: 100px;
-}
-
-.incomeBadge i {
-  font-size: 0.65rem;
 }

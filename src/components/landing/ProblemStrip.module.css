@@ -1,12 +1,10 @@
-/* ProblemStrip.module.css */
-.sectionLabel {
-  font-family: var(--font-space-grotesk), sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #ff6b35;
-  margin-bottom: 8px;
+/* ProblemStrip — Field Manual design tokens */
+
+.problemStrip {
+  background: var(--landing-surface, #0a1628);
+  padding: 64px 24px;
+  border-top: 1px solid var(--landing-border, rgba(255, 255, 255, 0.04));
+  border-bottom: 1px solid var(--landing-border, rgba(255, 255, 255, 0.04));
 }
 
 .sectionHeader {
@@ -14,40 +12,43 @@
   margin-bottom: 48px;
 }
 
+.sectionLabel {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent, #FF6B35);
+  margin-bottom: var(--space-2, 8px);
+}
+
 .sectionTitle {
   font-family: var(--font-space-grotesk), sans-serif;
   font-size: clamp(1.6rem, 3vw, 2.4rem);
   font-weight: 700;
-  color: #fff;
-  margin-bottom: 12px;
+  color: var(--landing-text, #fff);
+  margin-bottom: var(--space-3, 12px);
 }
 
 .sectionSubtitle {
   font-size: 1rem;
-  color: rgba(232, 232, 240, 0.6);
+  color: var(--landing-subtext, rgba(232, 232, 240, 0.6));
   max-width: 520px;
   margin: 0 auto;
-}
-
-.problemStrip {
-  background: #0a1628;
-  padding: 64px 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .problemGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  gap: var(--space-6, 24px);
   max-width: 1000px;
   margin: 0 auto;
 }
 
 .problemCard {
-  background: #1a1a2e;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 12px;
+  background: var(--landing-card, #1a1a2e);
+  border: 1px solid var(--landing-card-border, rgba(255, 255, 255, 0.07));
+  border-radius: var(--radius-lg, 10px);
   padding: 28px 24px;
   position: relative;
   overflow: hidden;
@@ -60,19 +61,19 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #ff6b35, transparent);
+  background: var(--accent-gradient-bar, linear-gradient(90deg, #FF6B35, transparent));
 }
 
 .problemIcon {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
-  background: rgba(255, 107, 53, 0.12);
+  border-radius: var(--radius-md, 6px);
+  background: var(--accent-bg, rgba(255, 107, 53, 0.12));
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
-  color: #ff6b35;
+  margin-bottom: var(--space-4, 16px);
+  color: var(--accent, #FF6B35);
   font-size: 1.4rem;
 }
 
@@ -80,29 +81,29 @@
   font-family: var(--font-space-grotesk), sans-serif;
   font-size: 1.05rem;
   font-weight: 700;
-  color: #fff;
-  margin-bottom: 8px;
+  color: var(--landing-text, #fff);
+  margin-bottom: var(--space-2, 8px);
 }
 
 .problemDesc {
   font-size: 0.9rem;
-  color: rgba(232, 232, 240, 0.6);
+  color: var(--landing-text-muted, rgba(232, 232, 240, 0.6));
   line-height: 1.65;
 }
 
 .problemAmount {
   display: inline-block;
-  margin-top: 12px;
+  margin-top: var(--space-3, 12px);
   font-family: var(--font-space-grotesk), sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
-  color: #dc3545;
+  color: var(--danger, #DC3545);
 }
 
 .problemAmountOrange {
-  color: #ff6b35;
+  color: var(--accent, #FF6B35);
 }
 
 .problemAmountGold {
-  color: #ffd700;
+  color: var(--gold, #FFD700);
 }

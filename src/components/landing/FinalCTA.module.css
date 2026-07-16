@@ -1,8 +1,9 @@
-/* FinalCTA.module.css */
+/* FinalCTA — Field Manual design tokens */
+
 .finalCta {
-  background: linear-gradient(160deg, #0a1628 0%, rgba(255, 107, 53, 0.08) 100%);
-  border-top: 1px solid rgba(255, 107, 53, 0.2);
-  border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+  background: var(--landing-gradient, linear-gradient(160deg, #0a1628 0%, rgba(255, 107, 53, 0.08) 100%));
+  border-top: 1px solid var(--accent-border, rgba(255, 107, 53, 0.2));
+  border-bottom: 1px solid var(--accent-border, rgba(255, 107, 53, 0.2));
   padding: 96px 24px;
   text-align: center;
 }
@@ -11,7 +12,7 @@
   font-family: var(--font-space-grotesk), sans-serif;
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 700;
-  color: #fff;
+  color: var(--landing-text, #fff);
   max-width: 700px;
   margin: 0 auto 16px;
   line-height: 1.2;
@@ -19,12 +20,12 @@
 
 .title em {
   font-style: normal;
-  color: #ff6b35;
+  color: var(--accent, #FF6B35);
 }
 
 .sub {
   font-size: 1.05rem;
-  color: rgba(232, 232, 240, 0.65);
+  color: var(--landing-subtext, rgba(232, 232, 240, 0.65));
   max-width: 540px;
   margin: 0 auto 36px;
   line-height: 1.7;
@@ -38,11 +39,11 @@
 .samplerLink {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 16px;
+  gap: var(--space-2, 8px);
+  margin-top: var(--space-4, 16px);
   font-size: 0.95rem;
   font-weight: 500;
-  color: #ff6b35;
+  color: var(--accent, #FF6B35);
   text-decoration: none;
   transition: opacity 0.15s ease;
 }
@@ -52,28 +53,11 @@
   text-decoration: underline;
 }
 
-.samplerLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 16px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #ff6b35;
-  text-decoration: none;
-  transition: opacity 0.15s ease;
-}
-
-.samplerLink:hover {
-  opacity: 0.8;
-  text-decoration: underline;
-}
-
 .urgencyRow {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: var(--space-6, 24px);
   margin-top: 28px;
   flex-wrap: wrap;
 }
@@ -83,9 +67,9 @@
   align-items: center;
   gap: 6px;
   font-size: 0.8rem;
-  color: rgba(232, 232, 240, 0.5);
+  color: var(--landing-muted, rgba(232, 232, 240, 0.5));
 }
 
 .urgencyItem i {
-  color: #ff6b35;
+  color: var(--accent, #FF6B35);
 }
