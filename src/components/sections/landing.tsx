@@ -85,10 +85,10 @@ const testimonials = [
 ];
 
 const navLinks = [
-  { label: "Curriculum", href: "#curriculum" },
-  { label: "Mentors", href: "#mentors" },
-  { label: "Success Stories", href: "#stories" },
-  { label: "Resources", href: "#resources" },
+  { label: "What You'll Learn", href: "#curriculum" },
+  { label: "Stories", href: "#stories" },
+  { label: "AMPH v2", href: "/projectamazonph" },
+  { label: "Free Sampler", href: "/sampler" },
 ];
 
 // =============================================================
@@ -318,9 +318,9 @@ export function LandingPage() {
                 {l.label}
               </a>
             ))}
-            <Button onClick={openAuth} className="font-bold">
-              Enroll Now
-            </Button>
+            <a href="/sampler">
+              <Button className="font-bold">Try Free Sampler</Button>
+            </a>
           </nav>
 
           <button
@@ -350,9 +350,9 @@ export function LandingPage() {
                   {l.label}
                 </a>
               ))}
-              <Button onClick={openAuth} className="mt-2 font-bold">
-                Enroll Now
-              </Button>
+              <a href="/sampler" className="mt-2">
+                <Button className="w-full font-bold">Try Free Sampler</Button>
+              </a>
             </motion.nav>
           )}
         </AnimatePresence>
