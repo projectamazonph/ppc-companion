@@ -157,7 +157,18 @@ export async function POST(req: NextRequest) {
         status = ["DRAFT", "SUBMITTED"].includes(body.status) ? body.status : "SUBMITTED";
       }
     } else {
-      status = existing ? existing.status : "SUBMITTED";
+      if (existing) {
+        // When status is not explicitly provided by a non-instructor,
+        // do NOT preserve GRADED/RETURNED — force to DRAFT so stale
+        // grading metadata is not carried across re-submissions.
+        if (!isInstructor && ["GRADED", "RETURNED"].includes(existing.status)) {
+          status = "DRAFT";
+        } else {
+          status = existing.status;
+        }
+      } else {
+        status = "SUBMITTED";
+      }
     }
 
     let submission;
@@ -178,6 +189,15 @@ export async function POST(req: NextRequest) {
       // Track submission time
       if (status === "SUBMITTED" && existing.status !== "SUBMITTED") {
         updateData.submittedAt = new Date();
+      }
+
+      // If a non-instructor is re-submitting on a previously graded
+      // submission, clear stale grading metadata.
+      if (!isInstructor && ["GRADED", "RETURNED"].includes(existing.status)) {
+        updateData.score = null;
+        updateData.feedback = null;
+        updateData.gradedAt = null;
+        updateData.gradedBy = null;
       }
 
       submission = await db.exerciseSubmission.update({

@@ -11,62 +11,44 @@ import { requireAuth, isErrorResponse } from "@/lib/auth-server";
 // =============================================================
 
 async function deriveProgress(studentId: string) {
-  // 1. Get all quiz attempts for the student, with quiz->module->phase info
-  const attempts = await db.quizAttempt.findMany({
-    where: { studentId },
+  // 1. Get every quiz in the catalog, grouped by phase via module->phase.
+  //    This is the authoritative list of what must be passed.
+  const allQuizzes = await db.quiz.findMany({
     include: {
-      quiz: {
-        include: {
-          module: {
-            include: { phase: true },
-          },
-        },
+      module: {
+        include: { phase: { select: { number: true } } },
       },
     },
   });
 
-  // 2. Get capstone status
+  const quizzesByPhase = new Map<number, Set<string>>();
+  for (const quiz of allQuizzes) {
+    const phaseNumber = quiz.module?.phase?.number;
+    if (phaseNumber) {
+      if (!quizzesByPhase.has(phaseNumber)) quizzesByPhase.set(phaseNumber, new Set());
+      quizzesByPhase.get(phaseNumber)!.add(quiz.id);
+    }
+  }
+
+  // 2. Get the student's best result per quiz (passed on any attempt).
+  const attempts = await db.quizAttempt.findMany({
+    where: { studentId, passed: true },
+    select: { quizId: true },
+  });
+  const passedQuizIds = new Set(attempts.map((a) => a.quizId));
+
+  // 3. Derive phase pass states: all quizzes in the phase must be in passedQuizIds.
+  const phasePass: Record<number, boolean> = { 1: false, 2: false, 3: false, 4: false };
+  for (const [phaseNumber, quizIds] of quizzesByPhase) {
+    if (quizIds.size === 0) continue;
+    phasePass[phaseNumber] = Array.from(quizIds).every((id) => passedQuizIds.has(id));
+  }
+
+  // 4. Capstone done
   const capstone = await db.capstoneProject.findFirst({
     where: { studentId },
     select: { status: true },
   });
-
-  // 3. Derive phase pass states (phases 1-4)
-  // A phase is passed if the student has passed ALL quizzes linked to that phase.
-  const phasePass: Record<number, boolean> = { 1: false, 2: false, 3: false, 4: false };
-
-  // Group quizzes by phase number
-  const quizzesByPhase = new Map<number, Set<string>>();
-  const passedQuizzes = new Map<string, boolean>();
-
-  for (const attempt of attempts) {
-    const phaseNumber = attempt.quiz.module?.phase?.number;
-    if (!phaseNumber) continue;
-
-    if (!quizzesByPhase.has(phaseNumber)) {
-      quizzesByPhase.set(phaseNumber, new Set());
-    }
-    quizzesByPhase.get(phaseNumber)!.add(attempt.quizId);
-
-    // Track if this quiz has been passed (any attempt)
-    if (attempt.passed && !passedQuizzes.get(attempt.quizId)) {
-      passedQuizzes.set(attempt.quizId, true);
-    }
-  }
-
-  for (const [phaseNumber, quizIds] of quizzesByPhase) {
-    if (quizIds.size === 0) continue;
-    // All quizzes in this phase must be passed
-    phasePass[phaseNumber] = Array.from(quizIds).every((id) => passedQuizzes.get(id) === true);
-  }
-
-  // Handle case where no quizzes exist for a phase — default to false
-  for (let i = 1; i <= 4; i++) {
-    if (!quizzesByPhase.has(i)) {
-      phasePass[i] = false;
-    }
-  }
-
   const capstoneDone = capstone?.status === "APPROVED";
 
   return {
@@ -101,10 +83,11 @@ export async function GET(req: NextRequest) {
 // records. Capstone done is derived from capstone approval.
 // =============================================================
 
-export async function POST(_req: NextRequest) {
-  // Direct progress mutation is no longer allowed.
-  // Phase pass states are derived server-side from authoritative
-  // quiz attempt and capstone records.
+export async function POST(req: NextRequest) {
+  // Authenticated callers still receive 410 — mutation is disabled.
+  const authUser = await requireAuth(req);
+  if (isErrorResponse(authUser)) return authUser;
+
   return NextResponse.json(
     {
       error:

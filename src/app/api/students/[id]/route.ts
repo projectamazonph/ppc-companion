@@ -25,7 +25,7 @@ export async function GET(
   try {
     const { id } = await params;
     const student = await db.student.findUnique({
-      where: { id },
+      where: { id, deletedAt: null },
       include: { progress: { orderBy: { phaseNumber: "asc" } } },
     });
     if (!student) {
@@ -60,8 +60,8 @@ export async function PUT(
     const { id } = await params;
     const body = await req.json();
 
-    // Existence check
-    const existing = await db.student.findUnique({ where: { id } });
+    // Existence check (skip soft-deleted students)
+    const existing = await db.student.findUnique({ where: { id, deletedAt: null } });
     if (!existing) {
       return NextResponse.json({ error: "Student not found" }, { status: 404 });
     }
@@ -96,6 +96,18 @@ export async function PUT(
     const validRoles = ["STUDENT", "INSTRUCTOR", "ADMIN"];
     if (validRoles.includes(body.role)) {
       if (auth.role === "ADMIN") {
+        // Prevent demoting the last ADMIN
+        if (existing.role === "ADMIN" && body.role !== "ADMIN") {
+          const adminCount = await db.student.count({
+            where: { role: "ADMIN", deletedAt: null },
+          });
+          if (adminCount <= 1) {
+            return NextResponse.json(
+              { error: "Cannot demote the last administrator account." },
+              { status: 403 }
+            );
+          }
+        }
         data.role = body.role as Role;
       }
       // Instructors silently ignore role field
@@ -141,7 +153,7 @@ export async function DELETE(
 
   try {
     const { id } = await params;
-    const existing = await db.student.findUnique({ where: { id } });
+    const existing = await db.student.findUnique({ where: { id, deletedAt: null } });
     if (!existing) {
       return NextResponse.json({ error: "Student not found" }, { status: 404 });
     }

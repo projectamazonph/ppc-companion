@@ -98,13 +98,15 @@ async function verifySessionVersion(
   try {
     const student = await db.student.findUnique({
       where: { id: userId },
-      select: { sessionVersion: true },
+      select: { sessionVersion: true, deletedAt: true },
     });
-    if (!student) return false;
-    return student.sessionVersion === tokenVersion;
+    return (
+      student !== null &&
+      student.deletedAt === null &&
+      student.sessionVersion === tokenVersion
+    );
   } catch {
-    // On DB error, accept the token (degraded mode)
-    return true;
+    return false;
   }
 }
 

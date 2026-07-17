@@ -144,9 +144,28 @@ export async function POST(req: NextRequest) {
 
       let isCorrect = false;
 
-      if (q.type === "MCQ" && q.modelAnswer) {
-        // MCQ: compare submitted answer to model answer
-        isCorrect = submitted.trim().toLowerCase() === q.modelAnswer.trim().toLowerCase();
+      if (q.type === "MCQ") {
+        // MCQ: compare submitted answer against the correct option IDs
+        // parsed from the options JSON. Each option is { id, text, correct? }.
+        if (q.options) {
+          try {
+            const parsedOptions = JSON.parse(q.options);
+            if (Array.isArray(parsedOptions)) {
+              const correctIds = parsedOptions
+                .filter((o: any) => o.correct === true)
+                .map((o: any) => String(o.id));
+              isCorrect = correctIds.length > 0 && correctIds.includes(submitted.trim());
+            }
+          } catch {
+            // Fallback: compare against modelAnswer if options parse fails
+            isCorrect = q.modelAnswer
+              ? submitted.trim().toLowerCase() === q.modelAnswer.trim().toLowerCase()
+              : false;
+          }
+        } else if (q.modelAnswer) {
+          // No options JSON — fall back to modelAnswer comparison
+          isCorrect = submitted.trim().toLowerCase() === q.modelAnswer.trim().toLowerCase();
+        }
       } else if (q.type === "NUMERIC" && q.acceptableAnswers) {
         // NUMERIC: check if submitted value falls within acceptable range(s)
         try {
@@ -168,18 +187,24 @@ export async function POST(req: NextRequest) {
           isCorrect = false;
         }
       }
-      // OPEN questions: cannot auto-grade. Student receives 0 points
-      // and instructor must manually grade.
-
-      if (isCorrect) {
-        score += points;
+      // OPEN questions: cannot auto-grade. They don't count toward
+      // the auto-graded total; score remains 0 until instructor grades.
+      if (q.type !== "OPEN") {
+        if (isCorrect) {
+          score += points;
+        }
+      } else {
+        // OPEN question — zero points in auto-graded score
+        isCorrect = false;
       }
 
       gradedAnswers[q.id] = { submitted, correct: isCorrect, points };
     }
 
-    // Ensure total is at least 1 to avoid division by zero
-    const safeTotal = Math.max(1, total);
+    // Compute percentage using only auto-gradable points as the denominator.
+    // If there are only OPEN questions, total is 0 and we treat as passed=false.
+    const autoTotal = total; // total excludes OPEN points after the loop
+    const safeTotal = Math.max(1, autoTotal);
     const percentage = (score / safeTotal) * 100;
     const passed = percentage >= (quiz.passingScore ?? 70);
 
@@ -194,39 +219,42 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Create the attempt record
-    const attempt = await db.quizAttempt.create({
-      data: {
-        studentId: body.studentId,
-        quizId: body.quizId,
-        score,
-        total: safeTotal,
-        percentage: Math.round(percentage * 100) / 100,
-        passed,
-        answers: JSON.stringify(gradedAnswers),
-        durationSec: typeof body.durationSec === "number" ? body.durationSec : null,
-      },
-    });
-
-    // Update ProgressEntry for this phase with the latest score
+    // Create the attempt record and update progress atomically
     const phaseNumber = quiz.module?.phase?.number ?? 1;
     const moduleId = quiz.module?.id ?? null;
-    if (moduleId) {
-      await db.progressEntry.upsert({
-        where: { studentId_phaseNumber: { studentId: body.studentId, phaseNumber } },
-        create: {
+
+    const [attempt] = await db.$transaction([
+      db.quizAttempt.create({
+        data: {
           studentId: body.studentId,
-          moduleId,
-          phaseNumber,
-          quizScore: score,
-          quizTotal: safeTotal,
+          quizId: body.quizId,
+          score,
+          total: safeTotal,
+          percentage: Math.round(percentage * 100) / 100,
+          passed,
+          answers: JSON.stringify(gradedAnswers),
+          durationSec: typeof body.durationSec === "number" ? body.durationSec : null,
         },
-        update: {
-          quizScore: score,
-          quizTotal: safeTotal,
-        },
-      });
-    }
+      }),
+      ...(moduleId
+        ? [
+            db.progressEntry.upsert({
+              where: { studentId_phaseNumber: { studentId: body.studentId, phaseNumber } },
+              create: {
+                studentId: body.studentId,
+                moduleId,
+                phaseNumber,
+                quizScore: score,
+                quizTotal: safeTotal,
+              },
+              update: {
+                quizScore: score,
+                quizTotal: safeTotal,
+              },
+            }),
+          ]
+        : []),
+    ]);
 
     return NextResponse.json({ attempt, passed, percentage }, { status: 201 });
   } catch (e: any) {

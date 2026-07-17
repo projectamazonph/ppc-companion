@@ -31,7 +31,8 @@ export async function GET(req: NextRequest) {
     const q = searchParams.get("q");
     const includeProgress = searchParams.get("progress") === "true";
 
-    const where: any = {};
+    // Always exclude soft-deleted students
+    const where: any = { deletedAt: null };
     if (role) where.role = role;
     if (status) where.status = status;
     if (cohort) where.cohort = cohort;
@@ -107,10 +108,13 @@ export async function POST(req: NextRequest) {
     // Security: Only ADMIN can set INSTRUCTOR or ADMIN roles.
     // Instructors always create STUDENT accounts regardless of body.role.
     let role: Role;
-    if (auth.role === "ADMIN" && validRoles.includes(body.role)) {
-      role = body.role as Role;
+    if (auth.role === "ADMIN") {
+      if (body.role !== undefined && !validRoles.includes(body.role)) {
+        return NextResponse.json({ error: "Invalid role" }, { status: 400 });
+      }
+      role = (body.role ?? "STUDENT") as Role;
     } else {
-      role = "STUDENT" as Role;
+      role = "STUDENT";
     }
 
     const status = (validStatuses.includes(body.status) ? body.status : "ACTIVE") as StudentStatus;
