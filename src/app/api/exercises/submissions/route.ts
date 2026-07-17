@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { Prisma, SubmissionStatus } from "@prisma/client";
 import { db } from "@/lib/db";
 import { requireAuth, isErrorResponse } from "@/lib/auth-server";
 
@@ -175,7 +174,7 @@ export async function POST(req: NextRequest) {
     let submission;
     if (existing) {
       // Build update — only allow fields appropriate to role
-      const updateData: Prisma.ExerciseSubmissionUpdateInput = {
+      const updateData: any = {
         answer: body.answer,
         status,
       };
@@ -207,11 +206,11 @@ export async function POST(req: NextRequest) {
       });
     } else {
       // New submission — grading fields only from instructors/admins
-      const createData: Prisma.ExerciseSubmissionCreateInput = {
+      const createData: any = {
         studentId: body.studentId,
         exerciseId,
         answer: body.answer,
-        status: status as SubmissionStatus,
+        status: status as any,
       };
 
       // Only instructors/admins can set grading fields on creation
