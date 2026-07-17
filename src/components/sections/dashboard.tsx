@@ -9,10 +9,10 @@ import { BookOpen, Flame, TrendUp as TrendingUp, Lightning as Zap, Rocket, Check
 import styles from "./dashboard.module.css";
 
 const statCards = [
-  { key: "progress", label: "Course Progress", icon: Target, color: "var(--primary)", bg: "color-mix(in srgb, var(--primary) 10%, transparent)" },
-  { key: "streak", label: "Day Streak", icon: Flame, color: "var(--chart-3)", bg: "color-mix(in srgb, var(--chart-3) 10%, transparent)" },
-  { key: "badges", label: "Badges Earned", icon: Award, color: "var(--chart-4)", bg: "color-mix(in srgb, var(--chart-4) 10%, transparent)" },
-  { key: "points", label: "Total Points", icon: Star, color: "var(--chart-2)", bg: "color-mix(in srgb, var(--chart-2) 10%, transparent)" },
+  { key: "progress", label: "Course Progress", icon: Target, color: "hsl(var(--primary))", bg: "color-mix(in srgb, hsl(var(--primary)) 10%, transparent)" },
+  { key: "streak", label: "Day Streak", icon: Flame, color: "hsl(var(--chart-3))", bg: "color-mix(in srgb, hsl(var(--chart-3)) 10%, transparent)" },
+  { key: "badges", label: "Badges Earned", icon: Award, color: "hsl(var(--chart-4))", bg: "color-mix(in srgb, hsl(var(--chart-4)) 10%, transparent)" },
+  { key: "points", label: "Total Points", icon: Star, color: "hsl(var(--chart-2))", bg: "color-mix(in srgb, hsl(var(--chart-2)) 10%, transparent)" },
 ] as const;
 
 function getStreakInfo(pct: number): { text: string; icon: typeof Flame; value: string } {

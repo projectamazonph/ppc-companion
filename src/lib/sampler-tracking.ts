@@ -11,7 +11,7 @@ import type { SamplerEvent } from "@/lib/sampler-data";
 // Config (documented in .env.example)
 // ---------------------------------------------------------------------------
 
-const PAPH_APP_URL = process.env.NEXT_PUBLIC_PAPH_APP_URL ?? "https://academy.projectamazonph.com";
+const PAPH_APP_URL = process.env.NEXT_PUBLIC_PAPH_APP_URL;
 const PAPH_COMPARE_PATH = process.env.NEXT_PUBLIC_PAPH_COMPARE_PATH ?? "/course-comparison";
 const SAMPLER_CAMPAIGN = process.env.NEXT_PUBLIC_PAPH_SAMPLER_CAMPAIGN ?? "va-ppc-starter";
 
@@ -27,8 +27,15 @@ export type AcademyComparisonParams = {
  * Build the measurable Project Amazon PH Academy handoff URL.
  * Always sends learners to the comparison/course page — never straight to
  * checkout. Params are non-PII: source, medium, campaign, step, optional variant.
+ *
+ * Throws if NEXT_PUBLIC_PAPH_APP_URL is not configured — the production
+ * Academy host must come from the environment, never from a hard-coded
+ * fallback in source.
  */
 export function buildAcademyHandoffUrl(opts: AcademyComparisonParams = {}): string {
+  if (!PAPH_APP_URL) {
+    throw new Error("NEXT_PUBLIC_PAPH_APP_URL must be configured");
+  }
   const url = new URL(PAPH_APP_URL);
   url.pathname = PAPH_COMPARE_PATH.replace(/^\/+/, "") ? `/${PAPH_COMPARE_PATH.replace(/^\/+/, "")}` : url.pathname;
   const params = new URLSearchParams(url.search);

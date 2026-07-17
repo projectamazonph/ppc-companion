@@ -91,6 +91,25 @@ const TAG_COLOR: Record<string, { bg: string; text: string }> = {
   slate: { bg: "bg-slate-500/10", text: "text-slate-700 dark:text-slate-300" },
 };
 
+// Shape we expect on each tag coming back from the activity API. Anything else
+// is dropped at the boundary via the `isTag` guard so the rendering code can
+// read id/color/name with full type-safety.
+type Tag = {
+  id: string;
+  color: string;
+  name: string;
+};
+
+function isTag(value: unknown): value is Tag {
+  if (!value || typeof value !== "object") return false;
+  const t = value as Record<string, unknown>;
+  return (
+    typeof t.id === "string" &&
+    typeof t.color === "string" &&
+    typeof t.name === "string"
+  );
+}
+
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, {
     year: "numeric",
@@ -1104,7 +1123,7 @@ function StudentDetailDialog({
                 {tags.length > 0 && (
                   <div className="flex flex-wrap items-center gap-1.5">
                     <TagIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                    {tags.map((t: any) => {
+                    {tags.filter(isTag).map((t) => {
                       const swatch = TAG_COLOR[t.color] ?? TAG_COLOR.blue;
                       return (
                         <Badge

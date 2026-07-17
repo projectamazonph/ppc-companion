@@ -26,7 +26,14 @@ const ALLOWED_STEPS = new Set([
 ]);
 
 // Only primitive, non-PII meta values are accepted, and keys are whitelisted.
-const ALLOWED_META_KEYS = new Set(["score", "maxScore", "variant", "tier", "durationMs"]);
+const ALLOWED_META_KEYS = new Set([
+  "score",
+  "maxScore",
+  "variant",
+  "tier",
+  "intent",
+  "durationMs",
+]);
 
 function sanitizeMeta(input: unknown): Record<string, string | number> {
   if (!input || typeof input !== "object") return {};

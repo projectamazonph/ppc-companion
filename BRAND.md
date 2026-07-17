@@ -43,9 +43,21 @@ Avoid excessive motion — this is a professional analytics tool.
 
 ## Favicon & App Icons
 
-Removed — no third-party favicon or app-icon assets are bundled with this
-project. The browser tab, PWA install, and Apple touch icons must be supplied
-by the operator before launch.
+Neutral placeholder icons are bundled so the manifest declares a complete set
+of install icons. The bundled set lives at `/public/icons/` and `/public/og/`
+and uses the brand `#FF6B35` background with a three-bar chart mark.
+
+| File | Size | Use |
+|---|---|---|
+| `/public/icons/icon-32.png` | 32×32 | Browser tab favicon |
+| `/public/icons/icon-180.png` | 180×180 | Apple Touch / iOS home screen |
+| `/public/icons/icon-192.png` | 192×192 | PWA install |
+| `/public/icons/icon-512.png` | 512×512 | PWA install high-res |
+| `/public/og/ppc-og.png` | 1200×630 | OG social share image |
+
+These are intentionally generic. Replace with the operator's branded
+artwork before public launch — keep the same filenames to avoid touching
+`layout.tsx` and `public/manifest.json`.
 
 ## Metadata
 

@@ -44,8 +44,11 @@ const publicRoutes = [
   "/api/auth/csrf",
   "/api/health",
   "/_next/",
+  "/favicon.ico",
+  "/icons/",
   "/logo.svg",
   "/manifest.json",
+  "/og/",
   "/robots.txt",
 ];
 
