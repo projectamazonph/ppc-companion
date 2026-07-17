@@ -12,12 +12,12 @@ describe("GET /api/sampler — sampler-only metadata", () => {
     expect(json.steps).toHaveLength(4);
     expect(json.diagnosticFramework).toBeDefined();
     expect(json.escalationCard).toBeDefined();
-    expect(Array.isArray(json.amphTiers)).toBe(true);
+    expect(Array.isArray(json.academyTiers)).toBe(true);
     expect(Array.isArray(json.previewModules)).toBe(true);
     expect(Array.isArray(json.careerPaths)).toBe(true);
 
     // Decoupling guard: the sampler endpoint must NOT expose the legacy
-    // four-phase course, module unlock state, or anything AMPH-v2-auth-like.
+    // four-phase course, module unlock state, or anything Academy-auth-like.
     expect(json.phases).toBeUndefined();
     expect(json.trialMode).toBeUndefined();
   });
@@ -27,9 +27,9 @@ describe("GET /api/sampler — sampler-only metadata", () => {
     const json = await res.json();
     for (const step of json.steps) {
       expect(typeof step.title).toBe("string");
-      expect(step).toHaveProperty("amphHandoff");
-      // Each step points learners to AMPH v2 for the deep content.
-      expect(step.amphHandoff.tier.length).toBeGreaterThan(0);
+      expect(step).toHaveProperty("academyHandoff");
+      // Each step points learners to the Academy for the deep content.
+      expect(step.academyHandoff.tier.length).toBeGreaterThan(0);
     }
   });
 });

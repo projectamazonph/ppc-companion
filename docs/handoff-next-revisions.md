@@ -64,7 +64,7 @@ The PostgreSQL schema (`prisma/schema.prisma`) and SQLite schema (`prisma/schema
 
 ## Phase 3: Product Boundary
 
-**Goal:** AMPH v2 content is not exposed through the client bundle or localStorage.
+**Goal:** Project Amazon PH Academy content is not exposed through the client bundle or localStorage.
 
 ### 3a. Content separation
 
@@ -86,7 +86,7 @@ The PostgreSQL schema (`prisma/schema.prisma`) and SQLite schema (`prisma/schema
 
 **Tasks:**
 1. Make the sampler route (`/sampler`) fully independent from the course view
-2. Ensure sampler state (`sampler-store`) does not import or reference AMPH v2 data
+2. Ensure sampler state (`sampler-store`) does not import or reference Academy data
 3. Add a clear boundary comment in the codebase separating sampler from curriculum
 
 ---
@@ -136,7 +136,7 @@ The PostgreSQL schema (`prisma/schema.prisma`) and SQLite schema (`prisma/schema
 | Phase | Effort | Risk if skipped |
 |-------|--------|-----------------|
 | **Phase 2** | Medium | Schema drift causes silent data bugs in production |
-| **Phase 3** | High | AMPH v2 content leaks; intellectual property exposure |
+| **Phase 3** | High | Academy content leaks; intellectual property exposure |
 | **Phase 4** | Medium | No blocking risk but required before paid enrollment |
 
 **Recommended next step:** Start with Phase 2b (standardize PostgreSQL) since it unblocks Phase 2a and Phase 2c, and is a prerequisite for reliable CI.

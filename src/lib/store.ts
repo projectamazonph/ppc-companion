@@ -131,9 +131,9 @@ export type AppState = {
   checklistCompleted: Record<string, boolean>;
   toggleChecklist: (id: string) => void;
 
-  // ---- PPC Companion → AMPH v2 SAMPLER (separate from course progress) ----
+  // ---- PPC Companion → Project Amazon PH Academy SAMPLER (separate from course progress) ----
   // Sampler completion is NOT course/phase completion. Kept fully isolated so
-  // we never pretend a sampler win equals the full AMPH v2 curriculum.
+  // we never pretend a sampler win equals the full Academy curriculum.
   samplerStepResults: Partial<Record<SamplerStepId, { completedAt: number; score?: number }>>;
   samplerStartedAt: number | null;
   samplerCompletedAt: number | null;
@@ -242,7 +242,7 @@ export const useAppStore = create<AppState>()(
           },
         })),
 
-      // ---- PPC Companion → AMPH v2 SAMPLER -------------------------------
+      // ---- PPC Companion → Project Amazon PH Academy SAMPLER ---------------
       // Fully isolated progress. Sampler completion is NEVER course completion.
       samplerStepResults: {},
       samplerStartedAt: null,

@@ -1,6 +1,6 @@
 # PPC Companion — Free Amazon PPC Sampler (by ProjectAmazonPH)
 
-> A free, mobile-friendly taste of real Amazon PPC VA work — and the on-ramp to the full AMPH v2 program.
+> A free, mobile-friendly taste of real Amazon PPC VA work — and the on-ramp to the full Project Amazon PH Academy.
 
 **v0.6.0** · Next.js 16 · React 19 · TypeScript 5 · Tailwind v4 · Prisma
 
@@ -8,21 +8,21 @@
 
 ## Overview
 
-PPC Companion is a **free sampler** built by **ProjectAmazonPH** for aspiring Filipino Virtual Assistants. It lets a prospective student try a safe, realistic Amazon PPC task — understand the work an Amazon PPC specialist actually does — and then continue into the appropriate **AMPH v2** course for full training.
+PPC Companion is a **free sampler** built by **ProjectAmazonPH** for aspiring Filipino Virtual Assistants. It lets a prospective student try a safe, realistic Amazon PPC task — understand the work an Amazon PPC specialist actually does — and then continue into the appropriate **Project Amazon PH Academy** course for full training.
 
-The app also preserves the original full training platform (structured curriculum, auto-graded exercises, quizzes, PPC tools, and a capstone project) as the underlying content source that feeds AMPH v2. New visitors meet the sampler first; the complete curriculum lives in AMPH v2.
+The app also preserves the original full training platform (structured curriculum, auto-graded exercises, quizzes, PPC tools, and a capstone project) as the underlying content source that feeds the Academy. New visitors meet the sampler first; the complete curriculum lives in the Academy.
 
 ---
 
 ## Features
 
-> **Positioning:** PPC Companion is the free public sampler and companion to **AMPH v2** — not a standalone competing course. The full curriculum and certification live in AMPH v2.
+> **Positioning:** PPC Companion is the free public sampler and companion to the **Project Amazon PH Academy** — not a standalone competing course. The full curriculum and certification live in the Academy.
 
 | Area | Capabilities |
 |------|-------------|
 | **Free Sampler** | 4-step public flow (See the Work → Check the Listing → Make One Safe PPC Decision → See the Career Path) with a retail-readiness scorecard and search-term triage exercise — no Amazon account or prior experience needed |
-| **AMPH v2 Handoff** | Measurable CTA redirect (`/sampler` → AMPH v2 comparison) with campaign attribution (`source=ppc-companion`, `medium=sampler`, `campaign=va-ppc-starter`) |
-| **Curriculum** | 4 phases · 10 modules · structured learning path · 1,779 lines of course data (source content for AMPH v2) |
+| **Academy Handoff** | Measurable CTA redirect (`/sampler` → Academy comparison) with campaign attribution (`source=ppc-companion`, `medium=sampler`, `campaign=va-ppc-starter`) |
+| **Curriculum** | 4 phases · 10 modules · structured learning path · 1,779 lines of course data (source content for the Academy) |
 | **Exercises** | Auto-graded interactive exercises with real PPC scenarios |
 | **Quizzes** | Checkpoint quizzes per phase with instant scoring |
 | **Dashboard** | Student progress tracking, module completion, score overview |
@@ -39,7 +39,7 @@ The app also preserves the original full training platform (structured curriculu
 
 ---
 
-## Curriculum — 4 Phases (source content for AMPH v2)
+## Curriculum — 4 Phases (source content for the Project Amazon PH Academy)
 
 | Phase | Focus | Modules |
 |-------|-------|---------|
@@ -162,7 +162,7 @@ Open [http://localhost:3000](http://localhost:3000)
 | `/api/audit` | GET | Admin | Audit trail |
 | `/api/tags` | GET | JWT | Tags |
 | `/api/admin/stats` | GET | Admin | Admin dashboard stats |
-| `/api/sampler` | GET | Public | PPC Companion → AMPH v2 starter sampler funnel |
+| `/api/sampler` | GET | Public | PPC Companion → Project Amazon PH Academy starter sampler funnel |
 | `/api/sampler/event` | POST | Public | Sampler funnel event tracking |
 | `/api/health` | GET | Public | Health check |
 

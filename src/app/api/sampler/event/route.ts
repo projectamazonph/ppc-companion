@@ -14,8 +14,8 @@ const ALLOWED_EVENTS = new Set([
   "sampler_step_completed",
   "sampler_triage_submitted",
   "sampler_completed",
-  "amph_cta_viewed",
-  "amph_cta_clicked",
+  "academy_cta_viewed",
+  "academy_cta_clicked",
 ]);
 
 const ALLOWED_STEPS = new Set([
@@ -26,7 +26,14 @@ const ALLOWED_STEPS = new Set([
 ]);
 
 // Only primitive, non-PII meta values are accepted, and keys are whitelisted.
-const ALLOWED_META_KEYS = new Set(["score", "maxScore", "variant", "tier", "durationMs"]);
+const ALLOWED_META_KEYS = new Set([
+  "score",
+  "maxScore",
+  "variant",
+  "tier",
+  "intent",
+  "durationMs",
+]);
 
 function sanitizeMeta(input: unknown): Record<string, string | number> {
   if (!input || typeof input !== "object") return {};

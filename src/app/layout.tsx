@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { PapHeader } from "@/components/header";
+import { ConditionalPapHeader } from "@/components/conditional-pap-header";
 
 const BASE_URL = "https://ppc-companion.vercel.app";
 
@@ -37,16 +37,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icons/icon-32.png", sizes: "32x32" },
-      { url: "/icons/icon-192.png", sizes: "192x192" },
-      { url: "/icons/icon-512.png", sizes: "512x512" },
+      { url: "/icons/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: [
-      { url: "/icons/icon-180.png", sizes: "180x180" },
-    ],
-    other: [
-      { url: "/og/ppc-og.png", rel: "preload" },
-    ],
+    apple: [{ url: "/icons/icon-180.png", sizes: "180x180", type: "image/png" }],
   },
   manifest: "/manifest.json",
   appleWebApp: {
@@ -127,14 +122,7 @@ const jsonLd = {
     color: "#FF6B35",
   },
   screenshot: `${BASE_URL}/og/ppc-og.png`,
-  softwareVersion: "0.5.0",
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    ratingCount: "127",
-    bestRating: "5",
-    worstRating: "1",
-  },
+  softwareVersion: "0.6.0",
 };
 
 export default function RootLayout({
@@ -151,7 +139,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <PapHeader />
+        <ConditionalPapHeader />
         {children}
         <Toaster />
       </body>

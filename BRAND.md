@@ -6,13 +6,13 @@
 
 ## App Identity
 
-ppc-companion is the **free Amazon PPC sampler** under ProjectAmazonPH — a training companion that lets aspiring Filipino VAs try safe, realistic PPC tasks and then continue into the full **AMPH v2** program. It is a learning product, not a seller analytics or campaign-management tool.
+ppc-companion is the **free Amazon PPC sampler** under ProjectAmazonPH — a training companion that lets aspiring Filipino VAs try safe, realistic PPC tasks and then continue into the full **Project Amazon PH Academy** program. It is a learning product, not a seller analytics or campaign-management tool.
 
 ## Logo
 
 Primary mark: **Concept 4** — Three ascending white bars with sky blue growth arrow sweep.
 Represents data, analytics, and upward trajectory.
-Source: `/public/icons/icon-og.png`
+Source: `/public/logo.svg`
 
 ## Colors
 
@@ -43,17 +43,24 @@ Avoid excessive motion — this is a professional analytics tool.
 
 ## Favicon & App Icons
 
-| File | Use |
-|---|---|
-| `/public/icons/icon-32.png` | Browser tab favicon |
-| `/public/icons/icon-180.png` | Apple Touch / iOS home screen |
-| `/public/icons/icon-192.png` | PWA manifest |
-| `/public/icons/icon-512.png` | PWA manifest high-res |
-| `/public/icons/icon-og.png` | OG social share image (1200×630) |
+Neutral placeholder icons are bundled so the manifest declares a complete set
+of install icons. The bundled set lives at `/public/icons/` and `/public/og/`
+and uses the brand `#FF6B35` background with a three-bar chart mark.
+
+| File | Size | Use |
+|---|---|---|
+| `/public/icons/icon-32.png` | 32×32 | Browser tab favicon |
+| `/public/icons/icon-180.png` | 180×180 | Apple Touch / iOS home screen |
+| `/public/icons/icon-192.png` | 192×192 | PWA install |
+| `/public/icons/icon-512.png` | 512×512 | PWA install high-res |
+| `/public/og/ppc-og.png` | 1200×630 | OG social share image |
+
+These are intentionally generic. Replace with the operator's branded
+artwork before public launch — keep the same filenames to avoid touching
+`layout.tsx` and `public/manifest.json`.
 
 ## Metadata
 
 - **Site name:** ppc-companion
 - **Author:** Ryan Dabao — ProjectAmazonPH
-- **OG image:** `/public/og/ppc-og.png` (1200×630 composed — navy + bar chart icon + tagline)
 - **Manifest:** `/public/manifest.json`

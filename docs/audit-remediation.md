@@ -86,7 +86,7 @@ The PostgreSQL schema (`schema.prisma`) and SQLite schema (`schema.sqlite.prisma
 
 ### P0-6: Paid-content boundary *(Not addressed — requires product decisions)*
 
-Moving AMPH v2 content server-side requires:
+Moving Project Amazon PH Academy content server-side requires:
 - Private repository or server-only content service
 - Enrollment/entitlement records
 - Server-side access enforcement
@@ -134,7 +134,7 @@ This is Phase 3 work and requires product/architectural decisions beyond code ch
 
 ## Phase 3: Product Boundary (Planned)
 
-1. Split sampler content from AMPH v2
+1. Split sampler content from the Project Amazon PH Academy
 2. Move proprietary content server-side or into a private repository
 3. Add explicit entitlement and enrollment records
 4. Replace localStorage authorization with server session checks
@@ -156,7 +156,6 @@ This is Phase 3 work and requires product/architectural decisions beyond code ch
 | File | Change |
 |------|--------|
 | `prisma/schema.prisma` | Added `sessionVersion` field |
-| `prisma/schema.sqlite.prisma` | Added `sessionVersion` field |
 | `src/middleware.ts` | Rate limiting before public-routes skip; added `/api/auth/logout` to exempt lists |
 | `src/lib/auth-server.ts` | `sessionVersion` verification; made auth helpers async |
 | `src/app/api/progress/route.ts` | POST disabled (410); GET derives from quiz attempts + capstone |
@@ -189,7 +188,6 @@ This is Phase 3 work and requires product/architectural decisions beyond code ch
 
 These are known issues flagged by the audit that remain for future phases:
 
-- **Schema divergence:** PostgreSQL and SQLite schemas differ substantially (P0-5, Phase 2)
 - **Paid-content boundary:** Course data in client bundle, localStorage access control (P0-6, Phase 3)
 - **Capstone sync broken:** Client fields silently discarded; toggle sends wrong state (P1)
 - **User APIs return too much info:** `publicUser` strips only password (P1)
@@ -220,12 +218,6 @@ npx prisma validate
 
 # Prisma client generation (required after schema changes)
 npx prisma generate
-
-# Prisma validation (against SQLite schema for local dev)
-npx prisma validate --schema=prisma/schema.sqlite.prisma
-
-# SQLite client generation
-npx prisma generate --schema=prisma/schema.sqlite.prisma
 
 # Full DB verification (validates schema + dry-run push)
 bun run db:verify

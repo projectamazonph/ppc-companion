@@ -14,7 +14,7 @@ import {
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
 import { Student as School, Plus, DotsThree as MoreHorizontal, Pencil, Trash as Trash2, Eye, CircleNotch as Loader2, WarningCircle as AlertCircle, CalendarBlank as Calendar, Users, ArrowsClockwise as RefreshCw, GraduationCap, UserCircle, Clock, X, CaretRight as ChevronRight, Stack as Layers } from "@phosphor-icons/react";
 import styles from "./cohorts.module.css";
@@ -60,15 +60,6 @@ function formatDate(dateStr: string): string {
     day: "numeric",
     year: "numeric",
   });
-}
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
 }
 
 // =============================================================
@@ -140,8 +131,8 @@ export function CohortsSection() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-50 dark:bg-primary-950/30">
-              <GraduationCap className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 dark:bg-primary/20">
+              <GraduationCap className="h-5 w-5 text-primary" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               Cohorts
@@ -150,6 +141,8 @@ export function CohortsSection() {
           <p className="text-sm text-muted-foreground max-w-lg">
             {isAdmin
               ? "Create, manage, and monitor training cohorts. Track enrollments, assign instructors, and oversee student progress."
+              : user?.role === "instructor"
+              ? "View and grade students in your assigned training cohorts."
               : "Browse your assigned training cohorts and track your learning journey."}
           </p>
         </div>
@@ -175,7 +168,7 @@ export function CohortsSection() {
 
       {/* ── Summary Stats (when data exists) ───────────── */}
       {!loading && !error && cohorts.length > 0 && (
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="rounded-xl border border-border/60 bg-card p-3.5">
             <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
               Total cohorts
@@ -218,7 +211,7 @@ export function CohortsSection() {
         <div className="flex flex-col items-center justify-center rounded-xl border border-border/60 bg-card py-16">
           <div className="relative">
             <div className="h-12 w-12 rounded-full border-2 border-border" />
-            <Loader2 className="absolute inset-0 m-auto h-6 w-6 animate-spin text-primary-600 dark:text-primary-400" />
+            <Loader2 className="absolute inset-0 m-auto h-6 w-6 animate-spin text-primary" />
           </div>
           <p className="mt-4 text-sm font-medium text-muted-foreground">
             Loading cohorts…
@@ -229,8 +222,8 @@ export function CohortsSection() {
       {/* ── Empty State ─────────────────────────────────── */}
       {!loading && !error && cohorts.length === 0 && (
         <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border/50 bg-card/50 py-20 px-6">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-50 dark:bg-primary-950/30">
-            <School className="h-8 w-8 text-primary-400 dark:text-primary-500" />
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 dark:bg-primary/20">
+            <School className="h-8 w-8 text-primary" />
           </div>
           <h3 className="mt-5 text-lg font-semibold text-foreground">
             No cohorts yet
@@ -269,7 +262,7 @@ export function CohortsSection() {
                 {/* Header row */}
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-base text-foreground truncate group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors">
+                    <h3 className="font-semibold text-base text-foreground truncate group-hover:text-primary transition-colors">
                       {c.name}
                     </h3>
                     {c.description && (
@@ -584,11 +577,11 @@ function CohortFormDialog({
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-950/30">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 dark:bg-primary/20">
               {isEdit ? (
-                <Pencil className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+                <Pencil className="h-5 w-5 text-primary" />
               ) : (
-                <Layers className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+                <Layers className="h-5 w-5 text-primary" />
               )}
             </div>
             <div>
@@ -780,8 +773,8 @@ function CohortStudentsDialog({
         <DialogHeader>
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-950/30">
-                <Users className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 dark:bg-primary/20">
+                <Users className="h-5 w-5 text-primary" />
               </div>
               <div className="min-w-0">
                 <DialogTitle className="text-lg truncate">
@@ -803,7 +796,7 @@ function CohortStudentsDialog({
           <div className="flex flex-col items-center justify-center py-12">
             <div className="relative">
               <div className="h-10 w-10 rounded-full border-2 border-border" />
-              <Loader2 className="absolute inset-0 m-auto h-5 w-5 animate-spin text-primary-600 dark:text-primary-400" />
+              <Loader2 className="absolute inset-0 m-auto h-5 w-5 animate-spin text-primary" />
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
               Loading students…

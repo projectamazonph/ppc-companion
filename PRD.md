@@ -1,4 +1,4 @@
-# PRD — PPC Companion (Free Sampler for AMPH v2)
+# PRD — PPC Companion (Free Sampler for the Project Amazon PH Academy)
 
 **Version:** 1.0 | **Status:** Approved | **Last Updated:** 2026-07-16
 
@@ -6,11 +6,11 @@
 
 ## Product Overview
 
-PPC Companion is a **free, mobile-friendly sampler** built by **ProjectAmazonPH** for aspiring Filipino Virtual Assistants. It lets a prospective student try a safe, realistic Amazon PPC task — understand the work an Amazon PPC specialist actually does — and then continue into the appropriate **AMPH v2** course for full training and certification.
+PPC Companion is a **free, mobile-friendly sampler** built by **ProjectAmazonPH** for aspiring Filipino Virtual Assistants. It lets a prospective student try a safe, realistic Amazon PPC task — understand the work an Amazon PPC specialist actually does — and then continue into the appropriate **Project Amazon PH Academy** course for full training and certification.
 
-PPC Companion is **not** a second complete PPC course. The original full training platform (a structured 4-phase / 10-module curriculum with auto-graded quizzes, interactive exercises, real PPC tools, and a capstone project) is preserved as the underlying content source that feeds AMPH v2. New visitors meet the sampler first; the complete curriculum and certification live in AMPH v2.
+PPC Companion is **not** a second complete PPC course. The original full training platform (a structured 4-phase / 10-module curriculum with auto-graded quizzes, interactive exercises, real PPC tools, and a capstone project) is preserved as the underlying content source that feeds the Academy. New visitors meet the sampler first; the complete curriculum and certification live in the Academy.
 
-**Core Value Proposition:** A no-risk, no-experience-needed taste of real Amazon PPC VA work that converts interested Filipinos into enrolled AMPH v2 students (₱15k → ₱80k+/month career trajectory).
+**Core Value Proposition:** A no-risk, no-experience-needed taste of real Amazon PPC VA work that converts interested Filipinos into enrolled Academy students (₱15k → ₱80k+/month career trajectory).
 
 ---
 

@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Student as School, Users, TrendUp as TrendingUp, Medal as Award, UserPlus, BookOpen, GraduationCap, ChartBar as BarChart3, ArrowUpRight, DotsThree as MoreHorizontal, CircleNotch as Loader2, WarningCircle as AlertCircle, FileText as FileCheck, ArrowsClockwise as RefreshCw, MagnifyingGlass as Search, Bell } from "@phosphor-icons/react";
+import { Student as School, Users, TrendUp as TrendingUp, Medal as Award, UserPlus, BookOpen, GraduationCap, ChartBar as BarChart3, ArrowUpRight, DotsThree as MoreHorizontal, CircleNotch as Loader2, WarningCircle as AlertCircle, FileText as FileCheck, ArrowsClockwise as RefreshCw, MagnifyingGlass as Search } from "@phosphor-icons/react";
 import styles from "./admin-dashboard.module.css";
 
 // =============================================================
@@ -74,7 +74,6 @@ function StatusBadge({ status }: { status: string }) {
 
 export function AdminDashboardSection() {
   const setSection = useAppStore((s) => s.setSection);
-  const user = useAppStore((s) => s.user);
   const { toast } = useToast();
 
   const [data, setData] = useState<StatsResponse | null>(null);
@@ -171,8 +170,8 @@ export function AdminDashboardSection() {
 
   return (
     <div className={styles.section}>
-      {/* Top bar */}
-      <header className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
+      {/* Page header — search + Add Student CTA only; AppShell provides global nav. */}
+      <div className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
             <School className="h-5 w-5" />
@@ -180,7 +179,7 @@ export function AdminDashboardSection() {
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">Admin Dashboard</h1>
             <p className="text-sm text-muted-foreground">
-              Aggregate platform overview for {user?.name ?? "Administrator"}
+              Platform overview
             </p>
           </div>
         </div>
@@ -199,16 +198,8 @@ export function AdminDashboardSection() {
             <UserPlus className="h-4 w-4" />
             Add Student
           </Button>
-          <button
-            type="button"
-            aria-label="Notifications"
-            className="relative flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted"
-          >
-            <Bell className="h-5 w-5" />
-            <span className="absolute right-2.5 top-2.5 size-2 rounded-full border border-card bg-rose-500" />
-          </button>
         </div>
-      </header>
+      </div>
 
       {/* Stats Cards Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -335,16 +326,6 @@ export function AdminDashboardSection() {
           </div>
         )}
       </div>
-
-      {/* Footer */}
-      <footer className="flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row">
-        <p>© {new Date().getFullYear()} PPC Companion. All rights reserved.</p>
-        <div className="flex gap-4">
-          <a className="transition-colors hover:text-primary" href="#">Privacy</a>
-          <a className="transition-colors hover:text-primary" href="#">Terms</a>
-          <a className="transition-colors hover:text-primary" href="#">Help</a>
-        </div>
-      </footer>
     </div>
   );
 }

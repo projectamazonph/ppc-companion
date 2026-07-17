@@ -16,17 +16,17 @@ import styles from "./landing.module.css";
 // =============================================================
 
 const stats = [
-  { value: "500+", label: "VAs Coached", description: "Across the Philippines", icon: Users },
-  { value: "₱50M+", label: "Ads Managed", description: "Real Amazon ad spend", icon: TrendingUp },
-  { value: "14 yrs", label: "Amazon Ads Experience", description: "Led by a verified coach", icon: BookOpen },
+  { value: "Free", label: "Sampler Access", description: "No login, no card, no commitment", icon: Users },
+  { value: "Real", label: "PPC Tasks", description: "Listing readiness + search-term triage", icon: TrendingUp },
+  { value: "10+ yrs", label: "Amazon Ads Experience", description: "Built by a verified coach", icon: BookOpen },
 ];
 
 const features = [
   {
     icon: ShieldCheck,
-    title: "Built by 14-Year Amazon Ads Veterans",
+    title: "Built by Amazon Ads Veterans",
     description:
-      "A program shaped by coaches who have managed ₱50M+ in real Amazon ad spend for sellers.",
+      "Shaped by coaches with 10+ years of real Amazon Ads experience — built for Filipino Virtual Assistants.",
   },
   {
     icon: Sparkles,
@@ -38,7 +38,7 @@ const features = [
     icon: Users,
     title: "A Clear Path to the Full Course",
     description:
-      "Try the free sampler, then continue to the AMPH v2 program built for Filipino Virtual Assistants.",
+      "Try the free sampler, then continue to the Project Amazon PH Academy built for Filipino Virtual Assistants.",
   },
 ];
 
@@ -57,35 +57,37 @@ const learnItems = [
   },
   {
     title: "Your Path into Amazon PPC VA Work",
-    description: "Where the free sampler fits and which AMPH v2 track suits you.",
+    description: "Where the free sampler fits and which Academy track suits you.",
   },
 ];
 
-const testimonials = [
+const practicePreview = [
   {
-    name: "Maria S.",
-    location: "Davao City, PH",
-    quote:
-      "This course doubled my hourly rate as a VA! I went from doing general admin tasks for $5/hr to managing PPC campaigns for $15/hr.",
+    label: "Step 1",
+    title: "See the work",
+    detail: "Tell traffic, conversion, and retail-readiness problems apart.",
   },
   {
-    name: "Juan D.",
-    location: "Cebu City, PH",
-    quote:
-      "I had zero experience with Amazon ads. The videos were so easy to follow. I got hired by a US client 2 weeks after getting my certificate.",
+    label: "Step 2",
+    title: "Check the listing",
+    detail: "Run a mini retail-readiness scorecard on a mock product page.",
   },
   {
-    name: "Anna R.",
-    location: "Manila, PH",
-    quote:
-      "The community support is amazing. Whenever I get stuck on a campaign, the mentors help me out. It feels like having a senior expert.",
+    label: "Step 3",
+    title: "Make one PPC decision",
+    detail: "Triage a search-term report and justify the safe action.",
+  },
+  {
+    label: "Step 4",
+    title: "See your career path",
+    detail: "Match your result to the Academy tier that fits your goal.",
   },
 ];
 
 const navLinks = [
   { label: "What You'll Learn", href: "#curriculum" },
-  { label: "Stories", href: "#stories" },
-  { label: "AMPH v2", href: "/projectamazonph" },
+  { label: "Practice", href: "#practice" },
+  { label: "Academy", href: "/projectamazonph" },
   { label: "Free Sampler", href: "/sampler" },
 ];
 
@@ -179,8 +181,8 @@ export function LandingPage() {
               </h1>
               <h2 className="max-w-xl text-base leading-relaxed text-muted-foreground md:text-xl">
                 A free, safe taste of the work a real Amazon PPC Virtual Assistant does —
-                built by the ProjectAmazonPH team with 14 years of Amazon Ads experience.
-                Like it? Continue to the full AMPH v2 program.
+                built by the ProjectAmazonPH team with 10+ years of Amazon Ads experience.
+                Like it? Continue to the full Project Amazon PH Academy.
               </h2>
             </div>
 
@@ -197,26 +199,18 @@ export function LandingPage() {
                   variant="outline"
                   className="h-12 w-full text-base font-bold"
                 >
-                  See the Full AMPH v2 Program
+                  See the Full Project Amazon PH Academy
                 </Button>
               </a>
             </div>
 
             <div className="mt-4 border-t border-border pt-6">
-              <p className="mb-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Built by the ProjectAmazonPH team
+              <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Practice the work behind
               </p>
-              <div className="flex flex-wrap gap-4 opacity-60 grayscale transition-all hover:grayscale-0">
-                {["Sponsored Products", "Sponsored Brands", "Sponsored Display"].map(
-                  (t) => (
-                    <div
-                      key={t}
-                      className="h-6 w-20 rounded bg-muted animate-pulse"
-                      aria-label={`${t} logo placeholder`}
-                    />
-                  )
-                )}
-              </div>
+              <p className="text-sm font-medium text-foreground">
+                Sponsored Products · Sponsored Brands · Sponsored Display
+              </p>
             </div>
           </div>
 
@@ -237,9 +231,9 @@ export function LandingPage() {
                 </div>
                 <div>
                   <p className="text-[10px] font-medium text-muted-foreground">
-                    Typical VA Earnings
+                    Career Path
                   </p>
-                  <p className="text-base font-bold text-foreground">₱60K–₱80K / mo</p>
+                  <p className="text-base font-bold text-foreground">Amazon PPC VA</p>
                 </div>
               </div>
             </div>
@@ -344,18 +338,7 @@ export function LandingPage() {
                 <li>• Spot a listing that isn&apos;t ready to advertise — and say exactly why.</li>
                 <li>• Write a short, credible escalation note a manager would accept.</li>
                 <li>• Make one safe search-term decision (negate vs. keep) with clear reasoning.</li>
-                <li>• Name the right AMPH v2 track for your goals.</li>
-              </ul>
-            </div>
-            <div className="mt-4 rounded-xl border border-border bg-background p-4">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-primary">
-                After the free sampler, you&apos;ll be able to:
-              </p>
-              <ul className="space-y-1.5 text-xs text-muted-foreground">
-                <li>• Spot a listing that isn&apos;t ready to advertise — and say exactly why.</li>
-                <li>• Write a short, credible escalation note a manager would accept.</li>
-                <li>• Make one safe search-term decision (negate vs. keep) with clear reasoning.</li>
-                <li>• Name the right AMPH v2 track for your goals.</li>
+                <li>• Name the right Academy track for your goals.</li>
               </ul>
             </div>
             <div className="pt-2">
@@ -401,42 +384,33 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ─── Testimonials ──────────────────────────────────────── */}
-      <section id="stories" className="w-full bg-background py-12">
+      {/* ─── Practice preview ──────────────────────────────────── */}
+      <section id="practice" className="w-full bg-background py-12">
         <div className="mx-auto max-w-7xl px-4">
           <FadeUp>
             <div className="mx-auto mb-10 max-w-3xl text-center">
               <h2 className="mb-3 text-2xl font-black tracking-tight">
-                Success Stories
+                What You&apos;ll Practice
               </h2>
               <p className="text-base text-muted-foreground">
-                Join thousands of VAs who have transformed their careers.
+                Four short, realistic steps — no Amazon account or prior
+                experience required.
               </p>
             </div>
           </FadeUp>
-          <StaggerGrid className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {testimonials.map((t) => (
+          <StaggerGrid className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {practicePreview.map((p) => (
               <div
-                key={t.name}
-                className="flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-sm"
+                key={p.title}
+                className="flex h-full flex-col gap-3 rounded-2xl border border-border bg-card p-6 shadow-sm"
               >
-                <div className="mb-3 flex text-yellow-400">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-yellow-400" />
-                  ))}
-                </div>
-                <p className="flex-grow text-sm italic text-foreground">
-                  &ldquo;{t.quote}&rdquo;
+                <p className="text-xs font-bold uppercase tracking-wider text-primary">
+                  {p.label}
                 </p>
-                <div className="mt-4 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-sm font-bold text-foreground">
-                    {t.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-foreground">{t.name}</h4>
-                    <p className="text-[10px] text-muted-foreground">{t.location}</p>
-                  </div>
-                </div>
+                <h3 className="text-lg font-bold text-foreground">{p.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {p.detail}
+                </p>
               </div>
             ))}
           </StaggerGrid>
@@ -459,14 +433,14 @@ export function LandingPage() {
             </h2>
             <p className="relative z-10 mx-auto mb-6 max-w-2xl text-base text-white/80">
               PPC Companion is a free taste. The full curriculum, coaching, and
-              certification live in AMPH v2 — built by ProjectAmazonPH for Filipino VAs.
+              certification live in the Project Amazon PH Academy — built by ProjectAmazonPH for Filipino VAs.
             </p>
             <div className="relative z-10 flex flex-col gap-3">
               <a href="/projectamazonph">
                 <Button
                   className="h-12 w-full bg-white text-base font-bold text-primary hover:bg-white/90"
                 >
-                  See AMPH v2 — from ₱2,999
+                  See the Academy — from ₱2,999
                 </Button>
               </a>
               <a href="/sampler">
@@ -529,12 +503,12 @@ export function LandingPage() {
               <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
                 <li>
                   <a href="#curriculum" className="transition-colors hover:text-primary">
-                    Courses
+                    What you&apos;ll learn
                   </a>
                 </li>
                 <li>
-                  <a href="#mentors" className="transition-colors hover:text-primary">
-                    Instructors
+                  <a href="#practice" className="transition-colors hover:text-primary">
+                    Practice steps
                   </a>
                 </li>
               </ul>
@@ -543,13 +517,13 @@ export function LandingPage() {
               <h3 className="mb-3 font-bold text-foreground">Resources</h3>
               <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
                 <li>
-                  <a href="#" className="transition-colors hover:text-primary">
-                    Blog
+                  <a href="#practice" className="transition-colors hover:text-primary">
+                    What you&apos;ll practice
                   </a>
                 </li>
                 <li>
-                  <a href="#tools" className="transition-colors hover:text-primary">
-                    PPC Calculator
+                  <a href="#resources" className="transition-colors hover:text-primary">
+                    Continue to the Academy
                   </a>
                 </li>
               </ul>

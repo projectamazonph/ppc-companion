@@ -1,13 +1,13 @@
 # AGENTS.md — PPC Companion
 
-> **Free Amazon PPC sampler** by ProjectAmazonPH — a mobile-friendly on-ramp that lets a prospective Filipino VA try a safe, realistic PPC task, then continue into the full **AMPH v2** program.
+> **Free Amazon PPC sampler** by ProjectAmazonPH — a mobile-friendly on-ramp that lets a prospective Filipino VA try a safe, realistic PPC task, then continue into the full **Project Amazon PH Academy** program.
 
 ## Identity
 
 | Field | Value |
 |-------|-------|
 | **Owner** | Ryan Roland Dabao (Amazon PPC Lead Manager, 10+ yrs) |
-| **Purpose** | Free public sampler + companion funnel into the full AMPH v2 curriculum (retail-readiness scorecard, search-term triage, career-path handoff). The legacy full training platform (curriculum, quizzes, exercises, PPC tools, capstone, cohort management) remains as the content source feeding AMPH v2 |
+| **Purpose** | Free public sampler + companion funnel into the full Project Amazon PH Academy curriculum (retail-readiness scorecard, search-term triage, career-path handoff). The legacy full training platform (curriculum, quizzes, exercises, PPC tools, capstone, cohort management) remains as the content source feeding the Academy |
 | **Status** | Production (v0.6.0) |
 | **Domain** | ppc-companion.vercel.app |
 
