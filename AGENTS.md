@@ -19,7 +19,7 @@
 | **Runtime** | Bun | Package management + scripts |
 | **UI** | Tailwind CSS v4 + custom components | PostCSS config |
 | **State** | Zustand v5 | Client-side state |
-| **Database** | Prisma v6 + SQLite | Local dev; PostgreSQL planned |
+| **Database** | Prisma v6 + PostgreSQL | Canonical schema — all environments |
 | **Auth** | JWT (jose) + HttpOnly cookies | Custom session management |
 | **Deploy** | Vercel (standalone output) | `next build --webpack` |
 | **Testing** | Vitest | Unit + component + API tests |
@@ -37,7 +37,7 @@ ppc-companion/
 │   ├── styles/           ← Global styles
 │   └── test/             ← Test helpers/fixtures
 ├── prisma/
-│   └── schema.prisma     ← Database schema (SQLite)
+│   └── schema.prisma     ← Database schema (PostgreSQL)
 ├── scripts/              ← Seed scripts, migration helpers
 ├── docs/
 │   └── CREATIVE-TEAM.md  ← Design & content guidelines
@@ -57,8 +57,8 @@ ppc-companion/
 - **Hooks:** camelCase, `use` prefix, named exports
 
 ### Database
-- **Prisma ORM** — schema in `prisma/schema.prisma`
-- **Migrations:** `bun run db:migrate:create` (dev), `bun run db:migrate:prod` (deploy)
+- **Prisma ORM** — schema in `prisma/schema.prisma` (PostgreSQL)
+- **Migrations:** `bun run db:migrate` (dev), `bun run db:migrate:create` (create only), `bun run db:migrate:prod` (deploy)
 - **Seed:** `bun run db:seed` (full) or `bun run db:seed-students`
 - **Verify:** `bun run db:verify` before committing schema changes
 - Design principles: timestamps on every entity, soft-delete with `deletedAt`
@@ -112,7 +112,7 @@ git push                    # Auto-deployed via Vercel
 
 | File | Purpose |
 |------|---------|
-| `prisma/schema.prisma` | Database schema — source of truth for data model |
+| `prisma/schema.prisma` | Database schema (PostgreSQL) — single source of truth |
 | `next.config.ts` | Next.js configuration |
 | `src/app/` | All routes and API endpoints |
 | `src/components/` | Shared UI components |

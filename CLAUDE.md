@@ -21,7 +21,7 @@ bun run db:migrate             # prisma migrate dev
 bun run db:migrate:prod        # prisma migrate deploy (production)
 bun run db:seed                # scripts/seed-full.ts
 bun run db:seed-students       # scripts/seed-students.ts (minimal/admin bootstrap)
-bun run db:verify              # prisma validate + dry-run push — run before committing schema changes
+bun run db:verify              # prisma validate — run before committing schema changes
 
 # Dev server
 bun run dev                    # next dev -p 3000, tees to dev.log
@@ -41,9 +41,22 @@ bun run build                  # prisma generate && next build --webpack && copy
 
 CI (`.github/workflows/ci.yml`) runs, in order: `tsc --noEmit`, `eslint .`, `vitest run`, a gitleaks secret scan, then `npm run build`. Match this locally before pushing.
 
-## Two Prisma schemas — read before touching the database
+## Database — single canonical Prisma schema
 
-`prisma/schema.prisma` is the **source of truth and defaults to `provider = "postgresql"`** (what Vercel/production uses). `prisma/schema.sqlite.prisma` is a parallel copy for local SQLite dev. To develop locally against SQLite you must copy `schema.sqlite.prisma` over `schema.prisma` (see comments in `.env.example`) — `DATABASE_URL="file:./db/custom.db"` alone is not enough if `schema.prisma` still says `postgresql`. Whichever schema you edit, keep both files in sync manually; there's no generation step between them. Run `bun run db:verify` before committing any schema change.
+`prisma/schema.prisma` is the **single source of truth and defaults to `provider = "postgresql"`** for all environments (local, preview, CI, production). The SQLite parallel schema has been removed — use PostgreSQL everywhere.
+
+To set up a local PostgreSQL database:
+
+```bash
+# Start PostgreSQL via Docker
+docker compose up -d db
+
+# Or use a local PostgreSQL instance
+createdb ppc-companion
+
+# Run migrations
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ppc-companion" npx prisma migrate dev
+```
 
 The Prisma model for a person is **`Student`** (not `User`) — it's the row for students, instructors, and admins alike, distinguished by `role: Role` (`STUDENT | INSTRUCTOR | ADMIN`). Some older docs (`README.md`, `docs/architecture.md`) still say "User" — that's stale, follow `prisma/schema.prisma`.
 

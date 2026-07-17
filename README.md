@@ -58,12 +58,12 @@ The app also preserves the original full training platform (structured curriculu
 | **UI** | React 19 + shadcn/ui (Radix primitives), migrating to custom "Field Manual" design system |
 | **Styling** | Tailwind CSS v4 + Geist font |
 | **Language** | TypeScript 5 (strict mode) |
-| **Database** | PostgreSQL via Prisma ORM (SQLite for local dev) |
+| **Database** | PostgreSQL via Prisma ORM |
 | **Auth** | bcryptjs + JWT |
 | **State** | Zustand (persisted localStorage) |
 | **Charts** | Recharts |
 | **Animations** | Framer Motion |
-| **Rate Limiting** | `node:sqlite`-backed limiter (in-memory middeware fallback) |
+| **Rate Limiting** | In-memory middleware + `node:sqlite`-backed limiter |
 | **Runtime** | Node.js 22+ / Bun 1.3+ |
 
 ---
@@ -77,8 +77,9 @@ bun install
 cp .env.example .env
 # Edit .env with your JWT_SECRET and DATABASE_URL
 
-# Local SQLite dev: copy the SQLite schema over the default PostgreSQL one
-cp prisma/schema.sqlite.prisma prisma/schema.prisma
+# Start PostgreSQL and run migrations
+docker compose up -d db
+npx prisma migrate dev
 # (keep both schemas in sync manually — there is no generation step between them)
 
 # Generate Prisma client + push schema
@@ -125,7 +126,6 @@ Open [http://localhost:3000](http://localhost:3000)
 │   └── styles/                # Design system CSS
 ├── prisma/
 │   ├── schema.prisma          # PostgreSQL (prod) schema — source of truth
-│   ├── schema.sqlite.prisma   # SQLite dev schema (keep in sync manually)
 │   └── migrations/            # Database migrations
 ├── public/downloads/          # Cheat sheets, templates, PDFs
 ├── scripts/                   # Seed scripts
@@ -172,7 +172,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 - **Server-side JWT** — All protected routes verify tokens via `requireAuth()`/`requireRole()`
 - **CSRF protection** — Origin/Referer check on cookie-authenticated mutating requests; Bearer token auth bypasses
-- **Persistent rate limiting** — SQLite-backed (Node 22 `node:sqlite`), survives restarts, in-memory fallback
+- **Persistent rate limiting** — SQLite-backed (Node 22 `node:sqlite`), survives restarts, in-memory fallback (kept for legacy compatibility)
 - **Env validation** — Startup check for `JWT_SECRET`, `DATABASE_URL`
 - **Ownership enforcement** — Users can only access their own data (admins/instructors bypass)
 - **Password hashing** — bcryptjs

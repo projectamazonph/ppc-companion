@@ -7,4 +7,7 @@ node_modules/
 .DS_Store
 tsconfig.tsbuildinfo
 *.tsbuildinfo
-.cortexkit/
+.cortexkit/db/
+pgdata/
+*.db
+*.db-journal

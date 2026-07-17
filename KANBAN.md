@@ -25,6 +25,12 @@
 - [x] Security audit Phase 1: MCQ grading via option IDs, not modelAnswer strings
 - [x] Security audit Phase 1: Sync SQLite schema with phase pass fields
 - [x] Security audit Phase 1: PR #6 merged to main (3 commits, 16 CR comments resolved)
+- [x] Phase 2: Remove SQLite schema — unified canonical PostgreSQL schema
+- [x] Phase 2: Generate PostgreSQL baseline migration
+- [x] Phase 2: Update docker-compose.yml with PostgreSQL service
+- [x] Phase 2: CI uses PostgreSQL service for migration validation + build
+- [x] Phase 2: Update .env.example, .gitignore, docs for PostgreSQL-only setup
+- [x] Phase 2: Update all project docs (AGENTS.md, CLAUDE.md, README.md, DEV-PLAN.md)
 - [x] Iter 1-2: Dashboard refactor (dashboard.tsx → dashboard.html)
 - [x] Iter 3: Curriculum refactor (curriculum.tsx → courses-list.html)
 - [x] Iter 4: Admin Dashboard refactor (admin-dashboard.tsx → admin-dashboard.html)

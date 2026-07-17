@@ -11,6 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ppc-companion
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,10 +53,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Prisma migrate (validate migrations against PostgreSQL)
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ppc-companion
+          JWT_SECRET: ci-only-do-not-use-in-prod
+
       - name: Build
         run: npm run build
         env:
           JWT_SECRET: ci-only-do-not-use-in-prod
-          DATABASE_URL: file:./build-test.db
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ppc-companion
 
 

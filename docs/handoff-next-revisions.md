@@ -24,6 +24,14 @@ All critical security fixes are live on `main`. See `docs/audit-remediation.md` 
 
 **Goal:** One canonical Prisma schema. Both local dev and production use PostgreSQL.
 
+✅ **Phase 2 complete** — see main branch (commit after `e6c5831`)
+
+- ✅ SQLite schema deleted (`prisma/schema.sqlite.prisma` removed)
+- ✅ PostgreSQL baseline migration generated
+- ✅ docker-compose.yml includes PostgreSQL service
+- ✅ CI.yml updated with PostgreSQL service container
+- ✅ .env.example, .gitignore, all docs updated
+
 ### 2a. Reconcile the two schemas
 
 The PostgreSQL schema (`prisma/schema.prisma`) and SQLite schema (`prisma/schema.sqlite.prisma`) diverge on many models. The codebase is written against the PostgreSQL schema (e.g. `module.phase`, `exercise` relation on submissions, `actionUrl` on Notification).

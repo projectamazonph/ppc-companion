@@ -13,7 +13,7 @@
 │  Next.js 16 (App Router) + TypeScript 5                  │
 │  Tailwind CSS v4 + shadcn/ui Components                  │
 ├───────────────────────┬─────────────────────────────────┤
-│   Client (Zustand)    │   Server (Prisma + SQLite)       │
+│   Client (Zustand)    │   Server (Prisma + PostgreSQL)   |
 │                       │                                  │
 │  • Store: auth, UI,   │  • Schema: Users, Cohorts,       │
 │    progress, admin    │    Courses, Modules, Progress,   │
@@ -26,7 +26,7 @@
 ### Key Design Decisions
 
 - **Next.js 16 App Router:** Latest stable for React Server Components, layouts, and streaming
-- **SQLite (via Prisma):** Zero-config local dev; PostgreSQL planned for production
+- **PostgreSQL (via Prisma):** Canonical schema for all environments. Use Docker Compose for local dev.
 - **Zustand v5:** Lightweight client state (auth, UI theme, admin filters)
 - **JWT (jose):** HttpOnly cookies for session management, role-based guards
 - **Tailwind v4 + shadcn/ui:** Consistent design system with CSS-first configuration
@@ -147,7 +147,7 @@
 
 ## Open Questions
 
-1. **Database:** When to migrate from SQLite to PostgreSQL? Before first production cohort or after?
+1. **Database:** ✅ Migrated to PostgreSQL. Single canonical schema (`schema.prisma`).
 2. **Email:** Which provider? Need transactional + marketing emails
 3. **Pricing:** Free during pilot? Subscription model?
 4. **Scaling:** How many concurrent cohorts before infrastructure changes needed?
