@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
 import { MagnifyingGlass as Search, CircleNotch as Loader2, WarningCircle as AlertCircle, Users, UserCheck, TrendUp as TrendingUp, BookOpen, Pencil, CheckCircle as CheckCircle2, ArrowsCounterClockwise as RotateCcw, GraduationCap, CaretDown as ChevronDown, CaretUp as ChevronUp, Clock, Target, Medal as Award, ChartBar as BarChart3, X } from "@phosphor-icons/react";
 import styles from "./my-students.module.css";
@@ -31,15 +31,6 @@ type Student = {
 // =============================================================
 // Helpers
 // =============================================================
-
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
 
 function getPhaseLabel(phase: number) {
   const labels: Record<number, string> = {
@@ -95,6 +86,10 @@ function getAvatarGradient(id: string) {
 
 function ProgressBar({ value, max = 4, className }: { value: number; max?: number; className?: string }) {
   const pct = Math.min(100, Math.round((value / max) * 100));
+  // Match the threshold-based color scheme used in students.tsx so progress
+  // reads the same way across both pages.
+  const barColor =
+    pct >= 75 ? "bg-emerald-500" : pct >= 40 ? "bg-amber-500" : "bg-orange-500";
   return (
     <div className={cn("w-full", className)}>
       <div className="flex items-center justify-between mb-1.5">
@@ -105,7 +100,7 @@ function ProgressBar({ value, max = 4, className }: { value: number; max?: numbe
       </div>
       <div className="h-2 w-full rounded-full bg-muted/60 overflow-hidden">
         <div
-          className="h-full rounded-full bg-primary transition-all duration-700 ease-out"
+          className={cn("h-full rounded-full transition-all duration-700 ease-out", barColor)}
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -212,7 +207,7 @@ export function MyStudentsSection() {
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">My Students</h1>
             <Badge
               variant="secondary"
-              className="rounded-full px-3 py-0.5 text-xs font-semibold bg-primary-50 text-primary-700 dark:bg-primary-950/40 dark:text-primary-300 border-primary-200/60 dark:border-primary-800/60"
+              className="rounded-full px-3 py-0.5 text-xs font-semibold bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary border-primary/20 dark:border-primary/40"
             >
               {totalStudents}
             </Badge>
@@ -297,7 +292,7 @@ export function MyStudentsSection() {
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <div className="relative">
             <div className="h-14 w-14 rounded-full border-4 border-muted" />
-            <div className="absolute inset-0 h-14 w-14 rounded-full border-4 border-transparent border-t-primary-500 animate-spin" />
+            <div className="absolute inset-0 h-14 w-14 rounded-full border-4 border-transparent border-t-primary animate-spin" />
           </div>
           <div className="text-center">
             <p className="text-sm font-medium text-foreground">Loading students</p>

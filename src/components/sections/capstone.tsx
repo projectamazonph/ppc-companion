@@ -218,7 +218,7 @@ export function CapstoneSection() {
                       🎉 All 5 deliverables complete!
                     </p>
                     <p className="text-xs sm:text-sm text-emerald-700/70 dark:text-emerald-400/70 mt-0.5">
-                      You&apos;re ready to present. Book a slot with your instructor.
+                      You&apos;re ready to present. Schedule via your dashboard.
                     </p>
                   </div>
                 </div>
@@ -231,11 +231,11 @@ export function CapstoneSection() {
       {/* ── Deliverables ── */}
       <section className="space-y-5">
         <div className="flex items-center gap-3">
-          <div className="h-px flex-1 bg-transparent" />
+          <div className="h-px flex-1 bg-border" />
           <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
             Deliverables
           </h2>
-          <div className="h-px flex-1 bg-transparent" />
+          <div className="h-px flex-1 bg-border" />
         </div>
 
         <div className="space-y-4">
@@ -410,11 +410,11 @@ export function CapstoneSection() {
       {phase4 && (
         <section className="space-y-4">
           <div className="flex items-center gap-3">
-            <div className="h-px flex-1 bg-transparent" />
+            <div className="h-px flex-1 bg-border" />
             <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">
               Readiness Checklist
             </h2>
-            <div className="h-px flex-1 bg-transparent" />
+            <div className="h-px flex-1 bg-border" />
           </div>
 
           <Card className="border-border/50 overflow-hidden">

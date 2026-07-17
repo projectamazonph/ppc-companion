@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { cn, normalizeAnswer } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import styles from "./quizzes.module.css";
 import {
-  GraduationCap, CheckCircle as CheckCircle2, XCircle, Trophy, ArrowsCounterClockwise as RotateCcw, Lightbulb, ArrowRight, Target, FileText, ChartBar as BarChart3, Eye, EyeSlash as EyeOff, Sparkle as Sparkles, CheckCircle as CircleCheck, XCircle as CircleX, Circle as CircleDot, Flag, CaretDown as ChevronDown, House as Home, BookOpen, Users, User, Monitor as MonitorDot, Bell } from "@phosphor-icons/react";
+  GraduationCap, CheckCircle as CheckCircle2, XCircle, Trophy, ArrowsCounterClockwise as RotateCcw, Lightbulb, ArrowRight, Target, FileText, ChartBar as BarChart3, Eye, EyeSlash as EyeOff, Sparkle as Sparkles, CheckCircle as CircleCheck, XCircle as CircleX, Circle as CircleDot, Flag, CaretDown as ChevronDown, BookOpen } from "@phosphor-icons/react";
 
 // ---------------------------------------------------------------------------
 // QuizzesSection — top-level wrapper
@@ -156,10 +156,6 @@ export function QuizzesSection() {
 
 type Question = Quiz["questions"][number];
 
-function normalizeAnswer(s: string): string {
-  return s.toLowerCase().replace(/[^0-9.%]/g, "");
-}
-
 function getAcceptable(q: Question): string[] {
   return q.acceptableAnswers ?? (q.modelAnswer ? [q.modelAnswer] : []);
 }
@@ -257,8 +253,8 @@ function QuizView({
 
   const report = () => {
     toast({
-      title: "Question reported",
-      description: "Thanks — our team will review this question shortly.",
+      title: "Report feature coming soon",
+      description: "Question reporting will be available in a future release.",
     });
   };
 
@@ -281,54 +277,21 @@ function QuizView({
 
   return (
     <div className="rounded-2xl border border-border/60 bg-card shadow-sm overflow-hidden">
-      {/* ── Sticky app-style header ─────────────────────────────── */}
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card px-4 sm:px-10 py-3 shadow-sm">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="flex size-9 sm:size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <GraduationCap className="h-5 w-5" />
-          </div>
-          <div>
-            <h2 className="text-foreground text-base sm:text-lg font-bold leading-tight tracking-tight">
-              PPC Companion
-            </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground font-medium truncate max-w-[140px] sm:max-w-none">
-              {quiz.title}
-            </p>
-          </div>
+      {/* Quiz context banner — keeps the active quiz title visible without
+          duplicating the AppShell's global nav. */}
+      <div className="flex items-center gap-3 border-b border-border/60 bg-muted/20 px-4 py-3 sm:px-8">
+        <div className="flex size-9 sm:size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <GraduationCap className="h-5 w-5" />
         </div>
-        {/* Desktop nav — mirrors stitch quiz.html */}
-        <div className="hidden md:flex flex-1 justify-end gap-8 items-center">
-          <nav className="flex items-center gap-6">
-            <span className="text-foreground text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-              Dashboard
-            </span>
-            <span className="text-primary text-sm font-bold">
-              Quiz
-            </span>
-            <span className="text-foreground/70 text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-              Community
-            </span>
-            <span className="text-foreground/70 text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-              Profile
-            </span>
-          </nav>
-          <div className="h-6 w-px bg-border" />
-          <div className="flex items-center gap-3">
-            <button className="flex items-center justify-center size-10 rounded-full hover:bg-muted transition-colors text-muted-foreground">
-              <Bell className="h-5 w-5" />
-            </button>
-            <div className="flex size-9 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold shadow-sm">
-              {phaseNumber}
-            </div>
-          </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-medium text-muted-foreground">
+            Quiz · Phase {phaseNumber}
+          </p>
+          <p className="truncate text-sm font-bold text-foreground">
+            {quiz.title}
+          </p>
         </div>
-        {/* Mobile: avatar */}
-        <div className="md:hidden flex items-center gap-3">
-          <div className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-bold">
-            {phaseNumber}
-          </div>
-        </div>
-      </header>
+      </div>
 
       {!submitted ? (
         <div className="flex flex-col pb-20 md:pb-0">
@@ -364,7 +327,7 @@ function QuizView({
               <Badge className="bg-blue-50 dark:bg-blue-900/30 text-primary dark:text-blue-300 border-blue-100 dark:border-blue-800 mb-3 sm:mb-4">
                 {phaseTitle}
               </Badge>
-              <h1 className="text-xl sm:text-[28px] font-extrabold leading-snug tracking-tight text-foreground">
+              <h1 className="text-xl sm:text-[28px] font-bold leading-snug tracking-tight text-foreground">
                 {q.question}
               </h1>
             </div>
@@ -856,33 +819,6 @@ function QuizView({
           </div>
         </div>
       )}
-
-      {/* Mobile bottom nav (mirrors stitch quiz.html) */}
-      <nav className="fixed bottom-0 left-0 w-full z-40 bg-card border-t border-border md:hidden pb-[env(safe-area-inset-bottom)]">
-        <div className="grid grid-cols-5 h-16 items-center">
-          <button className="flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-primary transition-colors p-1">
-            <Home className="text-[24px]" />
-            <span className="text-[10px] font-medium leading-none">Home</span>
-          </button>
-          <button className="flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-primary transition-colors p-1">
-            <BookOpen className="text-[24px]" />
-            <span className="text-[10px] font-medium leading-none">Courses</span>
-          </button>
-          <button className="flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-primary transition-colors p-1">
-            <Users className="text-[24px]" />
-            <span className="text-[10px] font-medium leading-none">Community</span>
-          </button>
-          <button className="flex flex-col items-center justify-center gap-1 text-primary transition-colors p-1 relative">
-            <MonitorDot className="text-[24px] fill-current" />
-            <span className="text-[10px] font-bold leading-none">Progress</span>
-            <span className="absolute top-1 right-3 size-2 rounded-full bg-destructive border border-card" />
-          </button>
-          <button className="flex flex-col items-center justify-center gap-1 text-muted-foreground hover:text-primary transition-colors p-1">
-            <User className="text-[24px]" />
-            <span className="text-[10px] font-medium leading-none">Profile</span>
-          </button>
-        </div>
-      </nav>
     </div>
   );
 }

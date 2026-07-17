@@ -120,8 +120,8 @@ function MetricsCalculator() {
       {/* Input section */}
       <div className="rounded-xl border border-border/60 bg-card p-5">
         <div className="flex items-center gap-2 mb-4">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary-100 dark:bg-primary-950/40">
-            <Target className="h-3.5 w-3.5 text-primary-600 dark:text-primary-400" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 dark:bg-primary/20">
+            <Target className="h-3.5 w-3.5 text-primary" />
           </div>
           <div>
             <h3 className="text-sm font-semibold">Input Data</h3>
@@ -164,8 +164,8 @@ function MetricsCalculator() {
       {/* Results grid */}
       <div>
         <div className="flex items-center gap-2 mb-3">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary-100 dark:bg-primary-950/40">
-            <BarChart3 className="h-3.5 w-3.5 text-primary-600 dark:text-primary-400" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 dark:bg-primary/20">
+            <BarChart3 className="h-3.5 w-3.5 text-primary" />
           </div>
           <h3 className="text-sm font-semibold">Calculated Metrics</h3>
         </div>
@@ -204,7 +204,7 @@ function MetricsCalculator() {
       {/* Formula reference */}
       <div className="rounded-xl border border-border/60 bg-muted/20 p-5">
         <div className="flex items-center gap-2 mb-3">
-          <Lightbulb className="h-3.5 w-3.5 text-primary-500" />
+          <Lightbulb className="h-3.5 w-3.5 text-primary" />
           <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
             All formulas at a glance
           </h3>
@@ -481,7 +481,7 @@ function SearchTermAnalyzer() {
                         value={row.searchTerm}
                         onChange={(e) => updateRow(row.id, "searchTerm", e.target.value)}
                         placeholder="e.g. insulated water bottle"
-                        className="h-8 text-sm border-0 px-0 bg-transparent focus-visible:ring-1 focus-visible:ring-primary-500/40 rounded"
+                        className="h-8 text-sm border-0 px-0 bg-transparent focus-visible:ring-1 focus-visible:ring-primary/40 rounded"
                       />
                     </td>
                     <td className="py-2.5 px-4">
@@ -525,23 +525,26 @@ function SearchTermAnalyzer() {
                     </td>
                     <td className="py-2.5 px-4 min-w-[260px]">
                       {rec ? (
-                        <div className="space-y-1.5">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <Badge className={cn("text-[10px] px-1.5 py-0.5", actionMeta[rec.action].color)}>
-                              {(() => {
-                                const Icon = actionMeta[rec.action].icon;
-                                return <Icon className="h-2.5 w-2.5 mr-0.5" />;
-                              })()}
-                              {actionMeta[rec.action].label}
-                            </Badge>
-                            {rec.bidChange !== 0 && (
-                              <Badge variant="outline" className="text-[10px] px-1.5 py-0.5">
-                                Bid {rec.bidChange > 0 ? "+" : ""}{rec.bidChange}%
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-[11px] text-muted-foreground leading-relaxed">{rec.reason}</p>
-                        </div>
+                        (() => {
+                          const meta = actionMeta[rec.action];
+                          const ActionIcon = meta.icon;
+                          return (
+                            <div className="space-y-1.5">
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <Badge className={cn("text-[10px] px-1.5 py-0.5", meta.color)}>
+                                  <ActionIcon className="h-2.5 w-2.5 mr-0.5" />
+                                  {meta.label}
+                                </Badge>
+                                {rec.bidChange !== 0 && (
+                                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5">
+                                    Bid {rec.bidChange > 0 ? "+" : ""}{rec.bidChange}%
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-[11px] text-muted-foreground leading-relaxed">{rec.reason}</p>
+                            </div>
+                          );
+                        })()
                       ) : (
                         <span className="text-xs text-muted-foreground italic">Enter data to see recommendation</span>
                       )}
@@ -645,7 +648,7 @@ const PRESET_CAMPAIGNS: Campaign[] = [
 ];
 
 const AD_TYPES = ["Sponsored Products", "Sponsored Brands", "Sponsored Display"];
-const MATCH_TYPES = ["Auto", "Broad", "Phrase", "Exact", "ASIN Targeting", "Placement"];
+const MATCH_TYPES = ["Auto", "Broad", "Phrase", "Exact", "ASIN", "Video", "Placement"];
 
 function CampaignBuilder() {
   const [campaigns, setCampaigns] = useState<Campaign[]>(PRESET_CAMPAIGNS);
@@ -745,8 +748,8 @@ function CampaignBuilder() {
       <div className="rounded-xl border border-border/60 bg-card p-5">
         <div className="flex items-baseline justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary-100 dark:bg-primary-950/40">
-              <BarChart3 className="h-3.5 w-3.5 text-primary-600 dark:text-primary-400" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 dark:bg-primary/20">
+              <BarChart3 className="h-3.5 w-3.5 text-primary" />
             </div>
             <h3 className="text-sm font-semibold">Budget allocation by layer</h3>
           </div>
@@ -859,7 +862,7 @@ function CampaignBuilder() {
                         <select
                           value={c.adType}
                           onChange={(e) => updateCampaign(c.id, "adType", e.target.value)}
-                          className="flex h-9 w-full rounded-lg border border-input bg-muted/30 px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                          className="flex h-9 w-full rounded-lg border border-input bg-muted/30 px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30"
                         >
                           {AD_TYPES.map((t) => <option key={t}>{t}</option>)}
                         </select>
@@ -869,7 +872,7 @@ function CampaignBuilder() {
                         <select
                           value={c.matchType}
                           onChange={(e) => updateCampaign(c.id, "matchType", e.target.value)}
-                          className="flex h-9 w-full rounded-lg border border-input bg-muted/30 px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                          className="flex h-9 w-full rounded-lg border border-input bg-muted/30 px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30"
                         >
                           {MATCH_TYPES.map((t) => <option key={t}>{t}</option>)}
                         </select>
@@ -964,7 +967,7 @@ export function ToolsSection() {
         <div>
           <div className="flex items-center gap-3 mb-1">
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight">Tools</h1>
-            <Badge className="bg-primary-100 dark:bg-primary-950/40 text-primary-700 dark:text-primary-300 border-0 text-[10px] px-2 py-0.5 font-semibold">
+            <Badge className="bg-primary/10 dark:bg-primary/20 text-primary border-0 text-[10px] px-2 py-0.5 font-semibold">
               3
             </Badge>
           </div>
@@ -986,7 +989,7 @@ export function ToolsSection() {
               className={cn(
                 "group relative flex flex-col items-center gap-2 rounded-xl border-2 p-3 sm:p-4 transition-all duration-200 text-center",
                 isActive
-                  ? "border-primary-400 dark:border-primary-700 bg-primary-50/50 dark:bg-primary-950/20 shadow-sm"
+                  ? "border-primary/40 dark:border-primary/70 bg-primary/5 dark:bg-primary/20 shadow-sm"
                   : "border-border/60 bg-card hover:border-border hover:bg-muted/30"
               )}
             >

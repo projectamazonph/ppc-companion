@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAppStore } from "@/lib/store";
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Lock, Bell, Download, SignOut as LogOut, Pencil as Edit, SealCheck as Verified, CaretRight as ChevronRight, CaretDown as ChevronDown, Medal as Award, WarningCircle as AlertCircle, CircleNotch as Loader2 } from "@phosphor-icons/react";
 import styles from "./my-profile.module.css";
@@ -54,15 +54,6 @@ type ActivityData = {
   submissions: Submission[];
   progress: ProgressPhase[];
 };
-
-function initialsOf(name: string): string {
-  return name
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
 
 export function MyProfileSection() {
   const user = useAppStore((s) => s.user);
@@ -132,7 +123,7 @@ export function MyProfileSection() {
 
       {/* ── Title ── */}
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
           My Profile
         </h1>
       </div>
@@ -274,7 +265,7 @@ function ProfileHeroCard({
   student: Student;
   tags: unknown[];
 }) {
-  const initials = initialsOf(student.name);
+  const initials = getInitials(student.name);
   const tagList = Array.isArray(tags) ? tags : [];
 
   return (
@@ -293,7 +284,7 @@ function ProfileHeroCard({
         {/* Name + role */}
         <div>
           <h3 className="text-xl font-bold text-foreground">{student.name}</h3>
-          <p className="text-sm text-muted-foreground">Amazon PPC Specialist</p>
+          <p className="text-sm text-muted-foreground">Student · Project Amazon PH</p>
           <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
             <Verified className="h-3 w-3" />
             Verified VA

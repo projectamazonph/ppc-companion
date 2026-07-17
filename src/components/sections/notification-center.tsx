@@ -365,7 +365,7 @@ export function NotificationCenterSection() {
             >
               Unread
               {hasUnread && (
-                <span className="ml-1.5 inline-flex items-center justify-center h-4 min-w-[16px] rounded-full bg-primary text-primary-foreground text-[9px] font-bold px-1">
+                <span className="ml-1.5 inline-flex items-center justify-center h-4 min-w-[18px] rounded-full bg-primary text-primary-foreground text-[10px] font-bold px-1">
                   {data?.unreadCount}
                 </span>
               )}

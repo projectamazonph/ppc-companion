@@ -18,8 +18,9 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
+import { phases } from "@/lib/course-data";
 import {
   Users, Plus, MagnifyingGlass as Search, DotsThree as MoreHorizontal, Pencil, Trash as Trash2, Eye, ArrowsClockwise as RefreshCw, Funnel as Filter, GraduationCap, Envelope as Mail, CalendarBlank as Calendar, Target, TrendUp as TrendingUp, CheckCircle as CheckCircle2, WarningCircle as AlertCircle, CircleNotch as Loader2, Pulse as Activity, Clock, FileText, Trophy, Tag as TagIcon, SignIn as LogIn, Bell, UserCheck, UserMinus as UserX, ChartBar as BarChart3, X, CaretDown as ChevronDown } from "@phosphor-icons/react";
 
@@ -76,6 +77,20 @@ const STATUS_STYLES: Record<Status, string> = {
   WITHDRAWN: "bg-muted text-muted-foreground border-border",
 };
 
+// Whitelisted tag-color tokens. Lookups fall back to "blue" if an unknown
+// tag color is encountered, so we never interpolate user data into a CSS var
+// name directly.
+const TAG_COLOR: Record<string, { bg: string; text: string }> = {
+  blue: { bg: "bg-blue-500/10", text: "text-blue-700 dark:text-blue-300" },
+  rose: { bg: "bg-rose-500/10", text: "text-rose-700 dark:text-rose-300" },
+  emerald: { bg: "bg-emerald-500/10", text: "text-emerald-700 dark:text-emerald-300" },
+  amber: { bg: "bg-amber-500/10", text: "text-amber-700 dark:text-amber-300" },
+  violet: { bg: "bg-violet-500/10", text: "text-violet-700 dark:text-violet-300" },
+  sky: { bg: "bg-sky-500/10", text: "text-sky-700 dark:text-sky-300" },
+  pink: { bg: "bg-pink-500/10", text: "text-pink-700 dark:text-pink-300" },
+  slate: { bg: "bg-slate-500/10", text: "text-slate-700 dark:text-slate-300" },
+};
+
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, {
     year: "numeric",
@@ -102,10 +117,6 @@ function computeOverallProgress(progress: ProgressEntry[] | undefined): number {
   }
   if (total === 0) return 0;
   return Math.round((done / total) * 100);
-}
-
-function getInitials(name: string): string {
-  return name.split(" ").map((p) => p[0]).slice(0, 2).join("").toUpperCase();
 }
 
 function getAvatarGradient(role: Role): string {
@@ -907,10 +918,11 @@ function StudentFormDialog({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="1">Phase 1 — Foundations</SelectItem>
-                    <SelectItem value="2">Phase 2 — Ads Deep Dive</SelectItem>
-                    <SelectItem value="3">Phase 3 — Simulated Practice</SelectItem>
-                    <SelectItem value="4">Phase 4 — Reporting & Capstone</SelectItem>
+                    {phases.map((p, i) => (
+                      <SelectItem key={p.id} value={String(i + 1)}>
+                        Phase {i + 1} — {p.title}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -1092,13 +1104,18 @@ function StudentDetailDialog({
                 {tags.length > 0 && (
                   <div className="flex flex-wrap items-center gap-1.5">
                     <TagIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                    {tags.map((t: any) => (
-                      <Badge key={t.id} variant="secondary" className="text-[10px] capitalize font-medium"
-                        style={{ backgroundColor: `var(--color-${t.color}, var(--color-blue))` }}
-                      >
-                        {t.name}
-                      </Badge>
-                    ))}
+                    {tags.map((t: any) => {
+                      const swatch = TAG_COLOR[t.color] ?? TAG_COLOR.blue;
+                      return (
+                        <Badge
+                          key={t.id}
+                          variant="secondary"
+                          className={`text-[10px] capitalize font-medium ${swatch.bg} ${swatch.text}`}
+                        >
+                          {t.name}
+                        </Badge>
+                      );
+                    })}
                   </div>
                 )}
 

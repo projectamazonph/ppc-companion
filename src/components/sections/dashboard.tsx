@@ -9,10 +9,10 @@ import { BookOpen, Flame, TrendUp as TrendingUp, Lightning as Zap, Rocket, Check
 import styles from "./dashboard.module.css";
 
 const statCards = [
-  { key: "progress", label: "Course Progress", icon: Target, color: "var(--primary, #FF6B35)", bg: "color-mix(in srgb, var(--primary) 10%, transparent)" },
-  { key: "streak", label: "Day Streak", icon: Flame, color: "#F97316", bg: "color-mix(in srgb, #F97316 10%, transparent)" },
-  { key: "badges", label: "Badges Earned", icon: Award, color: "#8B5CF6", bg: "color-mix(in srgb, #8B5CF6 10%, transparent)" },
-  { key: "points", label: "Total Points", icon: Star, color: "#F59E0B", bg: "color-mix(in srgb, #F59E0B 10%, transparent)" },
+  { key: "progress", label: "Course Progress", icon: Target, color: "var(--primary)", bg: "color-mix(in srgb, var(--primary) 10%, transparent)" },
+  { key: "streak", label: "Day Streak", icon: Flame, color: "var(--chart-3)", bg: "color-mix(in srgb, var(--chart-3) 10%, transparent)" },
+  { key: "badges", label: "Badges Earned", icon: Award, color: "var(--chart-4)", bg: "color-mix(in srgb, var(--chart-4) 10%, transparent)" },
+  { key: "points", label: "Total Points", icon: Star, color: "var(--chart-2)", bg: "color-mix(in srgb, var(--chart-2) 10%, transparent)" },
 ] as const;
 
 function getStreakInfo(pct: number): { text: string; icon: typeof Flame; value: string } {
@@ -23,11 +23,11 @@ function getStreakInfo(pct: number): { text: string; icon: typeof Flame; value: 
 }
 
 function getMotivation(pct: number): string {
-  if (pct >= 100) return "Program complete \u2014 you\u2019re an Amazon PPC pro!";
-  if (pct >= 75) return "Final stretch \u2014 you\u2019ve got this!";
-  if (pct >= 50) return "Halfway there \u2014 momentum is building!";
-  if (pct >= 25) return "Great start \u2014 you\u2019re building real skills!";
-  return "Every expert was once a beginner. Let\u2019s go!";
+  if (pct >= 100) return "Program complete \u2014 keep refining your craft.";
+  if (pct >= 75) return "Final stretch \u2014 keep going!";
+  if (pct >= 50) return "Halfway there \u2014 momentum is building.";
+  if (pct >= 25) return "Great start \u2014 you're building real skills.";
+  return "Every expert was once a beginner. Let's go.";
 }
 
 function generateRecentActivity(
@@ -43,8 +43,8 @@ function generateRecentActivity(
       const pct = Math.round((q.score / q.total) * 100);
       activities.push({
         icon: CheckCircle2,
-        iconBg: "#ECFDF5",
-        iconColor: "#059669",
+        iconBg: "color-mix(in srgb, var(--color-success) 10%, transparent)",
+        iconColor: "var(--color-success)",
         title: `Completed Quiz: ${q.quizId.replace(/-/g, " ")}`,
         detail: `${pct}% score`,
       });
@@ -54,10 +54,10 @@ function generateRecentActivity(
   if (exerciseCount > 0) {
     activities.push({
       icon: BookOpen,
-      iconBg: "#DBEAFE",
-      iconColor: "#2563EB",
+      iconBg: "color-mix(in srgb, var(--color-info) 10%, transparent)",
+      iconColor: "var(--color-info)",
       title: `Practiced ${exerciseCount} exercise${exerciseCount > 1 ? "s" : ""}`,
-      detail: "Keep practicing!",
+      detail: "Keep practicing.",
     });
   }
 

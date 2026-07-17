@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn, normalizeAnswer } from "@/lib/utils";
 import { BrandButton } from "@/components/shared/buttons";
 import styles from "./exercises.module.css";
 import { Pen as PenLine, CheckCircle as CheckCircle2, XCircle, Calculator, FloppyDisk as Save, Eye, EyeSlash as EyeOff, Sparkle as Sparkles, BookOpen, Target, Question as HelpCircle, CaretRight as ChevronRight, Trophy, Circle, Check, Lightbulb } from "@phosphor-icons/react";
@@ -563,7 +563,7 @@ function CalcQuestion({
   const [showAnswer, setShowAnswer] = useState(false);
   const [shakeIncorrect, setShakeIncorrect] = useState(false);
 
-  const normalize = (s: string) => s.toLowerCase().replace(/[^0-9.%]/g, "");
+  const normalize = normalizeAnswer;
   const hasAnswer = userAnswer.trim().length > 0;
   const isCorrect = hasAnswer && normalize(userAnswer) === normalize(question.answer);
 
@@ -855,7 +855,7 @@ function DecisionCard({
                   </div>
                   {isSelected && opt.explanation && (
                     <div className={cn(
-                      "mt-2.5 rounded-lg border-l-3 pl-3 py-1.5 text-xs leading-relaxed animate-[fadeSlideIn_0.3s_ease-out]",
+                      "mt-2.5 rounded-lg border-l-4 pl-3 py-1.5 text-xs leading-relaxed animate-[fadeSlideIn_0.3s_ease-out]",
                       opt.correct
                         ? "border-emerald-400 bg-emerald-50/40 dark:bg-emerald-950/10 text-emerald-800 dark:text-emerald-200"
                         : "border-rose-400 bg-rose-50/40 dark:bg-rose-950/10 text-rose-800 dark:text-rose-200"

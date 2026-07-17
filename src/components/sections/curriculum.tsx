@@ -220,7 +220,7 @@ function CoursesListView({
         })
       )}
 
-      <p className={styles.sortInfo}>Phases 1-2 Foundation · Phases 3-4 Advanced</p>
+      <p className={styles.sortInfo}>Phases 1-2 Foundation — Phases 3-4 Advanced</p>
     </div>
   );
 }
