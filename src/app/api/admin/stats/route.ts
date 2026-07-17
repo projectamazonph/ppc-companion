@@ -8,7 +8,7 @@ import { requireRole, isErrorResponse } from "@/lib/auth-server";
 // =============================================================
 
 export async function GET(req: NextRequest) {
-  const auth = requireRole(req, "ADMIN");
+  const auth = await requireRole(req, "ADMIN");
   if (isErrorResponse(auth)) return auth;
 
   try {

@@ -10,7 +10,7 @@ import { requireAuth, isErrorResponse } from "@/lib/auth-server";
 // =============================================================
 
 export async function GET(req: NextRequest) {
-  const authUser = requireAuth(req);
+  const authUser = await requireAuth(req);
   if (isErrorResponse(authUser)) return authUser;
 
   try {
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
 // =============================================================
 
 export async function PUT(req: NextRequest) {
-  const authUser = requireAuth(req);
+  const authUser = await requireAuth(req);
   if (isErrorResponse(authUser)) return authUser;
 
   try {
@@ -119,7 +119,7 @@ export async function PUT(req: NextRequest) {
 // =============================================================
 
 export async function DELETE(req: NextRequest) {
-  const authUser = requireAuth(req);
+  const authUser = await requireAuth(req);
   if (isErrorResponse(authUser)) return authUser;
 
   try {

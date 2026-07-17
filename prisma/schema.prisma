@@ -133,6 +133,7 @@ model Student {
   currentPhase  Int           @default(1) // 1-4
   targetAcos    Float         @default(30)
   notes         String?       // instructor notes about this student
+  sessionVersion Int           @default(0)
 
   // Phase checkpoint pass flags (v1: gate to unlock next phase)
   phase1Pass    Boolean       @default(false)

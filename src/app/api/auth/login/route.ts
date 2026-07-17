@@ -12,9 +12,9 @@ function publicUser(s: any) {
   return rest;
 }
 
-function signToken(student: { id: string; email: string; role: string; name: string }) {
+function signToken(student: { id: string; email: string; role: string; name: string; sessionVersion?: number }) {
   return jwt.sign(
-    { sub: student.id, email: student.email, role: student.role, name: student.name },
+    { sub: student.id, email: student.email, role: student.role, name: student.name, sessionVersion: student.sessionVersion ?? 0 },
     JWT_SECRET,
     { expiresIn: "7d" }
   );

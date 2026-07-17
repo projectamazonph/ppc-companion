@@ -131,6 +131,7 @@ model Student {
   currentPhase  Int           @default(1) // 1-4
   targetAcos    Float         @default(30)
   notes         String?       // instructor notes about this student
+  sessionVersion Int           @default(0)
 
   // Legacy cohort string (kept for back-compat; prefer Enrollment table below)
   cohort        String?

@@ -20,7 +20,7 @@ function publicStudent(s: any) {
 // =============================================================
 
 export async function GET(req: NextRequest) {
-  const auth = requireRole(req, "ADMIN", "INSTRUCTOR");
+  const auth = await requireRole(req, "ADMIN", "INSTRUCTOR");
   if (isErrorResponse(auth)) return auth;
 
   try {
@@ -64,12 +64,14 @@ export async function GET(req: NextRequest) {
 
 // =============================================================
 // POST /api/students — create a new student
-//   Body: { email, name, role?, status?, cohort?, currentPhase?, targetAcos?, notes? }
+//   Body: { email, name, password, role?, status?, cohort?, ... }
 //   Requires: ADMIN or INSTRUCTOR
+//   Security: Only administrators may set role to ADMIN or INSTRUCTOR.
+//   Instructors can only create STUDENT accounts (role is forced).
 // =============================================================
 
 export async function POST(req: NextRequest) {
-  const auth = requireRole(req, "ADMIN", "INSTRUCTOR");
+  const auth = await requireRole(req, "ADMIN", "INSTRUCTOR");
   if (isErrorResponse(auth)) return auth;
 
   try {
@@ -102,7 +104,15 @@ export async function POST(req: NextRequest) {
     const validRoles = ["STUDENT", "INSTRUCTOR", "ADMIN"];
     const validStatuses = ["ACTIVE", "PAUSED", "GRADUATED", "WITHDRAWN", "PENDING"];
 
-    const role = (validRoles.includes(body.role) ? body.role : "STUDENT") as Role;
+    // Security: Only ADMIN can set INSTRUCTOR or ADMIN roles.
+    // Instructors always create STUDENT accounts regardless of body.role.
+    let role: Role;
+    if (auth.role === "ADMIN" && validRoles.includes(body.role)) {
+      role = body.role as Role;
+    } else {
+      role = "STUDENT" as Role;
+    }
+
     const status = (validStatuses.includes(body.status) ? body.status : "ACTIVE") as StudentStatus;
 
     const currentPhase =

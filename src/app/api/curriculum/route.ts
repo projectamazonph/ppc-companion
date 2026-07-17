@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
   // Check auth user
-  const authResult = requireAuth(request);
+  const authResult = await requireAuth(request);
 
   if (isErrorResponse(authResult)) {
     // Unauthenticated: show trial mode

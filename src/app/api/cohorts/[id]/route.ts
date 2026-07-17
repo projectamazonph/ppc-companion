@@ -12,7 +12,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = requireAuth(req);
+  const auth = await requireAuth(req);
   if (isErrorResponse(auth)) return auth;
 
   try {
@@ -37,7 +37,7 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = requireRole(req, "ADMIN", "INSTRUCTOR");
+  const auth = await requireRole(req, "ADMIN", "INSTRUCTOR");
   if (isErrorResponse(auth)) return auth;
 
   try {
@@ -77,7 +77,7 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = requireRole(req, "ADMIN", "INSTRUCTOR");
+  const auth = await requireRole(req, "ADMIN", "INSTRUCTOR");
   if (isErrorResponse(auth)) return auth;
 
   try {

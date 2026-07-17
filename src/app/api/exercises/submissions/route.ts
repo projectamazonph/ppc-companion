@@ -10,7 +10,7 @@ import { requireAuth, isErrorResponse } from "@/lib/auth-server";
 // =============================================================
 
 export async function GET(req: NextRequest) {
-  const authUser = requireAuth(req);
+  const authUser = await requireAuth(req);
   if (isErrorResponse(authUser)) return authUser;
 
   try {
@@ -73,13 +73,15 @@ export async function GET(req: NextRequest) {
 
 // =============================================================
 // POST /api/exercises/submissions
-// Body: { studentId, exerciseId, answer, status?, score?, feedback? }
-//   Creates a new submission OR upserts if one already exists.
-//   Ownership: authenticated user's sub must match JWT sub.
+// Body: { studentId, exerciseId, answer }
+//   Creates or updates a submission.
+//   Students can only set their answer and whether it is SUBMITTED.
+//   Grading fields (score, feedback, status=GRADED/RETURNED, gradedAt)
+//   are restricted to INSTRUCTOR and ADMIN roles.
 // =============================================================
 
 export async function POST(req: NextRequest) {
-  const authUser = requireAuth(req);
+  const authUser = await requireAuth(req);
   if (isErrorResponse(authUser)) return authUser;
 
   try {
@@ -104,24 +106,34 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Verify student + exercise exist
-    const [student, exercise] = await Promise.all([
-      db.student.findUnique({ where: { id: body.studentId }, select: { id: true, deletedAt: true } }),
-      db.exercise.findUnique({ where: { id: body.exerciseId }, select: { id: true, type: true } }),
-    ]);
+    // Resolve exerciseId — it could be an ID or a code (e.g. "1.1A")
+    // Check by ID first, then by code
+    let exercise = await db.exercise.findUnique({
+      where: { id: body.exerciseId },
+      select: { id: true, type: true, code: true },
+    });
+
+    // If not found by ID, try resolving by code
+    if (!exercise) {
+      exercise = await db.exercise.findUnique({
+        where: { code: body.exerciseId },
+        select: { id: true, type: true, code: true },
+      });
+      if (!exercise) {
+        return NextResponse.json({ error: "Exercise not found" }, { status: 404 });
+      }
+    }
+
+    // Verify student exists
+    const student = await db.student.findUnique({
+      where: { id: body.studentId },
+      select: { id: true, deletedAt: true },
+    });
     if (!student || student.deletedAt) {
       return NextResponse.json({ error: "Student not found or deactivated" }, { status: 404 });
     }
-    if (!exercise) {
-      return NextResponse.json({ error: "Exercise not found" }, { status: 404 });
-    }
 
-    // Look up the exercise by code if exerciseId is actually a code (e.g. "1.1A")
-    let exerciseId = body.exerciseId;
-    if (!exercise) {
-      const byCode = await db.exercise.findUnique({ where: { code: body.exerciseId }, select: { id: true } });
-      if (byCode) exerciseId = byCode.id;
-    }
+    const exerciseId = exercise.id;
 
     // Try to find existing submission for this (student, exercise)
     const existing = await db.exerciseSubmission.findFirst({
@@ -129,32 +141,69 @@ export async function POST(req: NextRequest) {
       orderBy: { updatedAt: "desc" },
     });
 
+    // Role-based field restrictions
+    const isInstructor = ["ADMIN", "INSTRUCTOR"].includes(authUser.role);
+
+    // Determine status:
+    // - Instructors/admins can set status to any valid value
+    // - Students can only set status to "DRAFT" or "SUBMITTED"
     const validStatuses = ["DRAFT", "SUBMITTED", "GRADED", "RETURNED"];
-    const status = validStatuses.includes(body.status) ? body.status : "SUBMITTED";
+    let status: string;
+    if (body.status && validStatuses.includes(body.status)) {
+      if (isInstructor) {
+        status = body.status;
+      } else {
+        // Students can only set DRAFT or SUBMITTED
+        status = ["DRAFT", "SUBMITTED"].includes(body.status) ? body.status : "SUBMITTED";
+      }
+    } else {
+      status = existing ? existing.status : "SUBMITTED";
+    }
 
     let submission;
     if (existing) {
+      // Build update — only allow fields appropriate to role
+      const updateData: any = {
+        answer: body.answer,
+        status,
+      };
+
+      // Only instructors/admins can set grading fields
+      if (isInstructor) {
+        if (typeof body.score === "number") updateData.score = body.score;
+        if (typeof body.feedback === "string") updateData.feedback = body.feedback.trim() || null;
+        if (body.gradedAt) updateData.gradedAt = new Date(body.gradedAt);
+      }
+
+      // Track submission time
+      if (status === "SUBMITTED" && existing.status !== "SUBMITTED") {
+        updateData.submittedAt = new Date();
+      }
+
       submission = await db.exerciseSubmission.update({
         where: { id: existing.id },
-        data: {
-          answer: body.answer,
-          status: status as any,
-          score: typeof body.score === "number" ? body.score : existing.score,
-          feedback: body.feedback ?? existing.feedback,
-          gradedAt: body.gradedAt ? new Date(body.gradedAt) : existing.gradedAt,
-        },
+        data: updateData,
       });
     } else {
-      submission = await db.exerciseSubmission.create({
-        data: {
-          studentId: body.studentId,
-          exerciseId,
-          answer: body.answer,
-          status: status as any,
-          score: typeof body.score === "number" ? body.score : null,
-          feedback: body.feedback ?? null,
-        },
-      });
+      // New submission — grading fields only from instructors/admins
+      const createData: any = {
+        studentId: body.studentId,
+        exerciseId,
+        answer: body.answer,
+        status: status as any,
+      };
+
+      // Only instructors/admins can set grading fields on creation
+      if (isInstructor) {
+        if (typeof body.score === "number") createData.score = body.score;
+        if (typeof body.feedback === "string") createData.feedback = body.feedback.trim() || null;
+      }
+
+      if (status === "SUBMITTED") {
+        createData.submittedAt = new Date();
+      }
+
+      submission = await db.exerciseSubmission.create({ data: createData });
     }
 
     return NextResponse.json({ submission }, { status: existing ? 200 : 201 });
