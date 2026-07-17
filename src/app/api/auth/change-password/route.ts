@@ -6,7 +6,7 @@ import { requireAuth, isErrorResponse } from "@/lib/auth-server";
 export async function POST(req: NextRequest) {
   try {
     // Authenticate — identity comes from JWT, not the request body
-    const authUser = requireAuth(req);
+    const authUser = await requireAuth(req);
     if (isErrorResponse(authUser)) return authUser;
 
     const body = await req.json();
@@ -60,7 +60,10 @@ export async function POST(req: NextRequest) {
     const hashed = await bcrypt.hash(newPassword, 12);
     await db.student.update({
       where: { id: changeStudentId },
-      data: { password: hashed },
+      data: {
+        password: hashed,
+        sessionVersion: { increment: 1 },
+      },
     });
 
     return NextResponse.json({

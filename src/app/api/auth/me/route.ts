@@ -15,7 +15,7 @@ function publicUser(s: any) {
 
 export async function GET(req: NextRequest) {
   try {
-    const authUser = requireAuth(req);
+    const authUser = await requireAuth(req);
     if (isErrorResponse(authUser)) return authUser;
 
     const student = await db.student.findUnique({

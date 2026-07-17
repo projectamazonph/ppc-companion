@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const authUser = requireAuth(req);
+    const authUser = await requireAuth(req);
     if (isErrorResponse(authUser)) return authUser;
 
     const body = await req.json();

@@ -19,13 +19,13 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = requireRole(req, "ADMIN", "INSTRUCTOR");
+  const auth = await requireRole(req, "ADMIN", "INSTRUCTOR");
   if (isErrorResponse(auth)) return auth;
 
   try {
     const { id } = await params;
     const student = await db.student.findUnique({
-      where: { id },
+      where: { id, deletedAt: null },
       include: { progress: { orderBy: { phaseNumber: "asc" } } },
     });
     if (!student) {
@@ -45,23 +45,33 @@ export async function GET(
 // PUT /api/students/[id] — update a student
 //   Body: any subset of { name, email, role, status, cohort, currentPhase, notes }
 //   Requires: ADMIN or INSTRUCTOR
+//   Security: Only ADMIN can modify role. Instructors may update
+//   non-role fields. Users cannot change their own privilege level.
 // =============================================================
 
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = requireRole(req, "ADMIN", "INSTRUCTOR");
+  const auth = await requireRole(req, "ADMIN", "INSTRUCTOR");
   if (isErrorResponse(auth)) return auth;
 
   try {
     const { id } = await params;
     const body = await req.json();
 
-    // Existence check
-    const existing = await db.student.findUnique({ where: { id } });
+    // Existence check (skip soft-deleted students)
+    const existing = await db.student.findUnique({ where: { id, deletedAt: null } });
     if (!existing) {
       return NextResponse.json({ error: "Student not found" }, { status: 404 });
+    }
+
+    // Security: prevent users from changing their own privilege level
+    if (auth.sub === id && body.role && body.role !== existing.role) {
+      return NextResponse.json(
+        { error: "You cannot change your own role." },
+        { status: 403 }
+      );
     }
 
     // Email uniqueness check (if changing)
@@ -82,8 +92,26 @@ export async function PUT(
     if (typeof body.cohort === "string") data.cohort = body.cohort.trim() || null;
     if (typeof body.notes === "string") data.notes = body.notes.trim() || null;
 
+    // Security: Only ADMIN can modify role. Instructors cannot set/change roles.
     const validRoles = ["STUDENT", "INSTRUCTOR", "ADMIN"];
-    if (validRoles.includes(body.role)) data.role = body.role as Role;
+    if (validRoles.includes(body.role)) {
+      if (auth.role === "ADMIN") {
+        // Prevent demoting the last ADMIN
+        if (existing.role === "ADMIN" && body.role !== "ADMIN") {
+          const adminCount = await db.student.count({
+            where: { role: "ADMIN", deletedAt: null },
+          });
+          if (adminCount <= 1) {
+            return NextResponse.json(
+              { error: "Cannot demote the last administrator account." },
+              { status: 403 }
+            );
+          }
+        }
+        data.role = body.role as Role;
+      }
+      // Instructors silently ignore role field
+    }
 
     const validStatuses = ["ACTIVE", "PAUSED", "GRADUATED", "WITHDRAWN", "PENDING"];
     if (validStatuses.includes(body.status)) data.status = body.status as StudentStatus;
@@ -109,25 +137,45 @@ export async function PUT(
 }
 
 // =============================================================
-// DELETE /api/students/[id] — delete a student (cascades to progress entries)
-//   Requires: ADMIN or INSTRUCTOR
+// DELETE /api/students/[id] — soft-delete a student
+//   Requires: ADMIN only (instructors cannot delete users)
+//   Sets deletedAt timestamp instead of hard-deleting.
+//   Prevents deleting the last remaining ADMIN user.
 // =============================================================
 
 export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = requireRole(req, "ADMIN", "INSTRUCTOR");
+  // Security: Only ADMIN can delete users
+  const auth = await requireRole(req, "ADMIN");
   if (isErrorResponse(auth)) return auth;
 
   try {
     const { id } = await params;
-    const existing = await db.student.findUnique({ where: { id } });
+    const existing = await db.student.findUnique({ where: { id, deletedAt: null } });
     if (!existing) {
       return NextResponse.json({ error: "Student not found" }, { status: 404 });
     }
 
-    await db.student.delete({ where: { id } });
+    // Prevent deleting the last ADMIN user
+    if (existing.role === "ADMIN") {
+      const adminCount = await db.student.count({
+        where: { role: "ADMIN", deletedAt: null },
+      });
+      if (adminCount <= 1) {
+        return NextResponse.json(
+          { error: "Cannot delete the last administrator account." },
+          { status: 403 }
+        );
+      }
+    }
+
+    // Soft delete instead of hard delete
+    await db.student.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
 
     return NextResponse.json({
       deleted: true,

@@ -14,7 +14,7 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const authUser = requireRole(req, "INSTRUCTOR", "ADMIN");
+  const authUser = await requireRole(req, "INSTRUCTOR", "ADMIN");
   if (isErrorResponse(authUser)) return authUser;
 
   try {

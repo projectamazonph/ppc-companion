@@ -8,7 +8,7 @@ import { requireAuth, requireRole, isErrorResponse } from "@/lib/auth-server";
 // =============================================================
 
 export async function GET(req: NextRequest) {
-  const auth = requireAuth(req);
+  const auth = await requireAuth(req);
   if (isErrorResponse(auth)) return auth;
 
   try {
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
 // =============================================================
 
 export async function POST(req: NextRequest) {
-  const auth = requireRole(req, "ADMIN", "INSTRUCTOR");
+  const auth = await requireRole(req, "ADMIN", "INSTRUCTOR");
   if (isErrorResponse(auth)) return auth;
 
   try {

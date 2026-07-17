@@ -40,6 +40,7 @@ function checkRateLimit(key: string): { allowed: boolean; remaining: number; res
 const publicRoutes = [
   "/api/auth/login",
   "/api/auth/signup",
+  "/api/auth/logout",
   "/api/auth/csrf",
   "/api/health",
   "/_next/",
@@ -52,6 +53,7 @@ const publicRoutes = [
 const JWT_EXEMPT_ROUTES = [
   "/api/auth/login",
   "/api/auth/signup",
+  "/api/auth/logout",
   "/api/auth/csrf",
   "/api/health",
   "/api/curriculum",
@@ -132,17 +134,12 @@ function csrfCheck(request: NextRequest): { pass: boolean; reason?: string } {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Skip public routes immediately
-  if (publicRoutes.some((route) => pathname.startsWith(route))) {
-    return NextResponse.next();
-  }
-
   // Only process API routes
   if (!pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
 
-  // 2. Rate limiting
+  // 1. Rate limiting — applies to ALL API routes (including login/signup)
   // On Vercel, x-forwarded-for is set by the platform and trusted.
   // In other deployments, spoofable headers may weaken this — rate limiting
   // is abuse prevention, not a hard security boundary.
@@ -165,6 +162,14 @@ export async function middleware(request: NextRequest) {
         },
       }
     );
+  }
+
+  // 2. Skip public routes (rate limiting already applied above)
+  if (publicRoutes.some((route) => pathname.startsWith(route))) {
+    const response = NextResponse.next();
+    response.headers.set("X-RateLimit-Remaining", String(remaining));
+    response.headers.set("X-RateLimit-Reset", String(Math.ceil(resetAt / 1000)));
+    return response;
   }
 
   // 3. CSRF protection for mutating cookie-authenticated requests
