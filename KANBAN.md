@@ -13,6 +13,18 @@
 - [ ] (empty — awaiting verification)
 
 ## Done
+- [x] Security audit Phase 1 (P0): Disable direct progress mutation, derive from quiz/capstone records
+- [x] Security audit Phase 1 (P0): Server-side quiz grading (MCQ/NUMERIC; OPEN excluded from auto-score)
+- [x] Security audit Phase 1 (P0): Exercise submissions — restrict grading fields to instructors/admins
+- [x] Security audit Phase 1 (P0): Role escalation — ADMIN-only role assignment, soft delete, last-admin protection
+- [x] Security audit Phase 1 (P1): Logout endpoint clears session cookie
+- [x] Security audit Phase 1 (P1): Middleware rate limiting applied before public-route bypass
+- [x] Security audit Phase 1 (P1): sessionVersion token revocation on password change
+- [x] Security audit Phase 1: Fail-closed auth (reject deleted sessions, DB errors reject)
+- [x] Security audit Phase 1: Atomic quiz attempt + progress update ($transaction)
+- [x] Security audit Phase 1: MCQ grading via option IDs, not modelAnswer strings
+- [x] Security audit Phase 1: Sync SQLite schema with phase pass fields
+- [x] Security audit Phase 1: PR #6 merged to main (3 commits, 16 CR comments resolved)
 - [x] Iter 1-2: Dashboard refactor (dashboard.tsx → dashboard.html)
 - [x] Iter 3: Curriculum refactor (curriculum.tsx → courses-list.html)
 - [x] Iter 4: Admin Dashboard refactor (admin-dashboard.tsx → admin-dashboard.html)

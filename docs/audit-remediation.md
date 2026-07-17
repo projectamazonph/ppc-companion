@@ -2,7 +2,7 @@
 
 > **Repository:** projectamazonph/ppc-companion
 > **Audit commit:** `b03470984e18bdd305983310f553c3f90493686e`
-> **Status:** Phase 1 implementation complete — P0-5 (schema consolidation) partial; P0-6 (paid-content boundary) deferred
+> **Status:** ✅ Phase 1 merged to main (`e6c5831`). Phase 2–4 open for implementation.
 > **Last updated:** 2026-07-17
 
 ## Executive Summary
@@ -10,6 +10,10 @@
 The security audit (July 2026) identified **6 P0 (critical)** and **8+ P1 (high)** findings. The application has a strong visual and engineering foundation, but several trust boundaries were decorative rather than enforced.
 
 **Phase 1 — Security freeze** implementation is complete. Four of six P0 issues are fully closed. P0-5 (dual Prisma schemas) is partially addressed. P0-6 (paid-content boundary) is deferred to Phase 3 as it requires product-level decisions beyond code changes.
+
+---
+
+**Merged:** PR [#6](https://github.com/projectamazonph/ppc-companion/pull/6) — 3 commits, all CI green (TypeScript, ESLint, tests, gitleaks, build). 16 CodeRabbit review comments resolved.
 
 ---
 
