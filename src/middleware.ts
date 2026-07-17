@@ -44,7 +44,6 @@ const publicRoutes = [
   "/api/auth/csrf",
   "/api/health",
   "/_next/",
-  "/favicon.ico",
   "/logo.svg",
   "/manifest.json",
   "/robots.txt",
@@ -57,7 +56,7 @@ const JWT_EXEMPT_ROUTES = [
   "/api/auth/csrf",
   "/api/health",
   "/api/curriculum",
-  // Public PPC Companion → AMPH v2 sampler funnel (no login required)
+  // Public PPC Companion → Project Amazon PH Academy sampler funnel (no login required)
   "/api/sampler",
 ];
 

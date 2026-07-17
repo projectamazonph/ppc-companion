@@ -1,5 +1,5 @@
 // ============================================================================
-// SamplerView — the PPC Companion → AMPH v2 sampler experience
+// SamplerView — the PPC Companion → Project Amazon PH Academy sampler experience
 // ----------------------------------------------------------------------------
 // A focused, mobile-first flow (4 steps + completion). It is NOT the legacy
 // four-phase course. Sampler completion is tracked separately in the store and
@@ -16,13 +16,14 @@ import {
   DIAGNOSTIC_FRAMEWORK,
   ESCALATION_CARD,
   TRIAGE_SCENARIO,
-  AMPH_TIERS,
+  TRIAGE_MAX_SCORE,
+  ACADEMY_TIERS,
   PREVIEW_MODULES,
   gradeTriage,
   type SamplerStepId,
   type DiagnosticAnswer,
 } from "@/lib/sampler-data";
-import { buildAmphHandoffUrl, trackSamplerEvent } from "@/lib/sampler-tracking";
+import { buildAcademyHandoffUrl, trackSamplerEvent } from "@/lib/sampler-tracking";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -261,7 +262,7 @@ function SeeTheWork({
                   value={opt}
                   checked={answered === opt}
                   onChange={() => setAnswered(opt)}
-                  className="accent-orange-500"
+                  className="accent-primary"
                 />
                 <span className="capitalize">{opt.replace("-", " ")}</span>
               </label>
@@ -275,8 +276,8 @@ function SeeTheWork({
               )}
             >
               {answered === correct
-                ? "Correct. The listing (conversion) is the blocker — fixing the page beats raising a bid."
-                : "Not quite. The shopper reached the page and liked the price, so traffic is fine. The page itself failed to convert."}
+                ? "Correct — the listing (conversion) is the blocker; fixing the page beats raising a bid."
+                : "Not quite — the shopper reached the page and liked the price, so traffic is fine; the page itself failed to convert."}
             </p>
           )}
         </div>
@@ -365,7 +366,7 @@ function CheckListing({
                   onChange={() =>
                     setFlags((prev) => ({ ...prev, [f.key]: !prev[f.key] }))
                   }
-                  className="accent-rose-500"
+                  className="accent-destructive"
                 />
                 <span>{f.label}</span>
               </label>
@@ -548,7 +549,7 @@ function MakeDecision({
                             onChange={() =>
                               setRationales((p) => ({ ...p, [t.id]: r.id }))
                             }
-                            className="mt-0.5 accent-orange-500"
+                            className="mt-0.5 accent-primary"
                           />
                           <span>{r.text}</span>
                         </label>
@@ -653,7 +654,7 @@ function TriageResult({
 }
 
 // =============================================================
-// Step 4 — Career path + AMPH v2 handoff
+// Step 4 — Career path + Project Amazon PH Academy handoff
 // =============================================================
 
 function CareerPath({
@@ -664,24 +665,27 @@ function CareerPath({
   samplerScore: number | null;
 }) {
   const ctaViewedRef = useRef(false);
-  const amphUrl = useMemo(() => buildAmphHandoffUrl({ samplerStep: "career-path" }), []);
+  const academyUrl = useMemo(
+    () => buildAcademyHandoffUrl({ samplerStep: "career-path" }),
+    []
+  );
 
   useEffect(() => {
     if (ctaViewedRef.current) return;
     ctaViewedRef.current = true;
-    trackSamplerEvent({ event: "amph_cta_viewed", step: "career-path" });
+    trackSamplerEvent({ event: "academy_cta_viewed", step: "career-path" });
   }, []);
 
+  // Recommend based on score: higher score = Accelerated (skip basics); lower = Foundations.
+  // Transformation is the all-in track and is never auto-recommended — the learner picks it.
   const recommended =
-    samplerScore !== null && samplerScore >= 15
-      ? AMPH_TIERS[1]
-      : samplerScore !== null && samplerScore >= 10
-      ? AMPH_TIERS[2]
-      : AMPH_TIERS[2];
+    samplerScore !== null && samplerScore >= Math.ceil(TRIAGE_MAX_SCORE * 0.75)
+      ? ACADEMY_TIERS[1]
+      : ACADEMY_TIERS[0];
 
   const onCtaClick = (intent: string) => {
     trackSamplerEvent({
-      event: "amph_cta_clicked",
+      event: "academy_cta_clicked",
       step: "career-path",
       meta: { intent },
     });
@@ -705,14 +709,14 @@ function CareerPath({
             </ul>
             {samplerScore !== null && (
               <p className="mt-2 text-xs text-muted-foreground">
-                Triage score: {samplerScore}/20. This shows you tried the work — it is
-                not a certificate and does not equal AMPH v2 completion.
+                Triage score: {samplerScore}/{TRIAGE_MAX_SCORE}. This shows you tried the work — it is
+                not a certificate and does not equal Academy completion.
               </p>
             )}
           </div>
 
           <div>
-            <p className="text-sm font-semibold">Gaps still to learn (in AMPH v2):</p>
+            <p className="text-sm font-semibold">Gaps still to learn (in the Academy):</p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {PREVIEW_MODULES.map((m) => (
                 <Badge key={m.title} variant="secondary" className="bg-muted text-muted-foreground">
@@ -723,9 +727,9 @@ function CareerPath({
           </div>
 
           <div>
-            <p className="text-sm font-semibold">Which AMPH v2 tier fits your goal?</p>
+            <p className="text-sm font-semibold">Which Academy tier fits your goal?</p>
             <div className="mt-2 grid gap-2 sm:grid-cols-3">
-              {AMPH_TIERS.map((tier) => (
+              {ACADEMY_TIERS.map((tier) => (
                 <div
                   key={tier.id}
                   className={cn(
@@ -745,27 +749,27 @@ function CareerPath({
             </div>
           </div>
 
-          {/* AMPH v2 handoff CTA — routes to comparison page, not checkout */}
+          {/* Academy handoff CTA — routes to comparison page, not checkout */}
           <div className="rounded-xl border-2 border-orange-400/50 bg-gradient-to-br from-orange-50 to-amber-50 p-4 dark:from-orange-500/10 dark:to-amber-500/5">
             <p className="flex items-center gap-1.5 text-sm font-bold text-orange-800 dark:text-orange-300">
-              <Sparkles className="h-4 w-4" /> Continue in AMPH v2
+              <Sparkles className="h-4 w-4" /> Continue in the Project Amazon PH Academy
             </p>
             <p className="mt-1 text-xs text-orange-900/80 dark:text-orange-200/80">
               The sampler is a try-it preview. The full curriculum, simulators,
-              assessment, and credentials live in AMPH v2.
+              assessment, and credentials live in the Academy.
             </p>
             <a
-              href={amphUrl}
+              href={academyUrl}
               onClick={() => onCtaClick("course-comparison")}
               className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-orange-600"
             >
-              Compare AMPH v2 courses <ExternalLink className="h-4 w-4" />
+              Compare Academy courses <ExternalLink className="h-4 w-4" />
             </a>
             <div className="mt-2 flex flex-wrap gap-2">
-              {AMPH_TIERS.map((tier) => (
+              {ACADEMY_TIERS.map((tier) => (
                 <a
                   key={tier.id}
-                  href={buildAmphHandoffUrl({ samplerStep: "career-path", variant: tier.id })}
+                  href={buildAcademyHandoffUrl({ samplerStep: "career-path", variant: tier.id })}
                   onClick={() => onCtaClick(tier.id)}
                   className="text-xs font-medium text-orange-700 underline-offset-2 hover:underline dark:text-orange-300"
                 >
@@ -779,13 +783,13 @@ function CareerPath({
             <Button variant="ghost" onClick={onBack}>
               <ArrowLeft className="mr-1.5 h-4 w-4" /> Back
             </Button>
-            <a
-              href="#"
-              onClick={(e) => e.preventDefault()}
+            <button
+              type="button"
+              onClick={() => window.print()}
               className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
             >
-              <DownloadIcon className="h-3.5 w-3.5" /> First PPC Decision Sheet (PDF)
-            </a>
+              <DownloadIcon className="h-3.5 w-3.5" /> Save as PDF
+            </button>
           </div>
         </CardContent>
       </Card>

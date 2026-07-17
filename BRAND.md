@@ -6,13 +6,13 @@
 
 ## App Identity
 
-ppc-companion is the **free Amazon PPC sampler** under ProjectAmazonPH — a training companion that lets aspiring Filipino VAs try safe, realistic PPC tasks and then continue into the full **AMPH v2** program. It is a learning product, not a seller analytics or campaign-management tool.
+ppc-companion is the **free Amazon PPC sampler** under ProjectAmazonPH — a training companion that lets aspiring Filipino VAs try safe, realistic PPC tasks and then continue into the full **Project Amazon PH Academy** program. It is a learning product, not a seller analytics or campaign-management tool.
 
 ## Logo
 
 Primary mark: **Concept 4** — Three ascending white bars with sky blue growth arrow sweep.
 Represents data, analytics, and upward trajectory.
-Source: `/public/icons/icon-og.png`
+Source: `/public/logo.svg`
 
 ## Colors
 
@@ -43,17 +43,12 @@ Avoid excessive motion — this is a professional analytics tool.
 
 ## Favicon & App Icons
 
-| File | Use |
-|---|---|
-| `/public/icons/icon-32.png` | Browser tab favicon |
-| `/public/icons/icon-180.png` | Apple Touch / iOS home screen |
-| `/public/icons/icon-192.png` | PWA manifest |
-| `/public/icons/icon-512.png` | PWA manifest high-res |
-| `/public/icons/icon-og.png` | OG social share image (1200×630) |
+Removed — no third-party favicon or app-icon assets are bundled with this
+project. The browser tab, PWA install, and Apple touch icons must be supplied
+by the operator before launch.
 
 ## Metadata
 
 - **Site name:** ppc-companion
 - **Author:** Ryan Dabao — ProjectAmazonPH
-- **OG image:** `/public/og/ppc-og.png` (1200×630 composed — navy + bar chart icon + tagline)
 - **Manifest:** `/public/manifest.json`

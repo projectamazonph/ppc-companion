@@ -86,7 +86,7 @@ The PostgreSQL schema (`schema.prisma`) and SQLite schema (`schema.sqlite.prisma
 
 ### P0-6: Paid-content boundary *(Not addressed — requires product decisions)*
 
-Moving AMPH v2 content server-side requires:
+Moving Project Amazon PH Academy content server-side requires:
 - Private repository or server-only content service
 - Enrollment/entitlement records
 - Server-side access enforcement
@@ -134,7 +134,7 @@ This is Phase 3 work and requires product/architectural decisions beyond code ch
 
 ## Phase 3: Product Boundary (Planned)
 
-1. Split sampler content from AMPH v2
+1. Split sampler content from the Project Amazon PH Academy
 2. Move proprietary content server-side or into a private repository
 3. Add explicit entitlement and enrollment records
 4. Replace localStorage authorization with server session checks

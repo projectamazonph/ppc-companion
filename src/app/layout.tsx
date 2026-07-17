@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { PapHeader } from "@/components/header";
+import { ConditionalPapHeader } from "@/components/conditional-pap-header";
 
 const BASE_URL = "https://ppc-companion.vercel.app";
 
@@ -35,19 +35,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  icons: {
-    icon: [
-      { url: "/icons/icon-32.png", sizes: "32x32" },
-      { url: "/icons/icon-192.png", sizes: "192x192" },
-      { url: "/icons/icon-512.png", sizes: "512x512" },
-    ],
-    apple: [
-      { url: "/icons/icon-180.png", sizes: "180x180" },
-    ],
-    other: [
-      { url: "/og/ppc-og.png", rel: "preload" },
-    ],
-  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -61,15 +48,6 @@ export const metadata: Metadata = {
     siteName: "PPC Companion",
     title: "PPC Companion — Amazon PPC Manager Training Platform",
     description: "Interactive training platform for the 8-12 week Amazon PPC Manager program. Built by ProjectAmazonPH.",
-    images: [
-      {
-        url: "/og/ppc-og.png",
-        width: 1200,
-        height: 630,
-        alt: "PPC Companion — Amazon PPC Manager Training Platform",
-        type: "image/png",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -77,14 +55,6 @@ export const metadata: Metadata = {
     description: "Interactive training platform for the Amazon PPC Manager program. Built by ProjectAmazonPH.",
     site: "@ProjectAmazonPH",
     creator: "@ProjectAmazonPH",
-    images: [
-      {
-        url: "/og/ppc-og.png",
-        width: 1200,
-        height: 630,
-        alt: "PPC Companion — Amazon PPC Manager Training Platform",
-      },
-    ],
   },
   alternates: {
     canonical: BASE_URL,
@@ -126,15 +96,7 @@ const jsonLd = {
     name: "PPC Companion",
     color: "#FF6B35",
   },
-  screenshot: `${BASE_URL}/og/ppc-og.png`,
-  softwareVersion: "0.5.0",
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    ratingCount: "127",
-    bestRating: "5",
-    worstRating: "1",
-  },
+  softwareVersion: "0.6.0",
 };
 
 export default function RootLayout({
@@ -151,7 +113,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <PapHeader />
+        <ConditionalPapHeader />
         {children}
         <Toaster />
       </body>

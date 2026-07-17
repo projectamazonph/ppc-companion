@@ -1,19 +1,20 @@
 // ============================================================================
-// PPC Companion → AMPH v2 Sampler — Content Source
+// PPC Companion → Project Amazon PH Academy Sampler — Content Source
 // ----------------------------------------------------------------------------
 // This file is the EXCLUSIVE source of public sampler content.
 //
 // Guardrails (from the migration plan):
-//   - Do NOT copy AMPH v2's full lessons here.
+//   - Do NOT copy the Academy's full lessons here.
 //   - Keep each concept to a single focused step.
 //   - Define every acronym before relying on it.
 //   - No claim of job placement, income, account access, or campaign results.
 //   - The sampler must work without Seller Central, a client account, or
 //     prior PPC knowledge.
 //
-// PPC Companion is a SHORT SAMPLER, not a second PPC course. AMPH v2
-// remains the source of truth for the full curriculum, simulators, assessment,
-// progression, credentials, and enrollment.
+// PPC Companion is a SHORT SAMPLER, not a second PPC course. The
+// Project Amazon PH Academy remains the source of truth for the full
+// curriculum, simulators, assessment, progression, credentials, and
+// enrollment.
 // ============================================================================
 
 // =============================================================
@@ -27,7 +28,7 @@ export type SamplerConceptKey =
 
 export type SamplerContentReference = {
   conceptKey: SamplerConceptKey;
-  amphSource: string; // Canonical AMPH v2 lesson or tool slug
+  academySource: string; // Canonical Academy lesson or tool slug
   samplerPurpose: string; // What the student may learn here
   reviewDate: string; // ISO date — re-verify claim currency
   owner: "Project Amazon PH";
@@ -36,21 +37,21 @@ export type SamplerContentReference = {
 export const samplerContentReferences: SamplerContentReference[] = [
   {
     conceptKey: "amazon-ads-basics",
-    amphSource: "ppc-foundations/amazon-ecosystem",
+    academySource: "ppc-foundations/amazon-ecosystem",
     samplerPurpose: "Orient a new VA to what Amazon ads actually are in a real workflow.",
     reviewDate: "2026-07-16",
     owner: "Project Amazon PH",
   },
   {
     conceptKey: "listing-readiness",
-    amphSource: "listing-audit-simulator",
+    academySource: "listing-audit-simulator",
     samplerPurpose: "Teach the retail-readiness check before any ad spend is proposed.",
     reviewDate: "2026-07-16",
     owner: "Project Amazon PH",
   },
   {
     conceptKey: "search-term-triage",
-    amphSource: "search-term-triage",
+    academySource: "search-term-triage",
     samplerPurpose: "Let a VA make ONE safe PPC decision and explain the reasoning.",
     reviewDate: "2026-07-16",
     owner: "Project Amazon PH",
@@ -66,8 +67,8 @@ export type SamplerEvent =
   | "sampler_step_completed"
   | "sampler_triage_submitted"
   | "sampler_completed"
-  | "amph_cta_viewed"
-  | "amph_cta_clicked";
+  | "academy_cta_viewed"
+  | "academy_cta_clicked";
 
 // =============================================================
 // SAMPLER STEPS
@@ -86,8 +87,8 @@ export type SamplerStep = {
   subtitle: string;
   minutes: number;
   artifactLabel: string;
-  // The AMPH v2 tier + what it covers that this sampler does NOT.
-  amphHandoff: { tier: string; preview: string };
+  // The Academy tier + what it covers that this sampler does NOT.
+  academyHandoff: { tier: string; preview: string };
 };
 
 export const SAMPLER_STEPS: SamplerStep[] = [
@@ -99,10 +100,10 @@ export const SAMPLER_STEPS: SamplerStep[] = [
       "What an Amazon PPC (pay-per-click) VA actually does — and the three problems to tell apart.",
     minutes: 8,
     artifactLabel: "Identify the first thing to check in a mock account",
-    amphHandoff: {
+    academyHandoff: {
       tier: "PPC Foundations",
       preview:
-        "AMPH v2's Foundations covers the full Amazon ecosystem, every ad type, and metrics in depth.",
+        "The Academy's Foundations covers the full Amazon ecosystem, every ad type, and metrics in depth.",
     },
   },
   {
@@ -113,10 +114,10 @@ export const SAMPLER_STEPS: SamplerStep[] = [
       "A mini retail-readiness scorecard. Produce a short, three-item escalation note.",
     minutes: 15,
     artifactLabel: "Produce a three-item escalation note",
-    amphHandoff: {
+    academyHandoff: {
       tier: "Listing Audit simulator",
       preview:
-        "AMPH v2's Listing Audit simulator scores a full listing — this sampler only gives you the checklist mindset.",
+        "The Academy's Listing Audit simulator scores a full listing — this sampler only gives you the checklist mindset.",
     },
   },
   {
@@ -127,10 +128,10 @@ export const SAMPLER_STEPS: SamplerStep[] = [
       "A context-aware search-term triage case. Choose keep, investigate, negate, or escalate — and explain why.",
     minutes: 20,
     artifactLabel: "Decision + evidence and a manager-ready note",
-    amphHandoff: {
+    academyHandoff: {
       tier: "Search Term Triage & Bid Elevator",
       preview:
-        "AMPH v2 teaches the full optimization loop with many cases — this sampler has one curated case.",
+        "The Academy teaches the full optimization loop with many cases — this sampler has one curated case.",
     },
   },
   {
@@ -138,13 +139,13 @@ export const SAMPLER_STEPS: SamplerStep[] = [
     number: 4,
     title: "See the career path",
     subtitle:
-      "What you practiced, the gaps left to learn, and which AMPH v2 tier fits your goal.",
+      "What you practiced, the gaps left to learn, and which Academy tier fits your goal.",
     minutes: 12,
     artifactLabel: "Personal action plan and course comparison",
-    amphHandoff: {
+    academyHandoff: {
       tier: "Pricing & enrollment",
       preview:
-        "AMPH v2 handles sign-up, payment, progression, and certificates. PPC Companion never stores these.",
+        "The Academy handles sign-up, payment, progression, and certificates. PPC Companion never stores these.",
     },
   },
 ];
@@ -157,9 +158,9 @@ export const samplerMeta = {
   audience: "Filipino aspiring Virtual Assistants new to Amazon PPC",
   durationMinutes: SAMPLER_STEPS.reduce((s, step) => s + step.minutes, 0),
   isSampler: true as const,
-  competitorWithAmph: false as const,
+  competitorWithAcademy: false as const,
   disclaimer:
-    "This is a free sampler. It does not enroll you, grant certificates, or give account access. The full curriculum, simulators, and credentials are in AMPH v2.",
+    "This is a free sampler. It does not enroll you, grant certificates, or give account access. The full curriculum, simulators, and credentials are in the Project Amazon PH Academy.",
   promisedOutcome:
     "One credible VA artifact: a short, evidence-based escalation note you can put on a resume.",
 };
@@ -348,13 +349,21 @@ const DECISION_WEIGHT: Record<TriageDecision, number> = {
 
 const MAX_PER_TERM = 3; // 2 for decision + 1 if matches expected
 
+export const TRIAGE_MAX_SCORE_PER_TERM = MAX_PER_TERM + 1; // 3 decision + 1 rationale = 4
+
+/**
+ * Maximum score for the bundled TRIAGE_SCENARIO.
+ * Computed from the scenario so adding/removing terms doesn't desync the UI.
+ */
+export const TRIAGE_MAX_SCORE = TRIAGE_MAX_SCORE_PER_TERM * TRIAGE_SCENARIO.searchTerms.length;
+
 /**
  * Grade a triage submission. Fully multiple-choice, no free text to review.
  *  - Each term: up to 2 points for a safe, defensible decision + 1 point if it
  *    matches the expected decision (so reasoning that differs but is justified
  *    still scores).
  *  - Rationale: +1 if the chosen multiple-choice rationale is correct.
- * Max score scales with the number of terms (4 terms → 16 + 4 = 20).
+ * Max score scales with the number of terms (4 terms × 4 = 16 for the default scenario).
  */
 export function gradeTriage(
   answers: DiagnosticAnswer[],
@@ -401,17 +410,17 @@ export function gradeTriage(
 }
 
 // =============================================================
-// STEP 4 — Career paths + AMPH v2 tiers
+// STEP 4 — Career paths + Project Amazon PH Academy tiers
 // =============================================================
 
-export type AmphTier = {
+export type AcademyTier = {
   id: string;
   name: string;
   summary: string;
   fits: string;
 };
 
-export const AMPH_TIERS: AmphTier[] = [
+export const ACADEMY_TIERS: AcademyTier[] = [
   {
     id: "foundations",
     name: "PPC Foundations",
@@ -447,7 +456,7 @@ export const CAREER_PATHS = [
   },
 ] as const;
 
-// Modules the sampler only PREVIEWS (locked in AMPH v2).
+// Modules the sampler only PREVIEWS (locked in the Academy).
 export const PREVIEW_MODULES = [
   { title: "Unit economics", note: "Calculate true profit per order." },
   { title: "Campaign building", note: "Structure Sponsored Products campaigns." },
@@ -467,6 +476,6 @@ export const samplerWorksheet = {
     "My three-item escalation note (listing → inventory → price/Buy Box)",
     "The search term I reviewed and the safe action I chose",
     "The one-line reason a manager would accept",
-    "Which AMPH v2 tier I will look at next",
+    "Which Academy tier I will look at next",
   ],
 } as const;

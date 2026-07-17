@@ -1,8 +1,8 @@
 // ============================================================================
-// Sampler → AMPH v2 handoff + privacy-safe event tracking
+// Sampler → Project Amazon PH Academy handoff + privacy-safe event tracking
 // ----------------------------------------------------------------------------
-// PPC Companion never shares AMPH v2's auth, DB, or payment. It only routes
-// learners to a public AMPH v2 comparison page with measurable, non-PII params.
+// PPC Companion never shares the Academy's auth, DB, or payment. It only routes
+// learners to a public comparison page with measurable, non-PII params.
 // ============================================================================
 
 import type { SamplerEvent } from "@/lib/sampler-data";
@@ -11,11 +11,11 @@ import type { SamplerEvent } from "@/lib/sampler-data";
 // Config (documented in .env.example)
 // ---------------------------------------------------------------------------
 
-const AMPH_APP_URL = process.env.NEXT_PUBLIC_AMPH_APP_URL ?? "https://amph.projectamazonph.com";
-const AMPH_COMPARE_PATH = process.env.NEXT_PUBLIC_AMPH_COMPARE_PATH ?? "/course-comparison";
-const SAMPLER_CAMPAIGN = process.env.NEXT_PUBLIC_AMPH_SAMPLER_CAMPAIGN ?? "va-ppc-starter";
+const PAPH_APP_URL = process.env.NEXT_PUBLIC_PAPH_APP_URL ?? "https://academy.projectamazonph.com";
+const PAPH_COMPARE_PATH = process.env.NEXT_PUBLIC_PAPH_COMPARE_PATH ?? "/course-comparison";
+const SAMPLER_CAMPAIGN = process.env.NEXT_PUBLIC_PAPH_SAMPLER_CAMPAIGN ?? "va-ppc-starter";
 
-export type AmphComparisonParams = {
+export type AcademyComparisonParams = {
   source?: string;
   medium?: string;
   campaign?: string;
@@ -24,13 +24,13 @@ export type AmphComparisonParams = {
 };
 
 /**
- * Build the measurable AMPH v2 handoff URL.
+ * Build the measurable Project Amazon PH Academy handoff URL.
  * Always sends learners to the comparison/course page — never straight to
  * checkout. Params are non-PII: source, medium, campaign, step, optional variant.
  */
-export function buildAmphHandoffUrl(opts: AmphComparisonParams = {}): string {
-  const url = new URL(AMPH_APP_URL);
-  url.pathname = AMPH_COMPARE_PATH.replace(/^\/+/, "") ? `/${AMPH_COMPARE_PATH.replace(/^\/+/, "")}` : url.pathname;
+export function buildAcademyHandoffUrl(opts: AcademyComparisonParams = {}): string {
+  const url = new URL(PAPH_APP_URL);
+  url.pathname = PAPH_COMPARE_PATH.replace(/^\/+/, "") ? `/${PAPH_COMPARE_PATH.replace(/^\/+/, "")}` : url.pathname;
   const params = new URLSearchParams(url.search);
   params.set("source", opts.source ?? "ppc-companion");
   params.set("medium", opts.medium ?? "sampler");
