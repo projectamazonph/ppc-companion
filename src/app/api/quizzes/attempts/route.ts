@@ -149,11 +149,15 @@ export async function POST(req: NextRequest) {
         // parsed from the options JSON. Each option is { id, text, correct? }.
         if (q.options) {
           try {
-            const parsedOptions = JSON.parse(q.options);
+            const parsedOptions: unknown = JSON.parse(q.options);
             if (Array.isArray(parsedOptions)) {
               const correctIds = parsedOptions
-                .filter((o: any) => o.correct === true)
-                .map((o: any) => String(o.id));
+                .filter(
+                  (o: unknown): o is Record<string, unknown> =>
+                    typeof o === "object" && o !== null,
+                )
+                .filter((o) => o.correct === true)
+                .map((o) => String(o.id));
               isCorrect = correctIds.length > 0 && correctIds.includes(submitted.trim());
             }
           } catch {
