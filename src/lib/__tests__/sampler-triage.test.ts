@@ -6,7 +6,8 @@ import { gradeTriage, TRIAGE_SCENARIO, type DiagnosticAnswer } from "@/lib/sampl
 //   - 4 safe decisions each score a base weight (none are "wrong")
 //   - matching the *expected* decision adds a correctness point
 //   - the multiple-choice rationale adds 1 point when correct
-//   - max = 4 terms × (2 + 1) + 4 × 1 rationale = 20
+//   - per term: base 2 + match bonus 1 + rationale 1 = 4 max
+//   - max = 4 terms × 4 = 16
 // =============================================================
 
 const allExpected = (): DiagnosticAnswer[] =>
@@ -33,7 +34,9 @@ describe("gradeTriage", () => {
     }));
     const { score, maxScore } = gradeTriage(safeOnly, "", TRIAGE_SCENARIO);
     expect(maxScore).toBe(16);
-    // term1: 3 (expected) +1 rationale = 4; terms2-4: 2 base +1 rationale = 3 each → 4+9 = 13
+    // term1: expected decision (3) + correct rationale (1) = 4
+    // terms2-4: safe but unexpected decision (2) + correct rationale (1) = 3 each
+    // total: 4 + 3+3+3 = 13
     expect(score).toBe(13);
   });
 
@@ -49,7 +52,7 @@ describe("gradeTriage", () => {
       return { termId: t.id, decision: t.expectedDecision, rationaleId: wrong.id };
     });
     const { score } = gradeTriage(wrongRationale, "", TRIAGE_SCENARIO);
-    // 4×3 (expected) + 0 rationale
+    // 4 terms × 3 pts each (base 2 + match bonus 1) + 0 rationale pts = 12
     expect(score).toBe(12);
   });
 

@@ -7,17 +7,16 @@ export default function HeroSection() {
   return (
     <section className={styles.hero}>
       <div className={styles.eyebrow}>
-        <i className="ph ph-fire"></i>
-        14 Taon ng Karanasan sa Amazon Ads
+        <i className="ph ph-graduation-cap"></i>
+        Para sa mga walang Amazon background
       </div>
       <h1 className={styles.headline}>
-        Natatarantado ka pa rin<br />
-        sa <em>Amazon Ads?</em>
+        Wala kang karanasan sa Amazon?<br />
+        <em>Dito magsisimula ang pagbabago.</em>
       </h1>
       <p className={styles.subheadline}>
-        Habang ang mga kaibigan mo sa <strong>Cebu, Davao, at Iloilo</strong> ay kumikita na ng{" "}
-        <strong>₱60,000–₱80,000 kada buwan</strong> gamit ang Amazon PPC, nandito ka pa rin — nahihiya,
-        natatakot, o hindi alam kung saan magsisimula.
+        Ituro ka namin mula zero — keyword research, campaign setup, bidding — hanggang sa
+        makapagpatakbo ka ng sariling Amazon PPC campaigns. Walang kailangang previous experience.
       </p>
       <div className={styles.actions}>
         <a href="#pricing" className={`${buttonStyles.btnPrimary} ${styles.btnPrimaryLarge}`}>

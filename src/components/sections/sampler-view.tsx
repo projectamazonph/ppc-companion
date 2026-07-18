@@ -282,24 +282,27 @@ function SeeTheWork({
           )}
         </div>
 
-        <div className="flex justify-end">
-          <Button
-            onClick={() => {
-              onCompleteStep();
-              onNext();
-            }}
-          >
-            Next: Check the listing <ArrowRight className="ml-1.5 h-4 w-4" />
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-// =============================================================
-// Step 2 — Check the listing (retail-readiness scorecard)
-// =============================================================
+                <div className="flex justify-end">
+                  <Button
+                    disabled={answered === null}
+                    onClick={() => {
+                      onCompleteStep();
+                      onNext();
+                    }}
+                  >
+                    Next: Check the listing <ArrowRight className="ml-1.5 h-4 w-4" />
+                  </Button>
+                </div>
+        
+              </CardContent>
+        
+            </Card>
+          );
+        }
+        
+        // =============================================================
+        // Step 2 — Check the listing (retail-readiness scorecard)
+        // =============================================================
 
 const LISTING_FIELDS = [
   { key: "stock", label: "In stock", fail: "Out of stock" },

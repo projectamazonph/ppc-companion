@@ -152,9 +152,9 @@ export const SAMPLER_STEPS: SamplerStep[] = [
 
 export const samplerMeta = {
   id: "ppc-companion-sampler",
-  title: "Amazon PPC VA — Starter Sampler",
+  title: "Amazon PPC — Simula Dito",
   tagline:
-    "A short, safe taste of the work a real Amazon PPC Virtual Assistant does — not the full course.",
+    "Kumuha ng iyong unang hakbang sa Amazon PPC — guided, walang-pressure, at walang prior experience kinakailangan.",
   audience: "Filipino aspiring Virtual Assistants new to Amazon PPC",
   durationMinutes: SAMPLER_STEPS.reduce((s, step) => s + step.minutes, 0),
   isSampler: true as const,
