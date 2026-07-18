@@ -88,7 +88,6 @@ function Carousel({
     [scrollPrev, scrollNext]
   )
 
-  /* eslint-disable react-hooks/set-state-in-effect */
   React.useEffect(() => {
     if (!api || !setApi) return
     setApi(api)
@@ -104,7 +103,6 @@ function Carousel({
       api?.off("select", onSelect)
     }
   }, [api, onSelect])
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   return (
     <CarouselContext.Provider

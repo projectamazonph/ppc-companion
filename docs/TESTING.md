@@ -43,11 +43,13 @@ Use for important internal or external interfaces where independent change can b
 
 ## Commands
 
-- Unit and integration: `bun run test`
+- Unit and integration: `npx vitest run`
 - End-to-end: `Not yet configured`
-- Type checking: `Not yet configured`
+- Type checking: `npx tsc --noEmit`
 - Linting: `bun run lint`
 - Build: `bun run build`
+
+> ⚠️ Use `npx vitest run` (node-based) instead of `bun run test`. The bun test runner has a known jsdom environment incompatibility on some systems. `npx vitest run` is what CI uses and works reliably across all platforms.
 
 ## Coverage policy
 

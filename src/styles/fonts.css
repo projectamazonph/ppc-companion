@@ -2,10 +2,8 @@
    AMPH-v2 Field Manual Typography
    ============================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 html {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -14,7 +12,7 @@ html {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.01em;
@@ -23,7 +21,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 body {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
   font-weight: 400;
   line-height: 1.5;
   color: var(--text-secondary);
@@ -31,7 +29,7 @@ body {
 }
 
 code, pre, .mono {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
 }
 
 .tabular-nums {

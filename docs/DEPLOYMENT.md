@@ -28,7 +28,7 @@ After deployment, verify health checks, critical-path smoke tests, logs, metrics
 ## Commands
 
 - Build: `bun run build`
-- Test: `bun run test`
+- Test: `npx vitest run`
 - End-to-end: `Not yet configured`
 
 Replace unconfigured commands with actual executable steps before the first release.

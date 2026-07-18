@@ -1,5 +1,5 @@
 // ============================================================================
-// Middleware — JWT auth gate, CSRF protection, in-memory rate limiting
+// Proxy — JWT auth gate, CSRF protection, in-memory rate limiting
 // ============================================================================
 
 import { NextResponse } from "next/server";
@@ -133,7 +133,7 @@ function csrfCheck(request: NextRequest): { pass: boolean; reason?: string } {
   };
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Only process API routes

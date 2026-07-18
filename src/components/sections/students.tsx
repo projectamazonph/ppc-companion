@@ -735,7 +735,6 @@ function StudentFormDialog({
   });
   const { toast } = useToast();
 
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (student) {
       setForm({
@@ -761,7 +760,6 @@ function StudentFormDialog({
       });
     }
   }, [student, open]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   const submit = async () => {
     if (!form.name.trim() || !form.email.trim()) {

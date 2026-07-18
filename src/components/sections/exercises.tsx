@@ -568,15 +568,17 @@ function CalcQuestion({
   const isCorrect = hasAnswer && normalize(userAnswer) === normalize(question.answer);
 
   // Trigger shake animation when user types something incorrect
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (hasAnswer && !isCorrect && userAnswer.length > 0) {
-      setShakeIncorrect(true);
-      const t = setTimeout(() => setShakeIncorrect(false), 600);
-      return () => clearTimeout(t);
+      // Defer state update to avoid cascading render
+      const t = setTimeout(() => setShakeIncorrect(true), 0);
+      const hideT = setTimeout(() => setShakeIncorrect(false), 600);
+      return () => {
+        clearTimeout(t);
+        clearTimeout(hideT);
+      };
     }
   }, [userAnswer, hasAnswer, isCorrect]);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   return (
     <div

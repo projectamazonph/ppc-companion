@@ -5,7 +5,7 @@
   "description": "Amazon PPC Manager — Companion training platform for students, instructors, and admins.",
   "scripts": {
     "dev": "next dev -p 3000 2>&1 | tee dev.log",
-    "build": "prisma generate && next build --webpack && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
+    "build": "prisma generate && next build --webpack && node -e \"const fs=require('fs'),path=require('path');function copyDir(s,d){fs.mkdirSync(d,{recursive:true});fs.readdirSync(s).forEach(f=>{const sP=path.join(s,f),dP=path.join(d,f);fs.statSync(sP).isDirectory()?copyDir(sP,dP):fs.copyFileSync(sP,dP)})};copyDir('.next/static','.next/standalone/.next/static');copyDir('public','.next/standalone/public')\"",
     "start": "cross-env NODE_ENV=production node .next/standalone/server.js",
     "lint": "eslint .",
     "db:push": "prisma db push",

@@ -44,9 +44,13 @@ export function CapstoneSection() {
   // Celebration animation when all deliverables are completed
   useEffect(() => {
     if (allComplete && prevDoneRef.current < total) {
-      setShowCelebration(true);
-      const timer = setTimeout(() => setShowCelebration(false), 4000);
-      return () => clearTimeout(timer);
+      // Defer state update to avoid cascading render
+      const timer = setTimeout(() => setShowCelebration(true), 0);
+      const hideTimer = setTimeout(() => setShowCelebration(false), 4000);
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(hideTimer);
+      };
     }
     prevDoneRef.current = done;
   }, [done, allComplete, total]);
