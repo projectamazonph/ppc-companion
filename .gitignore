@@ -11,3 +11,4 @@ tsconfig.tsbuildinfo
 pgdata/
 *.db
 *.db-journal
+.wayland-core/
